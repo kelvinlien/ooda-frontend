@@ -1,5 +1,11 @@
 import React from 'react';
 import axios from 'axios';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -18,16 +24,42 @@ export default class LoginForm extends React.Component
         super(props);
         this.state = {
             url : 'localhost:2109/oauth/token/',
-            account : '',
-            password : ''
+            username : '',
+            password : '',
+            accessible : true
         }
         this.login = this.login.bind(this);
         this.saveToState = this.saveToState.bind(this);
     }
     login()
     {
-        // axios.get
-        alert("Hello there!");
+        let _this = this;
+        axios({
+            url : _this.state.url,
+            method : 'post',
+            headers : {
+                'Content-Type' : 'application/x-www-form-urlencoded'
+            },
+            data : {
+                'grant-type' : 'password',
+                'username' : _this.state.username,
+                'password' : _this.state.password
+            },
+            auth: {
+                username: 'ooda',
+                password: 'secret'
+              }
+        })
+        .then(function()
+        {
+            alert("Welcome aboard!");
+            _this.setState(()=>({
+                accessible : true
+            }));
+        })
+        .catch(function(error){
+            alert(error);
+        })
     }
     saveToState(e)
     {
@@ -37,8 +69,34 @@ export default class LoginForm extends React.Component
             [id] : value
         }))
     }
+    lobby()
+    {
+        return (
+            <div>
+                <button>HR only</button>
+            </div>
+        );
+    }
     render()
     {
+        let router = [];
+        if (this.state.accessible)
+        {
+            router.push(
+                <Router>
+                    <div>
+                        <nav>
+                            <Link to = "/lobby">Lobby</Link>
+                        </nav>
+                        <Switch>
+                            <Route path = "/lobby">
+                                {this.lobby}
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
+            )
+        }
         console.log(this.state);
         return(
             <form>
@@ -52,7 +110,7 @@ export default class LoginForm extends React.Component
                         <Grid key = {1} item>
                             <FormControl>
                                 <InputLabel htmlFor="account">Tài khoản</InputLabel>
-                                <Input id="account" aria-describedby="my-helper-text" value = {this.state.account} onChange = {e => this.saveToState(e)}/>
+                                <Input id="username" aria-describedby="my-helper-text" value = {this.state.username} onChange = {e => this.saveToState(e)}/>
                                 <FormHelperText id="my-helper-text">Vui lòng sử dụng tài khoản chúng tôi đã cung cấp cho bạn.</FormHelperText>
                             </FormControl>
                             <FormControl>
@@ -62,9 +120,10 @@ export default class LoginForm extends React.Component
                             </FormControl>
                         </Grid>
                         <Button type = 'button' onClick = {this.login} color = 'primary' variant = 'outlined'>
-                            Press to greet!
+                            Đăng nhập
                         </Button>
                     </Grid>
+                    {router}
                 </Container>
             </form>
         )
