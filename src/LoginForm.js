@@ -14,19 +14,20 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import user from './user.svg';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
+import qs from 'querystring';
 export default class LoginForm extends React.Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
-            url : 'localhost:2109/oauth/token/',
+            url : 'http://localhost:2109/oauth/token/',
             username : '',
             password : '',
-            accessible : true
+            accessible : false
         }
         this.login = this.login.bind(this);
         this.saveToState = this.saveToState.bind(this);
@@ -40,25 +41,27 @@ export default class LoginForm extends React.Component
             headers : {
                 'Content-Type' : 'application/x-www-form-urlencoded'
             },
-            data : {
-                'grant-type' : 'password',
+            data : qs.stringify({
+                'grant_type' : 'password',
                 'username' : _this.state.username,
                 'password' : _this.state.password
-            },
+            }),
             auth: {
                 username: 'ooda',
                 password: 'secret'
               }
         })
-        .then(function()
+        .then(function(response)
         {
-            alert("Welcome aboard!");
+            let role = response['data']['user']['role'];
+            alert("Welcome aboard! Your current role is " + role + '.');
             _this.setState(()=>({
                 accessible : true
             }));
         })
         .catch(function(error){
-            alert(error);
+            // alert(error);
+            alert("Bad request. Please double check your username and password!");
         })
     }
     saveToState(e)
