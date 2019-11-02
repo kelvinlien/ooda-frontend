@@ -1,11 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-  } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -24,19 +18,20 @@ export default class LoginForm extends React.Component
     {
         super(props);
         this.state = {
-            url : 'http://localhost:2109/oauth/token/',
+            url : 'oauth/token/',
             username : '',
-            password : '',
-            accessible : false
+            password : ''
         }
         this.login = this.login.bind(this);
         this.saveToState = this.saveToState.bind(this);
+        this.props.resetState();
     }
     login()
     {
         let _this = this;
         axios({
             url : _this.state.url,
+            baseURL : _this.props.baseURL,
             method : 'post',
             headers : {
                 'Content-Type' : 'application/x-www-form-urlencoded'
@@ -45,6 +40,10 @@ export default class LoginForm extends React.Component
                 'grant_type' : 'password',
                 'username' : _this.state.username,
                 'password' : _this.state.password
+                // 'username' : 'lulu',
+                // 'password' : 'pix'
+                // 'username' : 'poppy',
+                // 'password' : 'hammer'
             }),
             auth: {
                 username: 'ooda',
@@ -53,14 +52,14 @@ export default class LoginForm extends React.Component
         })
         .then(function(response)
         {
-            let role = response['data']['user']['role'];
+            let role = response['data']['user']['role'];            //get the role from response
+            let accessToken = response['data']['accessToken'];    //get token to check role
             alert("Welcome aboard! Your current role is " + role + '.');
-            _this.setState(()=>({
-                accessible : true
-            }));
+            _this.props.magicPhrase(accessToken);
         })
         .catch(function(error){
             // alert(error);
+            console.log(error);
             alert("Bad request. Please double check your username and password!");
         })
     }
@@ -72,37 +71,11 @@ export default class LoginForm extends React.Component
             [id] : value
         }))
     }
-    lobby()
-    {
-        return (
-            <div>
-                <button>HR only</button>
-            </div>
-        );
-    }
     render()
     {
-        let router = [];
-        if (this.state.accessible)
-        {
-            router.push(
-                <Router>
-                    <div>
-                        <nav>
-                            <Link to = "/lobby">Lobby</Link>
-                        </nav>
-                        <Switch>
-                            <Route path = "/lobby">
-                                {this.lobby}
-                            </Route>
-                        </Switch>
-                    </div>
-                </Router>
-            )
-        }
         console.log(this.state);
         return(
-            <form>
+            <>
                 <CssBaseline />
                 <Container maxWidth = 'xs'>
                     {/* <img src = {logo} alt = 'logo' /> */}
@@ -126,9 +99,9 @@ export default class LoginForm extends React.Component
                             Đăng nhập
                         </Button>
                     </Grid>
-                    {router}
+                    {/* {this.router()} */}
                 </Container>
-            </form>
+            </>
         )
     }
 }
