@@ -1,13 +1,15 @@
 import React from 'react';
 import axios from 'axios';
-import {Container, Button} from '@material-ui/core';
+import {Container, Button, AppBar, Drawer, Toolbar, IconButton, Typography} from '@material-ui/core';
+import MiniDrawer from './MiniDrawer.js';
 export default class Lobby extends React.Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
-            url : 'protected/ping/'
+            url : 'protected/ping/',
+            openDrawer : false
         }
         this.checkRole = this.checkRole.bind(this);
     }
@@ -33,11 +35,28 @@ export default class Lobby extends React.Component
             }
         })
     }
+    logOut()
+    {
+      window.open('../','_self');
+    }
+    openDrawer()
+    {
+      this.setState(() => ({
+        openDrawer : true
+      }));
+    }
+    closeDrawer()
+    {
+      this.setState(() => ({
+        openDrawer : false
+      }));
+    }
     render()
     {
-        console.log(this.props);
+      console.log(this.state);
         return(
-            <Container>
+            <Container maxWidth = 'false'>
+                <MiniDrawer role = 'hr' name = 'Kelvin' logOut = {() => this.logOut()}/>
                 {
                 this.props.accessible && 
                 <Button type = 'button' onClick = {() => this.checkRole()}>
