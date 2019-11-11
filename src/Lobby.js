@@ -9,7 +9,8 @@ export default class Lobby extends React.Component
         super(props);
         this.state = {
             url : 'protected/ping/',
-            openDrawer : false
+            role : 'staff',   //default role
+            fullname : ''
         }
         this.checkRole = this.checkRole.bind(this);
     }
@@ -17,23 +18,22 @@ export default class Lobby extends React.Component
     {
         let _this = this;
         axios({
-            url : this.state.url,
+            url : _this.state.url,
             baseURL : _this.props.baseURL,
             method : 'get',
             headers: {'Authorization': "Bearer " + _this.props.accessToken}
         })
-        .then(function(response){
-            console.log(response);
-            alert('Welcome to da club');
-        })
-        .catch(function(error){
-            let statusCode = error.response.status;
-            if ( statusCode === 401)
-            {
-                alert(error.response.data.message);
-                window.open('../','_self');
-            }
-        })
+        .then(function(){
+          _this.setState((prevState) => ({
+            ...prevState,
+            role : 'hr',
+            fullname : _this.props.fullname
+          }));
+        });
+        // this.setState((prevState) => ({
+        //   ...prevState,
+        //   fullname : this.props.usrname
+        // }));
     }
     logOut()
     {
@@ -51,18 +51,35 @@ export default class Lobby extends React.Component
         openDrawer : false
       }));
     }
+    // componentDidUpdate(prevProp)      //this to assume that component is loaded before Lobby fully received props.
+    // {
+    //   if (prevProp.usrname !== this.props.usrname)
+    //   {  
+    //     this.setState((prevState) => ({
+    //       ...prevState,
+    //       fullname : this.props.usrname
+    //     }));
+    //   }
+    //   if (prevProp.accessToken !== this.props.accessToken)
+    //   {
+    //     this.checkRole();
+    //   }
+    // }
+    componentDidMount()
+    {
+      this.checkRole();
+    }
     render()
     {
-      console.log(this.state);
         return(
-            <Container maxWidth = 'false'>
-                <MiniDrawer role = 'hr' name = 'Kelvin' logOut = {() => this.logOut()}/>
-                {
+            <Container>
+                <MiniDrawer role = {this.state.role} fullname = {this.state.fullname} logOut = {() => this.logOut()}/>
+                {/* {
                 this.props.accessible && 
                 <Button type = 'button' onClick = {() => this.checkRole()}>
                     HR Only
                 </Button>
-                }
+                } */}
             </Container>
         )
     }

@@ -17,7 +17,8 @@ export default class App extends React.Component
     this.state = {
         baseURL : 'http://localhost:2109/',
         accessible : false,
-        accessToken : ''
+        accessToken : '',
+        fullname : ''
 
     }
     this.openSesame = this.openSesame.bind(this);
@@ -30,11 +31,12 @@ export default class App extends React.Component
         accessToken : ''
       }))
   }
-  openSesame(token)
+  openSesame(token, fullname)
   {
     this.setState(()=>({
         accessible : true,
-        accessToken : token
+        accessToken : token,
+        fullname : fullname
     }));
   }
   render()
@@ -51,10 +53,10 @@ export default class App extends React.Component
           </nav>
           <Switch>
              <Route path = "/lobby">
-                 <Lobby baseURL = {this.state.baseURL} accessible = {this.state.accessible} accessToken = {this.state.accessToken}></Lobby>
+                 <Lobby baseURL = {this.state.baseURL} accessible = {this.state.accessible} accessToken = {this.state.accessToken} fullname = {this.state.fullname}></Lobby>
              </Route>
              <Route path = "/">
-                 <LoginForm baseURL = {this.state.baseURL} magicPhrase = {token => this.openSesame(token)} resetState = {() => this.resetState()}/>
+                 <LoginForm baseURL = {this.state.baseURL} magicPhrase = {(token, fullname) => this.openSesame(token, fullname)} resetState = {() => this.resetState()}/>
              </Route>
          </Switch>
      </div>

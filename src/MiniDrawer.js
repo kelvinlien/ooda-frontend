@@ -142,7 +142,7 @@ export default function MiniDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap className={classes.title}>
-            Xin chào {props.name}
+            Xin chào {props.fullname}
           </Typography>
           <IconButton type = "button" color="inherit" onClick = {props.logOut}>
             <ExitToApp />

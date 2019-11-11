@@ -52,10 +52,9 @@ export default class LoginForm extends React.Component
         })
         .then(function(response)
         {
-            let role = response['data']['user']['role'];            //get the role from response
+            let fullname = response['data']['user']['fullname'];            //get the role from response
             let accessToken = response['data']['accessToken'];    //get token to check role
-            alert("Welcome aboard! Your current role is " + role + '.');
-            _this.props.magicPhrase(accessToken);
+            _this.props.magicPhrase(accessToken, fullname);
         })
         .catch(function(error){
             // alert(error);
