@@ -29,11 +29,13 @@ export default class Lobby extends React.Component
             role : 'hr',
             fullname : _this.props.fullname
           }));
-        });
-        // this.setState((prevState) => ({
-        //   ...prevState,
-        //   fullname : this.props.usrname
-        // }));
+        })
+        .catch(function(){
+          _this.setState((prevState) => ({
+            ...prevState,
+            fullname : _this.props.fullname
+          }));
+        })
     }
     logOut()
     {
@@ -51,20 +53,6 @@ export default class Lobby extends React.Component
         openDrawer : false
       }));
     }
-    // componentDidUpdate(prevProp)      //this to assume that component is loaded before Lobby fully received props.
-    // {
-    //   if (prevProp.usrname !== this.props.usrname)
-    //   {  
-    //     this.setState((prevState) => ({
-    //       ...prevState,
-    //       fullname : this.props.usrname
-    //     }));
-    //   }
-    //   if (prevProp.accessToken !== this.props.accessToken)
-    //   {
-    //     this.checkRole();
-    //   }
-    // }
     componentDidMount()
     {
       this.checkRole();
