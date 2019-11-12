@@ -12,6 +12,7 @@ import user from './user.svg';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import qs from 'querystring';
+import history from './history.js';
 export default class LoginForm extends React.Component
 {
     constructor(props)
@@ -55,6 +56,7 @@ export default class LoginForm extends React.Component
             let fullname = response['data']['user']['fullname'];            //get the role from response
             let accessToken = response['data']['accessToken'];    //get token to check role
             _this.props.magicPhrase(accessToken, fullname);
+            history.push('/lobby');
         })
         .catch(function(error){
             // alert(error);
@@ -72,7 +74,6 @@ export default class LoginForm extends React.Component
     }
     render()
     {
-        console.log(this.state);
         return(
             <>
                 <CssBaseline />

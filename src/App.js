@@ -1,11 +1,13 @@
 import React from 'react';
 // import axios from 'axios';
 import {
-    BrowserRouter as Router,
+    Router,
     Switch,
     Route,
-    Link
+    Link,
+    Redirect
   } from "react-router-dom";
+import history from './history.js';
 import Lobby from './Lobby.js';
 import LoginForm from './LoginForm.js';
 
@@ -19,8 +21,7 @@ export default class App extends React.Component
         accessible : false,
         accessToken : '',
         fullname : ''
-
-    }
+    };
     this.openSesame = this.openSesame.bind(this);
     this.resetState = this.resetState.bind(this);
   }
@@ -39,26 +40,27 @@ export default class App extends React.Component
         fullname : fullname
     }));
   }
+  requireAuth()
+  {
+    if (!this.state.accessible)
+    {
+      history.push("/");
+    }
+  }
   render()
   {
+    console.log(this.state);
     return(
 	<form>
-      <Router>
+      <Router history = {history}>
       <div>
-         <nav>
-             <Link to = "/">Login</Link>
-          </nav>
-          <nav>
-             <Link to = "/lobby">Lobby</Link>
-          </nav>
-          <Switch>
-             <Route path = "/lobby">
-                 <Lobby baseURL = {this.state.baseURL} accessible = {this.state.accessible} accessToken = {this.state.accessToken} fullname = {this.state.fullname}></Lobby>
-             </Route>
-             <Route path = "/">
-                 <LoginForm baseURL = {this.state.baseURL} magicPhrase = {(token, fullname) => this.openSesame(token, fullname)} resetState = {() => this.resetState()}/>
-             </Route>
-         </Switch>
+          <Route exact path = "/">
+              <LoginForm baseURL = {this.state.baseURL} magicPhrase = {(token, fullname) => this.openSesame(token, fullname)} resetState = {() => this.resetState()}/>
+          </Route>
+          {/* <Route path = "/lobby" onEnter={() => this.requireAuth()}> */}
+          <Route path = "/lobby" onEnter={this.requireAuth()}>
+              <Lobby baseURL = {this.state.baseURL} accessible = {this.state.accessible} accessToken = {this.state.accessToken} fullname = {this.state.fullname}></Lobby>
+          </Route>
      </div>
  </Router>
  </form>

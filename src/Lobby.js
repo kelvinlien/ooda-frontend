@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Container, Button, AppBar, Drawer, Toolbar, IconButton, Typography} from '@material-ui/core';
+import {Container} from '@material-ui/core';
 import MiniDrawer from './MiniDrawer.js';
 export default class Lobby extends React.Component
 {
