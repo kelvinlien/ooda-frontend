@@ -2,10 +2,7 @@ import React from 'react';
 // import axios from 'axios';
 import {
     Router,
-    Switch,
-    Route,
-    Link,
-    Redirect
+    Route
   } from "react-router-dom";
 import history from './history.js';
 import Lobby from './Lobby.js';

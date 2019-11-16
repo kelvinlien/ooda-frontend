@@ -1,5 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
+import {
+  Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,10 +21,17 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import LeaveForm from './LeaveForm.js';
+import Statistic from './Statistic.js';
+import history from './history.js';
 // import Button from '@material-ui/core/Button';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
 
+import LeaveBalance from './LeaveBalance.js';
+
 const drawerWidth = 240;
+
+const baseURL = '/lobby/';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -80,7 +93,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
   },
 }));
 function getCustomTag(key, optionList)
@@ -172,11 +185,13 @@ export default function MiniDrawer(props) {
         <List>
           {
             Object.keys(optionList).map((key, index) => (
-              <ListItem button key = {index} >
+              <ListItem button key = {index} component={NavLink} to={baseURL + index}>
                 <ListItemIcon>
                   {getCustomTag(key, optionList)}
                 </ListItemIcon>
-                <ListItemText>{key}</ListItemText>
+                <ListItemText>
+                  {key}
+                </ListItemText>
               </ListItem>
             ))
           }
@@ -184,12 +199,19 @@ export default function MiniDrawer(props) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Thông tin này nọ các kiểu.
-        </Typography>
-        <Typography paragraph>
-          Cũng là thông tin này nọ các kiểu.
-        </Typography>
+        <Router history = {history} >
+          <Switch >
+            <Route path = '/lobby/0'>
+              <LeaveBalance />
+            </Route>
+            <Route path = '/lobby/1'>
+              <LeaveForm />
+            </Route>
+            <Route path = '/lobby/2' >
+              <Statistic />
+            </Route>
+          </Switch>
+        </Router>
       </main>
     </div>
   );
