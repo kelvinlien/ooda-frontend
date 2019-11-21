@@ -10,7 +10,9 @@ export default class Lobby extends React.Component
         this.state = {
             url : 'protected/ping/',
             role : 'staff',   //default role
-            fullname : ''
+            userInfo : {
+
+            }
         }
         this.checkRole = this.checkRole.bind(this);
     }
@@ -27,13 +29,13 @@ export default class Lobby extends React.Component
           _this.setState((prevState) => ({
             ...prevState,
             role : 'hr',
-            fullname : _this.props.fullname
+            userInfo : _this.props.userInfo
           }));
         })
         .catch(function(){
           _this.setState((prevState) => ({
             ...prevState,
-            fullname : _this.props.fullname
+            userInfo : _this.props.userInfo
           }));
         })
     }
@@ -61,13 +63,11 @@ export default class Lobby extends React.Component
     {
         return(
             <Container>
-                <MiniDrawer role = {this.state.role} fullname = {this.state.fullname} logOut = {() => this.logOut()}/>
-                {/* {
-                this.props.accessible && 
-                <Button type = 'button' onClick = {() => this.checkRole()}>
-                    HR Only
-                </Button>
-                } */}
+                <MiniDrawer 
+                role = {this.state.role} 
+                userInfo = {this.state.userInfo} 
+                logOut = {() => this.logOut()}
+                />
             </Container>
         )
     }

@@ -40,6 +40,7 @@ export default function NativeSelect(props) {
         <InputLabel htmlFor={props.id}>{props.label}</InputLabel>
         <Select
           native
+          variant = "outlined"
           value={state[props.id]}
           onChange={e => handleChange(e)}
           inputProps={{

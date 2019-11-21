@@ -17,7 +17,11 @@ export default class App extends React.Component
         baseURL : 'http://localhost:2109/',
         accessible : false,
         accessToken : '',
-        fullname : ''
+        userInfo : {
+          fullname : '',
+          team : '',
+          manager : ''
+        }
     };
     this.openSesame = this.openSesame.bind(this);
     this.resetState = this.resetState.bind(this);
@@ -29,7 +33,7 @@ export default class App extends React.Component
         accessToken : ''
       }))
   }
-  openSesame(token, fullname)
+  openSesame(token, fullname)   //add para to get more userInfo
   {
     this.setState(()=>({
         accessible : true,
@@ -39,10 +43,10 @@ export default class App extends React.Component
   }
   requireAuth()
   {
-    if (!this.state.accessible)
-    {
-      history.push("/");
-    }
+    // if (!this.state.accessible)
+    // {
+    //   history.push("/");
+    // }
   }
   render()
   {
@@ -56,7 +60,7 @@ export default class App extends React.Component
           </Route>
           {/* <Route path = "/lobby" onEnter={() => this.requireAuth()}> */}
           <Route path = "/lobby" onEnter={this.requireAuth()}>
-              <Lobby baseURL = {this.state.baseURL} accessible = {this.state.accessible} accessToken = {this.state.accessToken} fullname = {this.state.fullname}></Lobby>
+              <Lobby baseURL = {this.state.baseURL} accessible = {this.state.accessible} accessToken = {this.state.accessToken} userInfo = {this.state.userInfo}></Lobby>
           </Route>
      </div>
  </Router>

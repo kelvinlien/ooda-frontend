@@ -1,17 +1,22 @@
 import React from 'react';
-import {Card, Button, Select, Typography, Grid, FormControl, CardHeader, CardContent, CardActionArea, CardActions} from '@material-ui/core';
+import {Card, Button, Typography, Grid, Badge, CardHeader, CardContent, CardActionArea, CardActions, TextField} from '@material-ui/core';
+import CompareArrowsOutlinedIcon from '@material-ui/icons/CompareArrowsOutlined';
 import NativeSelect from './NativeSelect.js';
 import DatePicker from './DatePicker.js';
+import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
 export default class LeaveForm extends React.Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
-            fromDate : '',
-            toDate : ''
+            fromDate : new Date(),
+            toDate : new Date(),
+            leaveNum : '',
+            userInfo : this.props.userInfo
         };
         this.saveToState = this.saveToState.bind(this);
+        this.saveDateToState = this.saveDateToState.bind(this);
     }
     saveToState(e)
     {
@@ -22,8 +27,19 @@ export default class LeaveForm extends React.Component
         }))
         console.log(this.state);
     }
+
+    saveDateToState(id, value)
+    {
+        let num = Math.round((id === "toDate" ? value.getTime() - this.state.fromDate.getTime() : this.state.toDate.getTime() - value.getTime()) / (1000 * 3600 * 24)) ;
+        // console.log(value.getHours(), this.state.fromDate.getHours());
+        this.setState(()=>({
+            [id] : value,
+            leaveNum : num
+        }))
+    }
     render()
     {
+        console.log(this.state);
         return(
             <>
                 <Card>
@@ -38,59 +54,67 @@ export default class LeaveForm extends React.Component
                     />
                     <CardContent>
                     <Grid container spacing = {3}>
-                    <Grid item md = {6}>
-                        <NativeSelect 
-                        label = 'Team' 
-                        id = 'team'
-                        options = {[
-                            {
-                                value : 'rtst',
-                                name : 'rtSolution'
-                            },
-                            {
-                                value : 'rtlab',
-                                name : 'rtLab'
-                            }
-                        ]}
-                        />
+                        <Grid item md = {6}>
+                            <TextField
+                            label = "Họ và tên"
+                            // value = {this.state.userInfo.fullname}
+                            value = "Liên Hiệp Quốc"
+                            margin = "normal"
+                            variant = "outlined"
+                            disabled
+                            />
                         </Grid>
                         <Grid item md = {6}>
-                        <NativeSelect 
-                        label = 'Người quản lý' 
-                        id = 'manager'
-                        options = {[
-                            {
-                                value : 'vvd',
-                                name : 'Vũ Viết Dũng'
-                            },
-                            {
-                                value : 'ldt',
-                                name : 'Lê Đặng Trung'
-                            }
-                        ]}
-                        />
+                            <TextField
+                            label = "Team"
+                            // value = {this.state.userInfo.fullname}
+                            value = "rtLab"
+                            margin = "normal"
+                            variant = "outlined"
+                            disabled
+                            />
                         </Grid>
-                        <Grid item md = {4}>
-                        <NativeSelect 
-                        label = 'Lý do nghỉ' 
-                        id = 'reason'
-                        options = {[
-                            {
-                                value : 'sick',
-                                name : 'Bị bệnh'
-                            },
-                            {
-                                value : 'marriage',
-                                name : 'Cưới hỏi'
-                            }
-                        ]}
-                        />
+                        <Grid item md = {6}>
+                            <NativeSelect 
+                            label = 'Lý do nghỉ' 
+                            id = 'reason'
+                            options = {[
+                                {
+                                    value : 'sick',
+                                    name : 'Bị bệnh'
+                                },
+                                {
+                                    value : 'marriage',
+                                    name : 'Cưới hỏi'
+                                }
+                            ]}
+                            />
                         </Grid>
-                        <Grid item md = {4}>
+                        <Grid item md = {6}>
+                            <TextField
+                            label = "Người quản lý"
+                            // value = {this.state.userInfo.fullname}
+                            value = "Lê Đặng Trung"
+                            margin = "normal"
+                            variant = "outlined"
+                            disabled
+                            />
+                        </Grid>
+                        <Grid item md = {5}>
                             <DatePicker 
                             type = 'from'
                             id = 'fromDate'
                             label = 'Từ ngày'
+                            callBackFunc = {(id, value) => this.saveDateToState(id,value)}
+                            />
+                        </Grid>
+                        <Grid item md = {3}>
+                            <TextField
+                            label = "Số ngày nghỉ"
+                            value = {this.state.leaveNum}
+                            margin = "dense"
+                            variant = "filled"
+                            disabled
                             />
                         </Grid>
                         <Grid item md = {4}>
@@ -98,7 +122,8 @@ export default class LeaveForm extends React.Component
                             type = 'to' 
                             fromDate = {this.state.fromDate}
                             id = 'toDate'
-                            label = 'Đến ngày' 
+                            label = 'Đến ngày'
+                            callBackFunc = {(id, value) => this.saveDateToState(id,value)} 
                             />
                         </Grid>
                     </Grid>

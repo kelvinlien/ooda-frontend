@@ -155,7 +155,7 @@ export default function MiniDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap className={classes.title}>
-            Xin chào {props.fullname}
+            Xin chào {props.userInfo.fullname}
           </Typography>
           <IconButton type = "button" color="inherit" onClick = {props.logOut}>
             <ExitToApp />
@@ -205,7 +205,9 @@ export default function MiniDrawer(props) {
               <LeaveBalance />
             </Route>
             <Route path = '/lobby/1'>
-              <LeaveForm />
+              <LeaveForm 
+              userInfo = {props.userInfo}
+              />
             </Route>
             <Route path = '/lobby/2' >
               <Statistic />

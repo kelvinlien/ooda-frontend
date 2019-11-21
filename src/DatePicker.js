@@ -15,11 +15,7 @@ export default function DatePickers(props) {
   const handleDateChange = date => {
       if (props.type === 'to')
       {
-          if (props.fromDate == '')
-          {
-              alert("Vui lòng chọn ngày bắt đầu trước.");
-          }
-          else if (date < props.fromDate)
+          if (date < props.fromDate)
           {
               alert("Vui lòng chọn lại ngày.");
           }
@@ -32,12 +28,14 @@ export default function DatePickers(props) {
       {
         setSelectedDate(date);
       }
+      props.callBackFunc(props.id,date);
   };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
+          variant = "inline"
           margin="normal"
           id={props.id}
           label={props.label}
