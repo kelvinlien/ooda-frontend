@@ -30,6 +30,7 @@ export default function NativeSelect(props) {
       ...state,
       [props.id]: e.target.value,
     });
+    props.onChange(e);
   }
 
 

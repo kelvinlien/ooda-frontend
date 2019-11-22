@@ -155,7 +155,7 @@ export default function MiniDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap className={classes.title}>
-            Xin chào {props.userInfo.fullname}
+            Xin chào {props.userInfo.username}
           </Typography>
           <IconButton type = "button" color="inherit" onClick = {props.logOut}>
             <ExitToApp />
@@ -207,6 +207,8 @@ export default function MiniDrawer(props) {
             <Route path = '/lobby/1'>
               <LeaveForm 
               userInfo = {props.userInfo}
+              baseURL = {props.baseURL}
+              accessToken = {props.accessToken}
               />
             </Route>
             <Route path = '/lobby/2' >

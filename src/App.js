@@ -15,7 +15,6 @@ export default class App extends React.Component
     super(props);
     this.state = {
         baseURL : 'http://localhost:2109/',
-        accessible : false,
         accessToken : '',
         userInfo : {
           fullname : '',
@@ -26,27 +25,43 @@ export default class App extends React.Component
     this.openSesame = this.openSesame.bind(this);
     this.resetState = this.resetState.bind(this);
   }
+  componentDidMount()
+  {
+    if (localStorage.getItem("accessToken") && localStorage.getItem("userInfo"))
+    {
+      let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      this.setState(()=>({
+        accessToken : localStorage.getItem("accessToken"),
+        userInfo : userInfo
+      }))
+    }
+  }
+  componentWillUnmount()
+  {
+    localStorage.setItem("accessToken", this.state.accessToken);
+    localStorage.setItem("userInfo", JSON.stringify(this.state.userInfo));
+  }
   resetState()
   {
       this.setState(()=>({
-        accessible : false,
         accessToken : ''
       }))
   }
-  openSesame(token, fullname)   //add para to get more userInfo
+  openSesame(token, userInfo)   //add para to get more userInfo
   {
     this.setState(()=>({
-        accessible : true,
         accessToken : token,
-        fullname : fullname
+        userInfo : userInfo
     }));
+    localStorage.setItem("accessToken", token);
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
   }
   requireAuth()
   {
-    // if (!this.state.accessible)
-    // {
-    //   history.push("/");
-    // }
+    if (!localStorage.getItem("accessToken"))
+    {
+      history.push("/");
+    }
   }
   render()
   {
@@ -56,11 +71,20 @@ export default class App extends React.Component
       <Router history = {history}>
       <div>
           <Route exact path = "/">
-              <LoginForm baseURL = {this.state.baseURL} magicPhrase = {(token, fullname) => this.openSesame(token, fullname)} resetState = {() => this.resetState()}/>
+              <LoginForm 
+              baseURL = {this.state.baseURL} 
+              magicPhrase = {(token, userInfo) => this.openSesame(token, userInfo)} 
+              resetState = {() => this.resetState()}/>
           </Route>
           {/* <Route path = "/lobby" onEnter={() => this.requireAuth()}> */}
           <Route path = "/lobby" onEnter={this.requireAuth()}>
-              <Lobby baseURL = {this.state.baseURL} accessible = {this.state.accessible} accessToken = {this.state.accessToken} userInfo = {this.state.userInfo}></Lobby>
+              <Lobby 
+              baseURL = {this.state.baseURL} 
+              accessToken = {this.state.accessToken} 
+              userInfo = {this.state.userInfo}
+              accessToken = {this.state.accessToken}
+              >
+              </Lobby>
           </Route>
      </div>
  </Router>

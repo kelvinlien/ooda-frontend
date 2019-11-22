@@ -4,12 +4,15 @@ import CompareArrowsOutlinedIcon from '@material-ui/icons/CompareArrowsOutlined'
 import NativeSelect from './NativeSelect.js';
 import DatePicker from './DatePicker.js';
 import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
+import Axios from 'axios';
+import qs from 'qs';
 export default class LeaveForm extends React.Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
+            url : "leaveRequest/employee/2/",
             fromDate : new Date(),
             toDate : new Date(),
             leaveNum : '',
@@ -17,6 +20,7 @@ export default class LeaveForm extends React.Component
         };
         this.saveToState = this.saveToState.bind(this);
         this.saveDateToState = this.saveDateToState.bind(this);
+        this.createLeaveRequest = this.createLeaveRequest.bind(this);
     }
     saveToState(e)
     {
@@ -28,6 +32,17 @@ export default class LeaveForm extends React.Component
         console.log(this.state);
     }
 
+    componentDidUpdate(prevState, prevProp)
+    {
+        if (prevProp.userInfo !== this.props.userInfo)
+        {
+            this.setState(()=>({
+                ...prevState,
+                userInfo : this.props.userInfo
+            }))
+        }
+    }
+
     saveDateToState(id, value)
     {
         let num = Math.round((id === "toDate" ? value.getTime() - this.state.fromDate.getTime() : this.state.toDate.getTime() - value.getTime()) / (1000 * 3600 * 24)) ;
@@ -36,6 +51,31 @@ export default class LeaveForm extends React.Component
             [id] : value,
             leaveNum : num
         }))
+    }
+
+    createLeaveRequest()
+    {
+        let _this = this;
+        Axios({
+            url : _this.state.url,
+            baseURL : _this.props.baseURL,
+            method : "post",
+            headers : {
+                "content_type" : "application/x-www-form-urlencoded",
+                'Authorization': 'basic '+ this.props.accessToken
+            },
+            data : qs.stringify({
+                "reason" : this.state.reason,
+                "numberOfDays" : this.state.leaveNum
+            })
+
+        })
+        .then(function(){
+            alert("Gửi đơn xin phép thành công. Đơn của bạn sẽ được duyệt trong thời gian sớm nhất!");
+        })
+        .catch(function(error){
+            console.log(error);
+        })
     }
     render()
     {
@@ -58,7 +98,7 @@ export default class LeaveForm extends React.Component
                             <TextField
                             label = "Họ và tên"
                             // value = {this.state.userInfo.fullname}
-                            value = "Liên Hiệp Quốc"
+                            value = {this.state.userInfo.username}
                             margin = "normal"
                             variant = "outlined"
                             disabled
@@ -68,7 +108,7 @@ export default class LeaveForm extends React.Component
                             <TextField
                             label = "Team"
                             // value = {this.state.userInfo.fullname}
-                            value = "rtLab"
+                            value = "webdev"
                             margin = "normal"
                             variant = "outlined"
                             disabled
@@ -78,6 +118,7 @@ export default class LeaveForm extends React.Component
                             <NativeSelect 
                             label = 'Lý do nghỉ' 
                             id = 'reason'
+                            onChange = {e => this.saveToState(e)}
                             options = {[
                                 {
                                     value : 'sick',
@@ -140,6 +181,7 @@ export default class LeaveForm extends React.Component
                         variant = 'contained'
                         size = 'medium'
                         color = 'secondary'
+                        onClick = {this.createLeaveRequest}
                         >
                             Gửi
                         </Button>

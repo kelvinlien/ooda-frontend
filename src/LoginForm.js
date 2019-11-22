@@ -25,7 +25,7 @@ export default class LoginForm extends React.Component
         }
         this.login = this.login.bind(this);
         this.saveToState = this.saveToState.bind(this);
-        this.props.resetState();
+        // this.props.resetState();
     }
     login()
     {
@@ -41,10 +41,6 @@ export default class LoginForm extends React.Component
                 'grant_type' : 'password',
                 'username' : _this.state.username,
                 'password' : _this.state.password
-                // 'username' : 'lulu',
-                // 'password' : 'pix'
-                // 'username' : 'poppy',
-                // 'password' : 'hammer'
             }),
             auth: {
                 username: 'ooda',
@@ -53,9 +49,9 @@ export default class LoginForm extends React.Component
         })
         .then(function(response)
         {
-            let fullname = response['data']['user']['fullname'];            //get the role from response
+            let userInfo = response['data']['user'];            //get the role from response
             let accessToken = response['data']['accessToken'];    //get token to check role
-            _this.props.magicPhrase(accessToken, fullname);
+            _this.props.magicPhrase(accessToken, userInfo);
             history.push('/lobby');
         })
         .catch(function(error){

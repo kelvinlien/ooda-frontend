@@ -41,6 +41,8 @@ export default class Lobby extends React.Component
     }
     logOut()
     {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userInfo");
       window.open('../','_self');
     }
     openDrawer()
@@ -67,6 +69,8 @@ export default class Lobby extends React.Component
                 role = {this.state.role} 
                 userInfo = {this.state.userInfo} 
                 logOut = {() => this.logOut()}
+                baseURL = {this.props.baseURL}
+                accessToken = {this.props.accessToken}
                 />
             </Container>
         )
