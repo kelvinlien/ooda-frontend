@@ -12,6 +12,8 @@ export default function DatePickers(props) {
   // The first commit of Material-UI
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
+  const today = new Date();
+
   const handleDateChange = date => {
       if (props.type === 'to')
       {
@@ -22,13 +24,25 @@ export default function DatePickers(props) {
           else
           {
             setSelectedDate(date);
+            props.callBackFunc(props.id,date);
           }
       }
       else
       {
-        setSelectedDate(date);
+        if (date < today)
+        {
+          alert("Ngày bắt đầu không hợp lệ!");
+        }
+        else if (date > props.toDate)
+        {
+          alert("Vui lòng chọn lại ngày.");
+        }
+        else
+        {
+          setSelectedDate(date);
+          props.callBackFunc(props.id,date);
+        }
       }
-      props.callBackFunc(props.id,date);
   };
 
   return (

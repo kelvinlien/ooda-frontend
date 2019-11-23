@@ -16,7 +16,7 @@ export default class LeaveForm extends React.Component
             fromDate : new Date(),
             toDate : new Date(),
             leaveNum : '',
-            userInfo : this.props.userInfo
+            userInfo : ''
         };
         this.saveToState = this.saveToState.bind(this);
         this.saveDateToState = this.saveDateToState.bind(this);
@@ -32,15 +32,12 @@ export default class LeaveForm extends React.Component
         console.log(this.state);
     }
 
-    componentDidUpdate(prevState, prevProp)
+    componentDidMount()
     {
-        if (prevProp.userInfo !== this.props.userInfo)
-        {
-            this.setState(()=>({
-                ...prevState,
-                userInfo : this.props.userInfo
-            }))
-        }
+        let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        this.setState(() => ({
+            userInfo : userInfo
+        }))
     }
 
     saveDateToState(id, value)
@@ -144,6 +141,7 @@ export default class LeaveForm extends React.Component
                         <Grid item md = {5}>
                             <DatePicker 
                             type = 'from'
+                            toDate = {this.state.toDate}
                             id = 'fromDate'
                             label = 'Từ ngày'
                             callBackFunc = {(id, value) => this.saveDateToState(id,value)}

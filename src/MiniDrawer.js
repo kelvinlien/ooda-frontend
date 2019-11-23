@@ -206,7 +206,6 @@ export default function MiniDrawer(props) {
             </Route>
             <Route path = '/lobby/1'>
               <LeaveForm 
-              userInfo = {props.userInfo}
               baseURL = {props.baseURL}
               accessToken = {props.accessToken}
               />
