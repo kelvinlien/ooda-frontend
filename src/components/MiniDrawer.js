@@ -23,7 +23,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LeaveForm from './LeaveForm.js';
 import Statistic from './Statistic.js';
-import history from './history.js';
+import history from '../history.js';
 // import Button from '@material-ui/core/Button';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
 

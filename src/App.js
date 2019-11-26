@@ -5,8 +5,9 @@ import {
     Route
   } from "react-router-dom";
 import history from './history.js';
-import Lobby from './Lobby.js';
-import LoginForm from './LoginForm.js';
+import {setItem, getItem} from './LocalStorage'
+import Lobby from './components/Lobby.js';
+import LoginForm from './components/LoginForm.js';
 
 export default class App extends React.Component
 {
@@ -27,20 +28,20 @@ export default class App extends React.Component
   }
   componentDidMount()
   {
-    if (localStorage.getItem("accessToken") && localStorage.getItem("userInfo"))
+    if (getItem("accessToken") && getItem("userInfo"))
     {
-      let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      let userInfo = JSON.parse(getItem("userInfo"));
       this.setState(()=>({
-        accessToken : localStorage.getItem("accessToken"),
+        accessToken : getItem("accessToken"),
         userInfo : userInfo
       }))
     }
   }
-  componentWillUnmount()
-  {
-    localStorage.setItem("accessToken", this.state.accessToken);
-    localStorage.setItem("userInfo", JSON.stringify(this.state.userInfo));
-  }
+  // componentWillUnmount()
+  // {
+  //   LocalStorage.setItem("accessToken", this.state.accessToken);
+  //   LocalStorage.setItem("userInfo", JSON.stringify(this.state.userInfo));
+  // }
   resetState()
   {
       this.setState(()=>({
@@ -49,16 +50,16 @@ export default class App extends React.Component
   }
   openSesame(token, userInfo)   //add para to get more userInfo
   {
-    this.setState(()=>({
-        accessToken : token,
-        userInfo : userInfo
-    }));
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    let data = {
+      accessToken : token,
+      userInfo : userInfo
+  };
+    this.setState(()=>(data));
+    setItem(data);
   }
   requireAuth()
   {
-    if (!localStorage.getItem("accessToken"))
+    if (!getItem("accessToken"))
     {
       history.push("/");
     }

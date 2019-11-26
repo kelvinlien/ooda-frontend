@@ -58,13 +58,12 @@ export default class LeaveForm extends React.Component
             baseURL : _this.props.baseURL,
             method : "post",
             headers : {
-                "content_type" : "application/x-www-form-urlencoded",
-                'Authorization': 'basic '+ this.props.accessToken
+                'Authorization': 'Bearer '+ this.props.accessToken
             },
-            data : qs.stringify({
+            data : {
                 "reason" : this.state.reason,
                 "numberOfDays" : this.state.leaveNum
-            })
+            }
 
         })
         .then(function(){

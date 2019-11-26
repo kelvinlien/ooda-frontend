@@ -8,11 +8,11 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
-import user from './user.svg';
+import user from '../drawable/user.svg';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import qs from 'querystring';
-import history from './history.js';
+import history from '../history';
 export default class LoginForm extends React.Component
 {
     constructor(props)
@@ -49,8 +49,8 @@ export default class LoginForm extends React.Component
         })
         .then(function(response)
         {
-            let userInfo = response['data']['user'];            //get the role from response
-            let accessToken = response['data']['accessToken'];    //get token to check role
+            let userInfo = response['data']['user'];            
+            let accessToken = response['data']['accessToken'];   
             _this.props.magicPhrase(accessToken, userInfo);
             history.push('/lobby');
         })

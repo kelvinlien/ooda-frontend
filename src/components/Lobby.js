@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {Container} from '@material-ui/core';
 import MiniDrawer from './MiniDrawer.js';
+import {removeItem} from '../LocalStorage'
 export default class Lobby extends React.Component
 {
     constructor(props)
@@ -41,8 +42,7 @@ export default class Lobby extends React.Component
     }
     logOut()
     {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("userInfo");
+      removeItem(["accessToken", "userInfo"]);
       window.open('../','_self');
     }
     openDrawer()
