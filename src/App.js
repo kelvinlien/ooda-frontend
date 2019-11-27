@@ -30,10 +30,9 @@ export default class App extends React.Component
   {
     if (getItem("accessToken") && getItem("userInfo"))
     {
-      let userInfo = JSON.parse(getItem("userInfo"));
       this.setState(()=>({
         accessToken : getItem("accessToken"),
-        userInfo : userInfo
+        userInfo : getItem("userInfo")
       }))
     }
   }

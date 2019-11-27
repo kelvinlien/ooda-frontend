@@ -2,14 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import {Container} from '@material-ui/core';
 import MiniDrawer from './MiniDrawer.js';
-import {removeItem} from '../LocalStorage'
+import {setItem, getItem, clear} from '../LocalStorage'
 export default class Lobby extends React.Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
-            url : 'protected/ping/',
+            roleURL : 'protected/ping/',
+            leaveURL : "leaveRequest/employee/2/",
             role : 'staff',   //default role
             userInfo : {
 
@@ -21,7 +22,7 @@ export default class Lobby extends React.Component
     {
         let _this = this;
         axios({
-            url : _this.state.url,
+            url : _this.state.roleURL,
             baseURL : _this.props.baseURL,
             method : 'get',
             headers: {'Authorization': "Bearer " + _this.props.accessToken}
@@ -34,15 +35,52 @@ export default class Lobby extends React.Component
           }));
         })
         .catch(function(){
-          _this.setState((prevState) => ({
-            ...prevState,
-            userInfo : _this.props.userInfo
-          }));
+          axios({
+            url : _this.state.leaveURL,
+            baseURL : _this.props.baseURL,
+            method : 'get',
+            headers : {
+              'Authorization': 'Bearer '+ _this.props.accessToken
+            }
+          })
+          .then(function(response){
+            _this.setState((prevState) => ({
+              ...prevState,
+              userInfo : _this.props.userInfo,
+              remainingPaidLeave : response.data.remainingPaidLeave,
+              leaveRequests : response.data.leaveRequests
+            }));
+            setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
+          })
+          .catch(function(){
+            _this.setState((prevState) => ({
+              ...prevState,
+              userInfo : _this.props.userInfo
+            }));
+          })
         })
+    }
+
+    componentDidMount()
+    {
+      if (getItem("remainingPaidLeave"))
+      {
+        this.setState(() => ({
+          userInfo : getItem("userInfo"),
+          remainingPaidLeave : getItem("remainingPaidLeave"),
+          leaveRequests : getItem("leaveRequests")
+        }));
+      }
+      else
+      {
+        this.setState(() => ({
+          userInfo : getItem("userInfo")
+        }));
+      }
     }
     logOut()
     {
-      removeItem(["accessToken", "userInfo"]);
+      clear();
       window.open('../','_self');
     }
     openDrawer()
@@ -71,6 +109,7 @@ export default class Lobby extends React.Component
                 logOut = {() => this.logOut()}
                 baseURL = {this.props.baseURL}
                 accessToken = {this.props.accessToken}
+                leaveURL = {this.state.leaveURL}
                 />
             </Container>
         )

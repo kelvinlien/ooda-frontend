@@ -12,7 +12,7 @@ export default class LeaveForm extends React.Component
     {
         super(props);
         this.state = {
-            url : "leaveRequest/employee/2/",
+            url : this.props.leaveURL,
             fromDate : new Date(),
             toDate : new Date(),
             leaveNum : '',
