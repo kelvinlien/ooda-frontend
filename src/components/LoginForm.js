@@ -8,26 +8,57 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import user from './user.svg';
+import user from '../drawable/user.svg';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
+import qs from 'querystring';
+import history from '../history';
 export default class LoginForm extends React.Component
 {
     constructor(props)
     {
         super(props);
         this.state = {
-            url : 'localhost:2109/oauth/token/',
-            account : '',
+            url : 'oauth/token/',
+            username : '',
             password : ''
         }
         this.login = this.login.bind(this);
         this.saveToState = this.saveToState.bind(this);
+        // this.props.resetState();
     }
     login()
     {
-        // axios.get
-        alert("Hello there!");
+        let _this = this;
+        axios({
+            url : _this.state.url,
+            baseURL : _this.props.baseURL,
+            method : 'post',
+            headers : {
+                'Content-Type' : 'application/x-www-form-urlencoded'
+            },
+            data : qs.stringify({
+                'grant_type' : 'password',
+                'username' : _this.state.username,
+                'password' : _this.state.password
+            }),
+            auth: {
+                username: 'ooda',
+                password: 'secret'
+              }
+        })
+        .then(function(response)
+        {
+            let userInfo = response['data']['user'];            
+            let accessToken = response['data']['accessToken'];   
+            _this.props.magicPhrase(accessToken, userInfo);
+            history.push('/lobby');
+        })
+        .catch(function(error){
+            // alert(error);
+            console.log(error);
+            alert("Bad request. Please double check your username and password!");
+        })
     }
     saveToState(e)
     {
@@ -39,9 +70,8 @@ export default class LoginForm extends React.Component
     }
     render()
     {
-        console.log(this.state);
         return(
-            <form>
+            <>
                 <CssBaseline />
                 <Container maxWidth = 'xs'>
                     {/* <img src = {logo} alt = 'logo' /> */}
@@ -52,7 +82,7 @@ export default class LoginForm extends React.Component
                         <Grid key = {1} item>
                             <FormControl>
                                 <InputLabel htmlFor="account">Tài khoản</InputLabel>
-                                <Input id="account" aria-describedby="my-helper-text" value = {this.state.account} onChange = {e => this.saveToState(e)}/>
+                                <Input id="username" aria-describedby="my-helper-text" value = {this.state.username} onChange = {e => this.saveToState(e)}/>
                                 <FormHelperText id="my-helper-text">Vui lòng sử dụng tài khoản chúng tôi đã cung cấp cho bạn.</FormHelperText>
                             </FormControl>
                             <FormControl>
@@ -62,11 +92,12 @@ export default class LoginForm extends React.Component
                             </FormControl>
                         </Grid>
                         <Button type = 'button' onClick = {this.login} color = 'primary' variant = 'outlined'>
-                            Press to greet!
+                            Đăng nhập
                         </Button>
                     </Grid>
+                    {/* {this.router()} */}
                 </Container>
-            </form>
+            </>
         )
     }
 }
