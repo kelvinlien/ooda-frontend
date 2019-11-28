@@ -158,7 +158,7 @@ export default function MiniDrawer(props) {
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+              [classes.hide]: open
             })}
           >
             <MenuIcon />
@@ -199,7 +199,7 @@ export default function MiniDrawer(props) {
         <List>
           {
             Object.keys(optionList).map((key, index) => (
-              <ListItem button key = {index} component={NavLink} to={baseURL + index}>
+              <ListItem button key = {index} component={NavLink} to={baseURL + ((index - 1) >= 0 ? (index - 1) : '')}>
                 <ListItemIcon>
                   {getCustomTag(key, optionList)}
                 </ListItemIcon>
@@ -215,10 +215,14 @@ export default function MiniDrawer(props) {
         <div className={classes.toolbar} />
         <Router history = {history} >
           <Switch >
-            <Route path = '/lobby/0'>
-              <LeaveBalance />
+            <Route exact path = '/lobby/'>
+              <LeaveBalance 
+              remainingPaidLeave = {props.remainingPaidLeave}
+              totalAnnual = {props.totalAnnual}
+              leaveRequests = {props.leaveRequests}
+              />
             </Route>
-            <Route path = '/lobby/1'>
+            <Route path = '/lobby/0'>
               <LeaveForm 
               baseURL = {props.baseURL}
               accessToken = {props.accessToken}
@@ -226,7 +230,7 @@ export default function MiniDrawer(props) {
               remainingPaidLeave = {props.remainingPaidLeave}
               />
             </Route>
-            <Route path = '/lobby/2' >
+            <Route path = '/lobby/1' >
               <Statistic />
             </Route>
           </Switch>

@@ -52,7 +52,7 @@ export default class LoginForm extends React.Component
             let userInfo = response['data']['user'];            
             let accessToken = response['data']['accessToken'];   
             _this.props.magicPhrase(accessToken, userInfo);
-            history.push('/lobby');
+            history.push('/lobby/');
         })
         .catch(function(error){
             // alert(error);

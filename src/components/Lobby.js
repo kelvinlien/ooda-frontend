@@ -11,7 +11,9 @@ export default class Lobby extends React.Component
         this.state = {
             roleURL : 'protected/ping/',
             leaveURL : "leaveRequest/employee/2/",
-            userInfo : getItem('userInfo')
+            userInfo : this.props.userInfo,
+            totalAnnual : 15,
+            leaveRequests : []
         }
         this.checkRole = this.checkRole.bind(this);
     }
@@ -46,12 +48,12 @@ export default class Lobby extends React.Component
 
     componentDidMount()
     {
+      this.checkRole();
       if (getItem("remainingPaidLeave"))
       {
         this.setState(() => ({
           remainingPaidLeave : getItem("remainingPaidLeave"),
           leaveRequests : getItem("leaveRequests"),
-          // userInfo : getItem('userInfo')
           userInfo : this.props.userInfo
         }));
       }
@@ -79,22 +81,19 @@ export default class Lobby extends React.Component
         openDrawer : false
       }));
     }
-    componentDidMount()
-    {
-      this.checkRole();
-    }
     render()
     {
-        console.log(this.state.userInfo);
         return(
             <Container>
                 <MiniDrawer 
-                userInfo = {this.state.userInfo} 
+                userInfo = {this.props.userInfo} 
                 logOut = {() => this.logOut()}
                 baseURL = {this.props.baseURL}
                 accessToken = {this.props.accessToken}
                 leaveURL = {this.state.leaveURL}
                 remainingPaidLeave = {this.state.remainingPaidLeave}
+                totalAnnual = {this.state.totalAnnual}
+                leaveRequests = {this.state.leaveRequests}
                 />
             </Container>
         )

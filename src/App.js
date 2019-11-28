@@ -73,14 +73,12 @@ export default class App extends React.Component
               magicPhrase = {(token, userInfo) => this.openSesame(token, userInfo)} 
               resetState = {() => this.resetState()}/>
           </Route>
-          {/* <Route path = "/lobby" onEnter={() => this.requireAuth()}> */}
-          <Route path = "/lobby" onEnter={this.requireAuth()}>
+          <Route path = "/lobby/" onEnter={this.requireAuth()}>
               <Lobby 
               baseURL = {this.state.baseURL} 
               accessToken = {this.state.accessToken} 
               userInfo = {this.state.userInfo}
               accessToken = {this.state.accessToken}
-              userInfo = {this.state.userInfo}
               >
               </Lobby>
           </Route>
