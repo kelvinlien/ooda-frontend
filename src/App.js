@@ -18,9 +18,6 @@ export default class App extends React.Component
         baseURL : 'http://localhost:2109/',
         accessToken : '',
         userInfo : {
-          fullname : '',
-          team : '',
-          manager : ''
         }
     };
     this.openSesame = this.openSesame.bind(this);
@@ -83,6 +80,7 @@ export default class App extends React.Component
               accessToken = {this.state.accessToken} 
               userInfo = {this.state.userInfo}
               accessToken = {this.state.accessToken}
+              userInfo = {this.state.userInfo}
               >
               </Lobby>
           </Route>

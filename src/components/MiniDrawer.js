@@ -116,7 +116,7 @@ export default function MiniDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  switch (props.role)
+  switch (props.userInfo.role)
   {
     case 'hr':
       optionList =  {
@@ -126,10 +126,19 @@ export default function MiniDrawer(props) {
       };
       break;
     default:
-      optionList =  {
-        'Tra cứu' : Description,
-        'Đơn xin nghỉ phép' : Announcement
-      };
+      if (props.remainingPaidLeave)
+      {
+        optionList =  {
+          'Tra cứu' : Description,
+          'Đơn xin nghỉ phép' : Announcement
+        };
+      }
+      else
+      {
+        optionList = {
+          'Tra cứu' : Description
+        }
+      }
       break;
   };
 
@@ -214,6 +223,7 @@ export default function MiniDrawer(props) {
               baseURL = {props.baseURL}
               accessToken = {props.accessToken}
               leaveURL = {props.leaveURL}
+              remainingPaidLeave = {props.remainingPaidLeave}
               />
             </Route>
             <Route path = '/lobby/2' >

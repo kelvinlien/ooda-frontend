@@ -11,10 +11,7 @@ export default class Lobby extends React.Component
         this.state = {
             roleURL : 'protected/ping/',
             leaveURL : "leaveRequest/employee/2/",
-            role : 'staff',   //default role
-            userInfo : {
-
-            }
+            userInfo : getItem('userInfo')
         }
         this.checkRole = this.checkRole.bind(this);
     }
@@ -26,13 +23,6 @@ export default class Lobby extends React.Component
             baseURL : _this.props.baseURL,
             method : 'get',
             headers: {'Authorization': "Bearer " + _this.props.accessToken}
-        })
-        .then(function(){
-          _this.setState((prevState) => ({
-            ...prevState,
-            role : 'hr',
-            userInfo : _this.props.userInfo
-          }));
         })
         .catch(function(){
           axios({
@@ -46,17 +36,10 @@ export default class Lobby extends React.Component
           .then(function(response){
             _this.setState((prevState) => ({
               ...prevState,
-              userInfo : _this.props.userInfo,
               remainingPaidLeave : response.data.remainingPaidLeave,
               leaveRequests : response.data.leaveRequests
             }));
             setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
-          })
-          .catch(function(){
-            _this.setState((prevState) => ({
-              ...prevState,
-              userInfo : _this.props.userInfo
-            }));
           })
         })
     }
@@ -66,16 +49,17 @@ export default class Lobby extends React.Component
       if (getItem("remainingPaidLeave"))
       {
         this.setState(() => ({
-          userInfo : getItem("userInfo"),
           remainingPaidLeave : getItem("remainingPaidLeave"),
-          leaveRequests : getItem("leaveRequests")
+          leaveRequests : getItem("leaveRequests"),
+          // userInfo : getItem('userInfo')
+          userInfo : this.props.userInfo
         }));
       }
       else
       {
         this.setState(() => ({
-          userInfo : getItem("userInfo")
-        }));
+          userInfo : this.props.userInfo
+        }))
       }
     }
     logOut()
@@ -101,15 +85,16 @@ export default class Lobby extends React.Component
     }
     render()
     {
+        console.log(this.state.userInfo);
         return(
             <Container>
                 <MiniDrawer 
-                role = {this.state.role} 
                 userInfo = {this.state.userInfo} 
                 logOut = {() => this.logOut()}
                 baseURL = {this.props.baseURL}
                 accessToken = {this.props.accessToken}
                 leaveURL = {this.state.leaveURL}
+                remainingPaidLeave = {this.state.remainingPaidLeave}
                 />
             </Container>
         )

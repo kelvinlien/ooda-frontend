@@ -52,26 +52,36 @@ export default class LeaveForm extends React.Component
 
     createLeaveRequest()
     {
-        let _this = this;
-        Axios({
-            url : _this.state.url,
-            baseURL : _this.props.baseURL,
-            method : "post",
-            headers : {
-                'Authorization': 'Bearer '+ this.props.accessToken
-            },
-            data : {
-                "reason" : this.state.reason,
-                "numberOfDays" : this.state.leaveNum
-            }
-
-        })
-        .then(function(){
-            alert("Gửi đơn xin phép thành công. Đơn của bạn sẽ được duyệt trong thời gian sớm nhất!");
-        })
-        .catch(function(error){
-            console.log(error);
-        })
+        if (this.props.remainingPaidLeave >= this.state.leaveNum)
+        {
+            let _this = this;
+            Axios({
+                url : _this.state.url,
+                baseURL : _this.props.baseURL,
+                method : "post",
+                headers : {
+                    'Authorization': 'Bearer '+ _this.props.accessToken
+                },
+                data : {
+                    "reason" : _this.state.reason,
+                    "numberOfDays" : _this.state.leaveNum,
+                    "fromDate" : _this.state.fromDate,
+                    "toDate" : _this.state.toDate
+                }
+    
+            })
+            .then(function(){
+                alert("Gửi đơn xin phép thành công. Đơn của bạn sẽ được duyệt trong thời gian sớm nhất!");
+            })
+            .catch(function(error){
+                console.log(error);
+                alert("Gửi đơn xin phép thất bại. Vui lòng thử lại.");
+            })
+        }
+        else
+        {
+            alert("Số ngày nghỉ phép còn lại không đủ. Vui lòng kiểm tra lại!");
+        }
     }
     render()
     {
