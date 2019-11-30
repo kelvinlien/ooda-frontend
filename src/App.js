@@ -62,7 +62,6 @@ export default class App extends React.Component
   }
   render()
   {
-    console.log(this.state);
     return(
 	<form>
       <Router history = {history}>
@@ -78,7 +77,6 @@ export default class App extends React.Component
               baseURL = {this.state.baseURL} 
               accessToken = {this.state.accessToken} 
               userInfo = {this.state.userInfo}
-              accessToken = {this.state.accessToken}
               >
               </Lobby>
           </Route>

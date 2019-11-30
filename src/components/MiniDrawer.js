@@ -220,6 +220,9 @@ export default function MiniDrawer(props) {
               remainingPaidLeave = {props.remainingPaidLeave}
               totalAnnual = {props.totalAnnual}
               leaveRequests = {props.leaveRequests}
+              baseURL = {props.baseURL}
+              managerURL = {props.managerURL}
+              accessToken = {props.accessToken}
               />
             </Route>
             <Route path = '/lobby/0'>

@@ -6,8 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
-import {getItem} from '../LocalStorage'
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   root: {
@@ -20,21 +19,36 @@ const useStyles = makeStyles({
 });
 
 
+
 export default function SimpleTable(props) {
   const classes = useStyles();
 
     const rows = props.leaveRequests;
+
+    const cellNames = props.cellNames;
+
+    function handleClick(e, decision, id)
+    {
+      props.leaveDecide(decision, id);
+      console.log(Object.keys(props.decidedRequests));
+    }
+
 
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Lý do</TableCell>
-            <TableCell align="right">Từ ngày</TableCell>
-            <TableCell align="right">Đến ngày</TableCell>
-            <TableCell align="right">Số ngày nghỉ</TableCell>
-            <TableCell align="right">Trạng thái</TableCell>
+            {
+              cellNames.map((name, index) => (
+                index === 0 ?
+                <TableCell>{name}</TableCell>
+                :
+                name === 'Quyết định' ?
+                <TableCell align="center">{name}</TableCell>
+                :<TableCell align="right">{name}</TableCell>
+              ))
+            }
           </TableRow>
         </TableHead>
         <TableBody>
@@ -46,7 +60,30 @@ export default function SimpleTable(props) {
               <TableCell align="right">{row.fromDate}</TableCell>
               <TableCell align="right">{row.toDate}</TableCell>
               <TableCell align="right">{row.numberOfDays}</TableCell>
+              {row.title === undefined ?    //check if there is a title key in leaveRequests -> tell if current account is a manager or not
               <TableCell align="right">{row.status}</TableCell>
+              :Object.keys(props.decidedRequests).includes(''+row.id) ?
+              <TableCell align="center">
+                {props.decidedRequests[''+row.id]}
+              </TableCell>
+              :<TableCell align="center">
+                <Button
+                type="button"
+                color="primary"
+                onClick = { e => handleClick(e, 'approved', row.id)}
+                >
+                  Phê chuẩn
+                </Button>
+                <Button
+                type = 'button'
+                color = 'secondary'
+                decision = 'rejected'
+                onClick = { e => handleClick(e, 'rejected', row.id)}
+                >
+                  Từ chối
+                </Button>
+              </TableCell>
+              }
             </TableRow>
           ))}
         </TableBody>
