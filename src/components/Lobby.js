@@ -3,6 +3,8 @@ import axios from 'axios';
 import {Container} from '@material-ui/core';
 import MiniDrawer from './MiniDrawer.js';
 import {setItem, getItem, clear} from '../LocalStorage'
+
+
 export default class Lobby extends React.Component
 {
     constructor(props)
@@ -18,8 +20,7 @@ export default class Lobby extends React.Component
         }
         this.checkRole = this.checkRole.bind(this);
     }
-    checkRole()
-    {
+    checkRole() {
         let _this = this;
         axios({
             url : _this.state.roleURL,
@@ -61,8 +62,7 @@ export default class Lobby extends React.Component
         })
     }
 
-    componentDidMount()
-    {
+    componentDidMount() {
       if (getItem("remainingPaidLeave"))
       {
         this.setState(() => ({
@@ -77,39 +77,38 @@ export default class Lobby extends React.Component
           userInfo : getItem("userInfo")
         }));
       }
+      this.checkRole();
     }
-    logOut()
-    {
+
+    logOut() {
       clear();
       window.open('../','_self');
     }
-    openDrawer()
-    {
+
+    openDrawer() {
       this.setState(() => ({
         openDrawer : true
       }));
     }
+
     closeDrawer()
     {
       this.setState(() => ({
         openDrawer : false
       }));
     }
-    componentDidMount()
-    {
-      this.checkRole();
-    }
+
     render()
     {
         return(
             <Container>
                 <MiniDrawer 
-                role = {this.state.role} 
-                userInfo = {this.state.userInfo} 
-                logOut = {() => this.logOut()}
-                baseURL = {this.props.baseURL}
-                accessToken = {this.props.accessToken}
-                leaveURL = {this.state.leaveURL}
+                  role = {this.state.role} 
+                  userInfo = {this.state.userInfo} 
+                  logOut = {() => this.logOut()}
+                  baseURL = {this.props.baseURL}
+                  accessToken = {this.props.accessToken}
+                  leaveURL = {this.state.leaveURL}
                 />
             </Container>
         )

@@ -75,7 +75,6 @@ export default class LeaveForm extends React.Component
     }
     render()
     {
-        console.log(this.state);
         return(
             <>
                 <Card>
