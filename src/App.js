@@ -18,9 +18,6 @@ export default class App extends React.Component
         baseURL : 'http://localhost:2109/',
         accessToken : '',
         userInfo : {
-          fullname : '',
-          team : '',
-          manager : ''
         }
     };
     this.openSesame = this.openSesame.bind(this);
@@ -65,7 +62,6 @@ export default class App extends React.Component
   }
   render()
   {
-    console.log(this.state);
     return(
 	<form>
       <Router history = {history}>
@@ -76,13 +72,11 @@ export default class App extends React.Component
               magicPhrase = {(token, userInfo) => this.openSesame(token, userInfo)} 
               resetState = {() => this.resetState()}/>
           </Route>
-          {/* <Route path = "/lobby" onEnter={() => this.requireAuth()}> */}
-          <Route path = "/lobby" onEnter={this.requireAuth()}>
+          <Route path = "/lobby/" onEnter={this.requireAuth()}>
               <Lobby 
               baseURL = {this.state.baseURL} 
               accessToken = {this.state.accessToken} 
               userInfo = {this.state.userInfo}
-              accessToken = {this.state.accessToken}
               >
               </Lobby>
           </Route>

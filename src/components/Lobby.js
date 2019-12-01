@@ -9,34 +9,41 @@ export default class Lobby extends React.Component
     {
         super(props);
         this.state = {
-            roleURL : 'protected/ping/',
+            // hrURL : 'protected/ping/',    //this url used to check if current account's role is hr
             leaveURL : "leaveRequest/employee/2/",
-            role : 'staff',   //default role
-            userInfo : {
-
-            }
+            managerURL : "leaveRequest/manager/3/",
+            userInfo : this.props.userInfo,
+            totalAnnual : 15,
+            leaveRequests : [{title:''}],   //init purpose
+            title : this.props.userInfo.role
         }
         this.checkRole = this.checkRole.bind(this);
+        this.updateLeaveBalance = this.updateLeaveBalance.bind(this);
     }
-    checkRole()
+    checkRole() //check every role the app support to decide what to render
     {
+      if (this.state.userInfo.role === 'staff')
+      {
         let _this = this;
-        axios({
-            url : _this.state.roleURL,
-            baseURL : _this.props.baseURL,
-            method : 'get',
-            headers: {'Authorization': "Bearer " + _this.props.accessToken}
+        axios({         //check if current account is a dev
+          url : _this.state.leaveURL,
+          baseURL : _this.props.baseURL,
+          method : 'get',
+          headers : {
+            'Authorization': 'Bearer '+ _this.props.accessToken
+          }
         })
-        .then(function(){
+        .then(function(response){       //set this dev leave balance to localStorage
           _this.setState((prevState) => ({
             ...prevState,
-            role : 'hr',
-            userInfo : _this.props.userInfo
+            remainingPaidLeave : response.data.remainingPaidLeave,
+            leaveRequests : response.data.leaveRequests
           }));
+          setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
         })
-        .catch(function(){
+        .catch(function(){        //otherwise get this manager leave requests that need his attention
           axios({
-            url : _this.state.leaveURL,
+            url : _this.state.managerURL,
             baseURL : _this.props.baseURL,
             method : 'get',
             headers : {
@@ -46,41 +53,68 @@ export default class Lobby extends React.Component
           .then(function(response){
             _this.setState((prevState) => ({
               ...prevState,
-              userInfo : _this.props.userInfo,
-              remainingPaidLeave : response.data.remainingPaidLeave,
               leaveRequests : response.data.leaveRequests
             }));
-            setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
+            setItem({"leaveRequests" : response.data.leaveRequests});
           })
-          .catch(function(){
-            _this.setState((prevState) => ({
-              ...prevState,
-              userInfo : _this.props.userInfo
-            }));
+          .catch(function(error){
+            console.log(error);
           })
         })
+      }
+    }
+
+    updateLeaveBalance()
+    {
+      let _this = this;
+      axios({         
+        url : _this.state.leaveURL,
+        baseURL : _this.props.baseURL,
+        method : 'get',
+        headers : {
+          'Authorization': 'Bearer '+ _this.props.accessToken
+        }
+      })
+      .then(function(response){       
+        _this.setState((prevState) => ({
+          ...prevState,
+          remainingPaidLeave : response.data.remainingPaidLeave,
+          leaveRequests : response.data.leaveRequests
+        }));
+        setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
+      })
+      .catch(function(error){   
+        console.log(error);
+      })
     }
 
     componentDidMount()
     {
-      if (getItem("remainingPaidLeave"))
+      this.checkRole();
+      if (getItem("remainingPaidLeave"))      //dev
       {
         this.setState(() => ({
-          userInfo : getItem("userInfo"),
           remainingPaidLeave : getItem("remainingPaidLeave"),
-          leaveRequests : getItem("leaveRequests")
+          leaveRequests : getItem("leaveRequests"),
+          userInfo : this.props.userInfo
+        }));
+      }
+      else if (getItem("leaveRequests"))    //manager
+      {
+        this.setState(() => ({
+          leaveRequests : getItem("leaveRequests"),
+          userInfo : this.props.userInfo
         }));
       }
       else
       {
         this.setState(() => ({
-          userInfo : getItem("userInfo")
-        }));
+          userInfo : this.props.userInfo
+        }))
       }
     }
     logOut()
     {
-      clear();
       window.open('../','_self');
     }
     openDrawer()
@@ -95,21 +129,21 @@ export default class Lobby extends React.Component
         openDrawer : false
       }));
     }
-    componentDidMount()
-    {
-      this.checkRole();
-    }
     render()
     {
         return(
             <Container>
                 <MiniDrawer 
-                role = {this.state.role} 
-                userInfo = {this.state.userInfo} 
+                userInfo = {this.props.userInfo} 
                 logOut = {() => this.logOut()}
                 baseURL = {this.props.baseURL}
                 accessToken = {this.props.accessToken}
                 leaveURL = {this.state.leaveURL}
+                remainingPaidLeave = {this.state.remainingPaidLeave}
+                totalAnnual = {this.state.totalAnnual}
+                leaveRequests = {this.state.leaveRequests}
+                managerURL = {this.state.managerURL}
+                updateLeaveBalance = {() => this.updateLeaveBalance()}
                 />
             </Container>
         )
