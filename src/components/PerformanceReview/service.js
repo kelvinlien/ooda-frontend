@@ -30,6 +30,33 @@ export async function createPerformanceReview(prInfo) {
     return { newPR };
 }
 
-function updatePerformanceReview() {
+export async function getConductedPR() {
+    const [err, data] = await asyncTryCatchReq({
+        url: API().getConductedPR(getSelfId()),
+        method: 'get',
+    }, true);
+    if (err) {
+        return [];
+    }
+    return data.conducteds;
+}
 
+export async function updatePerformanceReview({
+    prId,
+    note,
+    KPI,
+}) {
+    const [err] = await asyncTryCatchReq({
+        url: API().updatePerfomanceReview(getSelfId()),
+        method: 'patch',
+        data: {
+            prId,
+            note,
+            KPI,
+        },
+    }, true);
+    if (err) {
+        return false;
+    }
+    return true;
 }

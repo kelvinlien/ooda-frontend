@@ -27,7 +27,7 @@ function ToReviewList({
                 year,
                 period,
             });
-            setReviewees(employeeList)
+            setReviewees(employeeList.filter(emp => !emp.isReviewedLastPeriod))
         });
     }, [])
     if (reviewees.length === 0) {
@@ -46,7 +46,8 @@ function ToReviewList({
                     {
                         reviewees.map(reviewee => {
                             return (
-                                <ListItem 
+                                <ListItem
+                                    key={reviewee.uid}
                                     button 
                                     component={Button}
                                     onClick={() => {

@@ -169,7 +169,6 @@ export default function MiniDrawer(props) {
       nav: 'pr',
     })
   }
-  console.log(optionList2);
   return (
     <div className={classes.root}>
       <CssBaseline />

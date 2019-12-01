@@ -6,8 +6,9 @@ const server = 'http://localhost:2109';
 export const API = () => ({
     isManager: (userId) => `/user/manager/${userId}/`,
     getPerformanceReviewableList: (userId) => `/pr/manager/${userId}/employee/`,
-    // POST
     createPerformanceReview: (managerId) => `/pr/manager/${managerId}/`,
+    getConductedPR: (managerId) => `pr/manager/${managerId}/`,
+    updatePerfomanceReview: (managerId) => `pr/manager/${managerId}/`,
 });
 
 export function composeAccessTokenHeader() {

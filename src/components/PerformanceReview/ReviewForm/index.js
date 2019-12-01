@@ -5,34 +5,53 @@ import Button from '@material-ui/core/Button';
 import { getUsername } from '../../../util/localStorage';
 import { Layout } from '../../FormLayout';
 import { Container, ActionContainer } from './styled';
-import Modal from '@material-ui/core/Modal';
+import { updatePerformanceReview } from '../service';
+import { showGlobalNotice } from '../../../globalService';
 
 
 
 function ReviewForm({
     setScreen,
     prDetail,
-    recordedNote,
-    recordedKPI,
 }) {
     const {
+        id: prId,
         reviewee,
     } = prDetail;
     if (!reviewee) {
         return null;
     }
     const {
+        note: recordedNote,
+        KPI: recordedKPI,
         username: revieweedName,
     } = reviewee;
     return (
         <Container>
             <Formik
                 initialValues={{
-                    kpi: '',
-                    note: '',
+                    kpi: recordedKPI || '',
+                    note: recordedNote || '',
                 }}
-                onSubmit={(values) => {
-
+                onSubmit={async (values) => {
+                    
+                    const rs = await updatePerformanceReview({
+                        prId,
+                        note: values.note,
+                        KPI: values.kpi,
+                    });
+                    if (rs) {
+                        showGlobalNotice({
+                            variant: 'info',
+                            message: 'Đã cập nhật thành công',
+                        });
+                        setScreen(0);
+                        return;
+                    } 
+                    showGlobalNotice({
+                        variant: 'error',
+                        message: 'Đã xảy ra lỗi',
+                    });
                 }}
                 render={({ handleSubmit, handleChange, values }) => {
                     return (
@@ -89,9 +108,7 @@ function ReviewForm({
                                         className='item'
                                         color='primary'
                                         variant='contained'
-                                        onClick={() => {
-                                            console.log('To DO');
-                                        }}
+                                        onClick={handleSubmit}
                                     >
                                         Cập nhật
                                     </Button>
