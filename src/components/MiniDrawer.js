@@ -19,6 +19,7 @@ import RateReview from '@material-ui/icons/RateReview';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ThumbUp from '@material-ui/icons/ThumbUp';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -27,9 +28,10 @@ import Statistic from './Statistic.js';
 import history from '../history.js';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
 import { asyncTryCatchReq, API } from '../util/customAxios';
-import { getItemFromStorage } from '../util/localStorage';
+import { getItemFromStorage, getRole } from '../util/localStorage';
 import LeaveBalance from './LeaveBalance.js';
 import PerformanceReview from './PerformanceReview/index';
+import PerformanceApproval from './PerformanceApproval/index';
 
 const drawerWidth = 240;
 
@@ -169,6 +171,14 @@ export default function MiniDrawer(props) {
       nav: 'pr',
     })
   }
+
+  if (getRole() === 'hr') {
+    optionList2.push({
+      title: 'Duyệt phiếu đánh giá',
+      icon: <ThumbUp />,
+      nav: 'hr/pr',
+    })
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -224,7 +234,7 @@ export default function MiniDrawer(props) {
         </div>
         <Divider />
         <List>
-          {/* {
+          {
             Object.keys(optionList).map((key, index) => (
               <ListItem button key = {index} component={NavLink} to={baseURL + index}>
                 <ListItemIcon>
@@ -235,7 +245,7 @@ export default function MiniDrawer(props) {
                 </ListItemText>
               </ListItem>
             ))
-          } */}
+          }
           {
             optionList2.length !== 0 && optionList2.map((option) => (
               <ListItem button key={option.title} component={NavLink} to={baseURL + option.nav}>
@@ -266,6 +276,9 @@ export default function MiniDrawer(props) {
             </Route>
             <Route path = '/lobby/2' >
               <Statistic />
+            </Route>
+            <Route path ='/lobby/hr/pr'>
+              <PerformanceApproval />
             </Route>
             <Route path = '/lobby/pr'>
               <PerformanceReview />

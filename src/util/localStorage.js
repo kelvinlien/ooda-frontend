@@ -58,3 +58,11 @@ export const getUsername = () => {
   }
   return user.username;
 }
+
+export const getRole = () => {
+  const user = getItemFromStorage('userInfo');
+  if (!user) {
+    return undefined;
+  }
+  return user.role;
+}

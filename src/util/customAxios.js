@@ -7,8 +7,10 @@ export const API = () => ({
     isManager: (userId) => `/user/manager/${userId}/`,
     getPerformanceReviewableList: (userId) => `/pr/manager/${userId}/employee/`,
     createPerformanceReview: (managerId) => `/pr/manager/${managerId}/`,
-    getConductedPR: (managerId) => `pr/manager/${managerId}/`,
-    updatePerfomanceReview: (managerId) => `pr/manager/${managerId}/`,
+    getConductedPR: (managerId) => `/pr/manager/${managerId}/`,
+    updatePerfomanceReview: (managerId) => `/pr/manager/${managerId}/`,
+    getToFinalize: () => '/pr/hr/',
+    finalizePR: () => '/pr/hr/',
 });
 
 export function composeAccessTokenHeader() {
