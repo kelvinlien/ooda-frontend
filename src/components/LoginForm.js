@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import qs from 'querystring';
 import history from '../history';
+import {clear} from '../LocalStorage'
 export default class LoginForm extends React.Component
 {
     constructor(props)
@@ -25,7 +26,7 @@ export default class LoginForm extends React.Component
         }
         this.login = this.login.bind(this);
         this.saveToState = this.saveToState.bind(this);
-        // this.props.resetState();
+        clear();
     }
     login()
     {

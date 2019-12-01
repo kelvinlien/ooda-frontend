@@ -53,17 +53,17 @@ export default class LeaveBalance extends React.Component{
             baseURL : _this.props.baseURL,
             method : "patch",
             header : {
-                'Authorization': 'Basic '+ _this.props.accessToken
+                'Authorization': 'Bearer '+ _this.props.accessToken
             },
             data : {
                 'leaveRequestId' : '' + id,
                 'decision' : decision
-            },
-            withCredentials: true
+            }
+            // withCredentials: true
         })
         .then(function(){
             let newDecidedRequests = this.state.decidedRequests;
-            decision == 'rejected' ? newDecidedRequests[id] = 'Đã từ chối' : newDecidedRequests[id] = 'Đã chấp thuận';
+            decision == 'rejected' ? newDecidedRequests[id] = 'Đã bỏ qua' : newDecidedRequests[id] = 'Đã chấp thuận';
             this.setState((prevState) => ({
                 ...prevState,
                 remainRequest : prevState.remainRequest - 1,
@@ -86,7 +86,7 @@ export default class LeaveBalance extends React.Component{
             {
                 if (this.props.leaveRequests[0].title)     //check if there is a title from manager's leaveRequests
                 {
-                    this.cellNames[this.cellNames.indexOf('Trạng thái')] = 'Quyết định';
+                    this.cellNames = ['Họ tên', 'Vị trí', 'Lý do', 'Từ ngày', 'Đến ngày', 'Số ngày nghỉ', 'Quyết định'];
                 }
             }
         }

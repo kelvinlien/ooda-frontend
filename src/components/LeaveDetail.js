@@ -22,12 +22,12 @@ export default class LeaveDetail extends React.Component
             >
                 <Grid item lg >
                     <Typography variant = 'overline' > 
-                        <b>{this.props.remainingPaidLeave ? 'Số ngày nghỉ phép còn lại' : 'Số đơn xin nghỉ phép còn lại'}</b>
+                        <b>{this.props.remainingPaidLeave !== undefined ? 'Số ngày nghỉ phép còn lại' : 'Số đơn xin nghỉ phép còn lại'}</b>
                     </Typography>
                 </Grid>
                 <Grid item lg >
                     <Typography variant = 'caption'>
-                        {this.props.remainingPaidLeave ? 
+                        {this.props.remainingPaidLeave !== undefined ? 
                         this.props.remainingPaidLeave + ' ngày'
                         : this.props.remainRequest + ' đơn'
                         }
@@ -46,12 +46,12 @@ export default class LeaveDetail extends React.Component
                 alignContent = 'space-around'
                 >
                     <Typography variant = 'overline' >
-                        <b>{this.props.remainingPaidLeave ? 'Tổng số ngày phép trong năm' : 'Tổng số đơn xin nghỉ phép cần duyệt'}</b>
+                        <b>{this.props.remainingPaidLeave !== undefined ? 'Tổng số ngày phép trong năm' : 'Tổng số đơn xin nghỉ phép cần duyệt'}</b>
                     </Typography>
                 </Grid>
                 <Grid item lg >
                     <Typography variant = 'caption'>
-                        {this.props.remainingPaidLeave ? this.props.totalAnnual + ' ngày' : this.props.totalRequest + ' đơn'}
+                        {this.props.remainingPaidLeave !== undefined ? this.props.totalAnnual + ' ngày' : this.props.totalRequest + ' đơn'}
                     </Typography>
                 </Grid>
             </Grid>

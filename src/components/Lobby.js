@@ -18,6 +18,7 @@ export default class Lobby extends React.Component
             title : this.props.userInfo.role
         }
         this.checkRole = this.checkRole.bind(this);
+        this.updateLeaveBalance = this.updateLeaveBalance.bind(this);
     }
     checkRole() //check every role the app support to decide what to render
     {
@@ -63,6 +64,30 @@ export default class Lobby extends React.Component
       }
     }
 
+    updateLeaveBalance()
+    {
+      let _this = this;
+      axios({         
+        url : _this.state.leaveURL,
+        baseURL : _this.props.baseURL,
+        method : 'get',
+        headers : {
+          'Authorization': 'Bearer '+ _this.props.accessToken
+        }
+      })
+      .then(function(response){       
+        _this.setState((prevState) => ({
+          ...prevState,
+          remainingPaidLeave : response.data.remainingPaidLeave,
+          leaveRequests : response.data.leaveRequests
+        }));
+        setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
+      })
+      .catch(function(error){   
+        console.log(error);
+      })
+    }
+
     componentDidMount()
     {
       this.checkRole();
@@ -90,7 +115,6 @@ export default class Lobby extends React.Component
     }
     logOut()
     {
-      clear();
       window.open('../','_self');
     }
     openDrawer()
@@ -119,6 +143,7 @@ export default class Lobby extends React.Component
                 totalAnnual = {this.state.totalAnnual}
                 leaveRequests = {this.state.leaveRequests}
                 managerURL = {this.state.managerURL}
+                updateLeaveBalance = {() => this.updateLeaveBalance()}
                 />
             </Container>
         )

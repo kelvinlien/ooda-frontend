@@ -120,13 +120,11 @@ export default function MiniDrawer(props) {
   {
     case 'hr':
       optionList =  {
-        'Tra cứu' : Description,
-        'Đơn xin nghỉ phép' : Announcement,
         'Thống kê' : PieChart
       };
       break;
     default:
-      if (props.remainingPaidLeave)
+      if (props.remainingPaidLeave !== undefined)
       {
         optionList =  {
           'Tra cứu' : Description,
@@ -136,7 +134,7 @@ export default function MiniDrawer(props) {
       else
       {
         optionList = {
-          'Tra cứu' : Description
+          'Duyệt đơn' : Description
         }
       }
       break;
@@ -231,6 +229,7 @@ export default function MiniDrawer(props) {
               accessToken = {props.accessToken}
               leaveURL = {props.leaveURL}
               remainingPaidLeave = {props.remainingPaidLeave}
+              updateLeaveBalance = {() => props.updateLeaveBalance()}
               />
             </Route>
             <Route path = '/lobby/1' >

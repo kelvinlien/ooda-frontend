@@ -54,9 +54,20 @@ export default function SimpleTable(props) {
         <TableBody>
           {rows.map(row => (
             <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
+              {
+                row.title === undefined ?
+                <TableCell component="th" scope="row">
                 {row.reason}
-              </TableCell>
+                </TableCell>
+                :
+                <>
+                <TableCell component="th" scope="row">
+                {/* {row.name} */} Pham Huy Phat
+                </TableCell>
+                <TableCell align="right">{row.title}</TableCell>
+                <TableCell align="right">{row.reason}</TableCell>
+                </>
+              }
               <TableCell align="right">{row.fromDate}</TableCell>
               <TableCell align="right">{row.toDate}</TableCell>
               <TableCell align="right">{row.numberOfDays}</TableCell>
@@ -77,10 +88,9 @@ export default function SimpleTable(props) {
                 <Button
                 type = 'button'
                 color = 'secondary'
-                decision = 'rejected'
                 onClick = { e => handleClick(e, 'rejected', row.id)}
                 >
-                  Từ chối
+                  Bỏ qua
                 </Button>
               </TableCell>
               }
