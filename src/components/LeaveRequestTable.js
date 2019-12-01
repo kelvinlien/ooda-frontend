@@ -83,7 +83,7 @@ export default function SimpleTable(props) {
                 color="primary"
                 onClick = { e => handleClick(e, 'approved', row.id)}
                 >
-                  Phê chuẩn
+                  Chấp thuận
                 </Button>
                 <Button
                 type = 'button'

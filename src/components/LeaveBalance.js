@@ -5,6 +5,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import LeaveDetail from './LeaveDetail.js';
 import LeaveCalendar from './LeaveCalendar.js';
 import LeaveRequestTable from './LeaveRequestTable'
+import {getItem, setItem} from '../LocalStorage'
 export default class LeaveBalance extends React.Component{
     constructor(props)
     {
@@ -52,7 +53,7 @@ export default class LeaveBalance extends React.Component{
             url : _this.props.managerURL,
             baseURL : _this.props.baseURL,
             method : "patch",
-            header : {
+            headers : {
                 'Authorization': 'Bearer '+ _this.props.accessToken
             },
             data : {
@@ -62,13 +63,14 @@ export default class LeaveBalance extends React.Component{
             // withCredentials: true
         })
         .then(function(){
-            let newDecidedRequests = this.state.decidedRequests;
+            let newDecidedRequests = _this.state.decidedRequests;
             decision == 'rejected' ? newDecidedRequests[id] = 'Đã bỏ qua' : newDecidedRequests[id] = 'Đã chấp thuận';
-            this.setState((prevState) => ({
+            _this.setState((prevState) => ({
                 ...prevState,
                 remainRequest : prevState.remainRequest - 1,
                 decidedRequests : newDecidedRequests
-            }))
+            }));
+            setItem(_this.state);
         })
         .catch(function(error){
             console.log(error);
@@ -76,10 +78,24 @@ export default class LeaveBalance extends React.Component{
         })
     }
 
+    componentDidMount()
+    {
+        // this.props.updateLeaveRequests();
+        if (getItem("decidedRequests"))
+        {
+        this.setState(() => ({
+            totalRequest : getItem("totalRequest"),
+            remainRequest : getItem("remainRequest"),
+            decidedRequests : getItem("decidedRequests")
+        }))
+        }
+    }
+
     render()
     {
         console.log(this.state.decidedRequests);
         console.log(this.props.accessToken);
+        console.log(this.props.leaveRequests);
         if (this.props.leaveRequests != [])
         {
             if (typeof(this.props.leaveRequests) == 'object')

@@ -19,6 +19,7 @@ export default class Lobby extends React.Component
         }
         this.checkRole = this.checkRole.bind(this);
         this.updateLeaveBalance = this.updateLeaveBalance.bind(this);
+        this.updateLeaveRequests = this.updateLeaveRequests.bind(this);
     }
     checkRole() //check every role the app support to decide what to render
     {
@@ -62,6 +63,29 @@ export default class Lobby extends React.Component
           })
         })
       }
+    }
+
+    updateLeaveRequests()
+    {
+      let _this = this;
+      axios({
+        url : _this.state.managerURL,
+        baseURL : _this.props.baseURL,
+        method : 'get',
+        headers : {
+          'Authorization': 'Bearer '+ _this.props.accessToken
+        }
+      })
+      .then(function(response){
+        _this.setState((prevState) => ({
+          ...prevState,
+          leaveRequests : response.data.leaveRequests
+        }));
+        setItem({"leaveRequests" : response.data.leaveRequests});
+      })
+      .catch(function(error){
+        console.log(error);
+      })
     }
 
     updateLeaveBalance()
@@ -144,6 +168,7 @@ export default class Lobby extends React.Component
                 leaveRequests = {this.state.leaveRequests}
                 managerURL = {this.state.managerURL}
                 updateLeaveBalance = {() => this.updateLeaveBalance()}
+                updateLeaveRequests = {() => this.updateLeaveRequests()}
                 />
             </Container>
         )

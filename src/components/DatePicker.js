@@ -14,10 +14,11 @@ export default function DatePickers(props) {
 
   const today = new Date();
 
+  let temp = new Date();
   const handleDateChange = date => {
       if (props.type === 'to')
       {
-          if (date < props.fromDate)
+          if (date < temp.setDate(props.fromDate.getDate() - 1))
           {
               alert("Vui lòng chọn lại ngày.");
           }
@@ -29,11 +30,11 @@ export default function DatePickers(props) {
       }
       else
       {
-        if (date < today)
+        if (date < temp.setDate(today.getDate() - 1))
         {
           alert("Ngày bắt đầu không hợp lệ!");
         }
-        else if (date > props.toDate)
+        else if (date > temp.setDate(props.toDate.getDate() + 1))
         {
           alert("Vui lòng chọn lại ngày.");
         }
