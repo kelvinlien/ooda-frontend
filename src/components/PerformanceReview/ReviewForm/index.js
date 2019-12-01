@@ -1,13 +1,18 @@
 import React from 'react';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { getUsername } from '../../../util/localStorage';
 import { Layout } from '../../FormLayout';
+import CustomizedErrorForm from '../../CustomizedErrorForm';
 import { Container, ActionContainer } from './styled';
 import { updatePerformanceReview } from '../service';
 import { showGlobalNotice } from '../../../globalService';
 
+const validationSchema = Yup.object().shape({
+    kpi: Yup.number('Phải là số nguyên').integer('Phải là số nguyên'),
+});
 
 
 function ReviewForm({
@@ -29,6 +34,7 @@ function ReviewForm({
     return (
         <Container>
             <Formik
+                validationSchema={validationSchema}
                 initialValues={{
                     kpi: recordedKPI || '',
                     note: recordedNote || '',
@@ -79,6 +85,9 @@ function ReviewForm({
                                     label='KPI'
                                 />
                             </Layout>
+                            <CustomizedErrorForm
+                                    name='kpi'
+                                />
                             <Layout col={1}>
                                 <TextField
                                     className='note'

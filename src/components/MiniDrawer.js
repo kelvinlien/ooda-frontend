@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import RateReview from '@material-ui/icons/RateReview';
+import History  from '@material-ui/icons/History';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -32,6 +33,7 @@ import { getItemFromStorage, getRole } from '../util/localStorage';
 import LeaveBalance from './LeaveBalance.js';
 import PerformanceReview from './PerformanceReview/index';
 import PerformanceApproval from './PerformanceApproval/index';
+import PerformanceHistory from './PerformanceHistory/index';
 
 const drawerWidth = 240;
 
@@ -163,7 +165,13 @@ export default function MiniDrawer(props) {
       };
       break;
   };
-  const optionList2 = [];
+  const optionList2 = [
+    {
+      title: 'Lịch sử đánh giá',
+      icon: <History />,
+      nav: 'pr/history',
+    }
+  ];
   if (isManager) {
     optionList2.push({
       title: 'Đánh giá năng lực',
@@ -276,6 +284,9 @@ export default function MiniDrawer(props) {
             </Route>
             <Route path = '/lobby/2' >
               <Statistic />
+            </Route>
+            <Route path ='/lobby/pr/history'>
+              <PerformanceHistory />
             </Route>
             <Route path ='/lobby/hr/pr'>
               <PerformanceApproval />
