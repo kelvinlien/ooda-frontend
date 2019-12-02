@@ -11,7 +11,10 @@ export const API = () => ({
     updatePerfomanceReview: (managerId) => `/pr/manager/${managerId}/`,
     getToFinalize: () => '/pr/hr/',
     finalizePR: () => '/pr/hr/',
-    getPRHistory: (userId) => `/pr/employee/${userId}/`
+    getPRHistory: (userId) => `/pr/employee/${userId}/`,
+    getEmployees: () => `/user/employee/`,
+    updateEmployee: () => `/user/employee/`,
+    createNewEmployee: () => `/user/employee/`,
 });
 
 export function composeAccessTokenHeader() {

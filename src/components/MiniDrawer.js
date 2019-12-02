@@ -21,6 +21,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ThumbUp from '@material-ui/icons/ThumbUp';
+import Contacts from '@material-ui/icons/Contacts';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -34,6 +35,7 @@ import LeaveBalance from './LeaveBalance.js';
 import PerformanceReview from './PerformanceReview/index';
 import PerformanceApproval from './PerformanceApproval/index';
 import PerformanceHistory from './PerformanceHistory/index';
+import EmployeeManagement from './EmployeeManagement/index';
 
 const drawerWidth = 240;
 
@@ -182,6 +184,11 @@ export default function MiniDrawer(props) {
 
   if (getRole() === 'hr') {
     optionList2.push({
+      title: 'Quản lý nhân sự',
+      icon: <Contacts />,
+      nav: 'hr/management',
+    });
+    optionList2.push({
       title: 'Duyệt phiếu đánh giá',
       icon: <ThumbUp />,
       nav: 'hr/pr',
@@ -293,6 +300,9 @@ export default function MiniDrawer(props) {
             </Route>
             <Route path = '/lobby/pr'>
               <PerformanceReview />
+            </Route>
+            <Route path = '/lobby/hr/management'>
+              <EmployeeManagement />
             </Route>
           </Switch>
         </Router>
