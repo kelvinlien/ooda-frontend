@@ -50,8 +50,15 @@ function NewEmployeeForm({setScreen, setDetail}) {
                     addNewEmployee({
                         ...values,
                         joinDate,
-                        managerId: 3,
-                        role: department === 'hr' ? 'hr' : 'staff',
+                        ...(department === 'hr' ? {
+        
+                            managerId: 4,
+                            role: 'hr',
+                        } : {
+               
+                            managerId: 3,
+                            role: 'staff',
+                        }),
                     }).then(rs => {
                         if (!rs) {
                             showGlobalNotice({
@@ -67,7 +74,7 @@ function NewEmployeeForm({setScreen, setDetail}) {
                         resetForm();
                         setDetail({
                             ...rs,
-                            managerName: 'Lien Hop Quoc',
+                            managerName: rs.role === 'hr' ? 'Nguyen Ngan Ha' : 'Lien Hop Quoc',
                         });
                         setScreen(2);
                     })

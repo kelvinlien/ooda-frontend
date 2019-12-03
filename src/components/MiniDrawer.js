@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import clsx from 'clsx';
 import {
   Router,
@@ -20,6 +20,7 @@ import History  from '@material-ui/icons/History';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import Contacts from '@material-ui/icons/Contacts';
 import ListItem from '@material-ui/core/ListItem';
@@ -36,6 +37,7 @@ import PerformanceReview from './PerformanceReview/index';
 import PerformanceApproval from './PerformanceApproval/index';
 import PerformanceHistory from './PerformanceHistory/index';
 import EmployeeManagement from './EmployeeManagement/index';
+import ProfilePage from './ProfilePage/index';
 
 const drawerWidth = 240;
 
@@ -172,6 +174,11 @@ export default function MiniDrawer(props) {
       title: 'Lịch sử đánh giá',
       icon: <History />,
       nav: 'pr/history',
+    },
+    {
+      title: 'Hồ sơ cá nhân',
+      icon: <AccountBoxIcon />,
+      nav: 'profile',
     }
   ];
   if (isManager) {
@@ -303,6 +310,9 @@ export default function MiniDrawer(props) {
             </Route>
             <Route path = '/lobby/hr/management'>
               <EmployeeManagement />
+            </Route>
+            <Route path = '/lobby/profile'>
+              <ProfilePage />
             </Route>
           </Switch>
         </Router>

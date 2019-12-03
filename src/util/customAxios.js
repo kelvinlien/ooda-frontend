@@ -15,6 +15,7 @@ export const API = () => ({
     getEmployees: () => `/user/employee/`,
     updateEmployee: () => `/user/employee/`,
     createNewEmployee: () => `/user/employee/`,
+    changePassword: (userId) => `/user/password/${userId}/`,
 });
 
 export function composeAccessTokenHeader() {
