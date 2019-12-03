@@ -3,7 +3,6 @@ import axios from 'axios';
 import { CssBaseline, Grid, Paper, Container} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import LeaveDetail from './LeaveDetail.js';
-import LeaveCalendar from './LeaveCalendar.js';
 import LeaveRequestTable from './LeaveRequestTable'
 import {getItem, setItem} from '../LocalStorage'
 export default class LeaveBalance extends React.Component{
@@ -14,8 +13,8 @@ export default class LeaveBalance extends React.Component{
         this.makeThemeH1 = this.makeThemeH1.bind(this);
         this.cellNames = ['Lý do', 'Từ ngày', 'Đến ngày', 'Số ngày nghỉ', 'Trạng thái'];
         this.state = {
-            totalRequest : this.props.leaveRequests.length,
-            remainRequest : this.props.leaveRequests.length,
+            totalRequest : 0,
+            remainRequest : 0,
             decidedRequests : {} 
         }
         this.leaveDecide = this.leaveDecide.bind(this);
@@ -26,10 +25,21 @@ export default class LeaveBalance extends React.Component{
     {
         if (prevProp.leaveRequests !== this.props.leaveRequests)
         {
-            this.setState(() => ({
-                totalRequest : this.props.leaveRequests.length,
-                remainRequest : this.props.leaveRequests.length
-            }));
+            if (getItem('decidedRequests'))
+            {
+                this.setState(() => ({
+                    totalRequest : getItem("totalRequest"),
+                    remainRequest : getItem("remainRequest"),
+                    decidedRequests : getItem("decidedRequests")
+                }))
+            }
+            else
+            {
+                this.setState(() => ({
+                    totalRequest : this.props.leaveRequests.length,
+                    remainRequest : this.props.leaveRequests.length
+                }));
+            }
         }
     }
 
@@ -74,7 +84,8 @@ export default class LeaveBalance extends React.Component{
         })
         .catch(function(error){
             console.log(error);
-            console.log(_this.props.accessToken);
+            console.log(_this.props.leaveRequests);
+            console.log(_this.state.totalRequest);
         })
     }
 
@@ -93,9 +104,8 @@ export default class LeaveBalance extends React.Component{
 
     render()
     {
-        console.log(this.state.decidedRequests);
-        console.log(this.props.accessToken);
-        console.log(this.props.leaveRequests);
+        console.log(getItem("remainRequest"));
+        console.log(getItem('decidedRequests'));
         if (this.props.leaveRequests != [])
         {
             if (typeof(this.props.leaveRequests) == 'object')
@@ -133,6 +143,8 @@ export default class LeaveBalance extends React.Component{
                                     cellNames = {this.cellNames}
                                     leaveDecide = {this.leaveDecide}
                                     decidedRequests = {this.state.decidedRequests}
+                                    totalRequest = {this.state.totalRequest}
+                                    totalAnnual = {this.props.totalAnnual}
                                     />
                                 </Container>
                             </Grid>
