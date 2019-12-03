@@ -114,7 +114,7 @@ async function checkIfManager(userId) {
   const [err, data] = await asyncTryCatchReq({
     url: API().isManager(userId),
     method: 'get',
-  });
+  }, true);
   if (err) {
     return false;
   }

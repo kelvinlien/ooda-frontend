@@ -24,3 +24,17 @@ export async function addNewEmployee(newEmployee) {
     }
     return rs;
 }
+
+export async function updateEmployee(updatedEmployee) {
+    const [err] = await  asyncTryCatchReq({
+        url: API().updateEmployee(),
+        data: updatedEmployee,
+        method: 'patch',
+    }, true);
+
+    if (err) {
+        return false;
+    }
+
+    return true;
+}

@@ -5,7 +5,7 @@ import NewCard from '../NewCard/index';
 import { getEmployeeList } from '../service';
 import { ListContainer } from './styled';
 
-function EmployeeList({setScreen}) {
+function EmployeeList({setScreen, setDetail}) {
     const [employees, setEmployees] = useState([]);
 
     useEffect(() => {
@@ -23,6 +23,10 @@ function EmployeeList({setScreen}) {
             {
                 employees.map(employee => (
                     <SummaryCard
+                        onClick={() => {
+                            setDetail(employee);
+                            setScreen(2);
+                        }}
                         key={employee.id}
                         {...employee}
                     />

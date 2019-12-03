@@ -22,11 +22,14 @@ const useStyles = makeStyles({
 function SummaryCard({
     username,
     title,
+    onClick,
 }) {
     const classes = useStyles();
     return (
         <Card className={classes.card}>
-            <CardActionArea>
+            <CardActionArea
+                onClick={onClick}
+            >
                 <CardMedia
                     component="img"
                     alt="Contemplative AVA"

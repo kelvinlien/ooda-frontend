@@ -11,6 +11,8 @@ const useStyles = makeStyles({
   card: {
     maxWidth: 468,
     padding: 16,
+    margin: 12,
+    border: '1px solid black',
   },
   actions: {
     justifyContent: 'flex-end',

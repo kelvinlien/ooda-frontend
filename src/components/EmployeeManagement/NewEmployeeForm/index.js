@@ -15,8 +15,7 @@ import { showGlobalNotice } from '../../../globalService';
 import { addNewEmployee } from '../service';
 import CustomizedErrorForm from '../../CustomizedErrorForm';
 import { Layout } from '../../FormLayout';
-import { Container } from './styled';
-import { ActionContainer } from './styled';
+import { Container, ActionContainer } from './styled';
 
 const departmentList = [
     {
@@ -29,7 +28,7 @@ const departmentList = [
     },
 ]
 
-function NewEmployeeForm({setScreen}) {
+function NewEmployeeForm({setScreen, setDetail}) {
     const [joinDate, setJoinDate] = React.useState(new Date());
     const [openSelect, setOpenSelect] = React.useState(false);
     const handleDateChange = date => {
@@ -44,13 +43,14 @@ function NewEmployeeForm({setScreen}) {
                     department: '',
                     title: '',
                 }}
-                onSubmit={(values) => {
+                onSubmit={(values, { resetForm }) => {
                     const {
                         department,
                     } = values;
                     addNewEmployee({
                         ...values,
                         joinDate,
+                        managerId: 3,
                         role: department === 'hr' ? 'hr' : 'staff',
                     }).then(rs => {
                         if (!rs) {
@@ -63,7 +63,13 @@ function NewEmployeeForm({setScreen}) {
                         showGlobalNotice({
                             variant: 'success',
                             message: 'Đã tạo thành công, hãy cập nhật những thông tin chi tiết',
-                        })
+                        });
+                        resetForm();
+                        setDetail({
+                            ...rs,
+                            managerName: 'Lien Hop Quoc',
+                        });
+                        setScreen(2);
                     })
 
                 }}
