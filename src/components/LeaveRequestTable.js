@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -36,7 +37,8 @@ export default function SimpleTable(props) {
 
   return (
     <Paper className={classes.root}>
-      <Table className={classes.table} aria-label="simple table">
+      {props.totalRequest > 0 || props.totalAnnual > 0 ?
+        <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
             {
@@ -98,6 +100,15 @@ export default function SimpleTable(props) {
           ))}
         </TableBody>
       </Table>
+    :
+    <Typography
+    variant = 'h5'
+    color = 'inherit'
+    align = 'center'
+    >
+      Hiện tại không có đơn nào cần duyệt
+    </Typography>
+    }
     </Paper>
   );
 }
