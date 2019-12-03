@@ -14,8 +14,8 @@ export default class Lobby extends React.Component
             managerURL : "leaveRequest/manager/3/",
             userInfo : this.props.userInfo,
             totalAnnual : 15,
-            leaveRequests : [{title:''}],   //init purpose
-            title : this.props.userInfo.role
+            leaveRequests : [],   //init purpose
+            title : 'hr'
         }
         this.checkRole = this.checkRole.bind(this);
         this.updateLeaveBalance = this.updateLeaveBalance.bind(this);
@@ -38,9 +38,10 @@ export default class Lobby extends React.Component
           _this.setState((prevState) => ({
             ...prevState,
             remainingPaidLeave : response.data.remainingPaidLeave,
-            leaveRequests : response.data.leaveRequests
+            leaveRequests : response.data.leaveRequests,
+            title : 'dev'
           }));
-          setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
+          setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests, title : 'dev'});
         })
         .catch(function(){        //otherwise get this manager leave requests that need his attention
           axios({
@@ -54,9 +55,10 @@ export default class Lobby extends React.Component
           .then(function(response){
             _this.setState((prevState) => ({
               ...prevState,
-              leaveRequests : response.data.leaveRequests
+              leaveRequests : response.data.leaveRequests,
+              title : 'manager'
             }));
-            setItem({"leaveRequests" : response.data.leaveRequests});
+            setItem({"leaveRequests" : response.data.leaveRequests,title : 'manager'});
           })
           .catch(function(error){
             console.log(error);
@@ -120,14 +122,16 @@ export default class Lobby extends React.Component
         this.setState(() => ({
           remainingPaidLeave : getItem("remainingPaidLeave"),
           leaveRequests : getItem("leaveRequests"),
-          userInfo : this.props.userInfo
+          userInfo : this.props.userInfo,
+          title : getItem("title")
         }));
       }
       else if (getItem("leaveRequests"))    //manager
       {
         this.setState(() => ({
           leaveRequests : getItem("leaveRequests"),
-          userInfo : this.props.userInfo
+          userInfo : this.props.userInfo,
+          title : getItem("title")
         }));
       }
       else
@@ -169,6 +173,7 @@ export default class Lobby extends React.Component
                 managerURL = {this.state.managerURL}
                 updateLeaveBalance = {() => this.updateLeaveBalance()}
                 updateLeaveRequests = {() => this.updateLeaveRequests()}
+                title = {this.state.title}
                 />
             </Container>
         )

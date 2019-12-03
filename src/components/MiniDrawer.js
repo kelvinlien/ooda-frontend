@@ -222,6 +222,7 @@ export default function MiniDrawer(props) {
               managerURL = {props.managerURL}
               accessToken = {props.accessToken}
               updateLeaveRequests = {() => props.updateLeaveRequests()}
+              title = {props.title}
               />
             </Route>
             <Route path = '/lobby/0'>

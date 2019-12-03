@@ -70,7 +70,6 @@ export default class LeaveBalance extends React.Component{
                 'leaveRequestId' : '' + id,
                 'decision' : decision
             }
-            // withCredentials: true
         })
         .then(function(){
             let newDecidedRequests = _this.state.decidedRequests;
@@ -106,15 +105,9 @@ export default class LeaveBalance extends React.Component{
     {
         console.log(getItem("remainRequest"));
         console.log(getItem('decidedRequests'));
-        if (this.props.leaveRequests != [])
+        if (this.props.title == 'manager')     //check if there is a title from manager's leaveRequests
         {
-            if (typeof(this.props.leaveRequests) == 'object')
-            {
-                if (this.props.leaveRequests[0].title)     //check if there is a title from manager's leaveRequests
-                {
-                    this.cellNames = ['Họ tên', 'Vị trí', 'Lý do', 'Từ ngày', 'Đến ngày', 'Số ngày nghỉ', 'Quyết định'];
-                }
-            }
+            this.cellNames = ['Họ tên', 'Vị trí', 'Lý do', 'Từ ngày', 'Đến ngày', 'Số ngày nghỉ', 'Quyết định'];
         }
         return(
             <div>
@@ -144,7 +137,6 @@ export default class LeaveBalance extends React.Component{
                                     leaveDecide = {this.leaveDecide}
                                     decidedRequests = {this.state.decidedRequests}
                                     totalRequest = {this.state.totalRequest}
-                                    totalAnnual = {this.props.totalAnnual}
                                     />
                                 </Container>
                             </Grid>

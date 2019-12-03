@@ -37,7 +37,6 @@ export default function SimpleTable(props) {
 
   return (
     <Paper className={classes.root}>
-      {props.totalRequest > 0 || props.totalAnnual > 0 ?
         <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -100,15 +99,6 @@ export default function SimpleTable(props) {
           ))}
         </TableBody>
       </Table>
-    :
-    <Typography
-    variant = 'h5'
-    color = 'inherit'
-    align = 'center'
-    >
-      Hiện tại không có đơn nào cần duyệt
-    </Typography>
-    }
     </Paper>
   );
 }
