@@ -24,6 +24,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LeaveForm from './LeaveForm.js';
 import Statistic from './Statistic.js';
 import history from '../history.js';
+import Avatar from '@material-ui/core/Avatar';
 // import Button from '@material-ui/core/Button';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
 
@@ -161,6 +162,12 @@ export default function MiniDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
+          <Avatar
+            alt = 'Phat'
+            src = ''
+          >
+              {props.userInfo.username ? props.userInfo.username.charAt(0) : ''}
+          </Avatar>
           <Typography variant="h6" noWrap className={classes.title}>
             <div className = 'row'>
             Xin chào {props.userInfo.username}

@@ -1,5 +1,7 @@
 import React from 'react';
 import {Typography, Grid} from '@material-ui/core';
+
+
 export default class LeaveDetail extends React.Component
 {
     constructor(props)
@@ -9,6 +11,7 @@ export default class LeaveDetail extends React.Component
             date : new Date()
         }
     }
+    
     render()
     {
         return(
@@ -17,15 +20,15 @@ export default class LeaveDetail extends React.Component
                 container
                 direction="row"
                 justify="space-between"
-                alignItems="flex-start"
+                alignItems="center"
                 spacing = {1}
             >
-                <Grid item lg >
+                <Grid item lg = {11} >
                     <Typography variant = 'overline' > 
                         <b>{this.props.remainingPaidLeave !== undefined ? 'Số ngày nghỉ phép còn lại' : 'Số đơn xin nghỉ phép còn lại'}</b>
                     </Typography>
                 </Grid>
-                <Grid item lg >
+                <Grid item lg = {1} >
                     <Typography variant = 'caption'>
                         {this.props.remainingPaidLeave !== undefined ? 
                         this.props.remainingPaidLeave + ' ngày'
@@ -37,19 +40,19 @@ export default class LeaveDetail extends React.Component
             <Grid
             container
             direction="row"
+            justify = "flex-end"
+            alignContent = 'space-between'
             spacing = {1}
             >
                 <Grid 
                 item 
-                lg 
-                justify = "flex-end"
-                alignContent = 'space-around'
+                lg ={11}
                 >
                     <Typography variant = 'overline' >
                         <b>{this.props.remainingPaidLeave !== undefined ? 'Tổng số ngày phép trong năm' : 'Tổng số đơn xin nghỉ phép cần duyệt'}</b>
                     </Typography>
                 </Grid>
-                <Grid item lg >
+                <Grid item lg = {1} >
                     <Typography variant = 'caption'>
                         {this.props.remainingPaidLeave !== undefined ? this.props.totalAnnual + ' ngày' : this.props.totalRequest + ' đơn'}
                     </Typography>

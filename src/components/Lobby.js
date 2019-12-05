@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {Container} from '@material-ui/core';
 import MiniDrawer from './MiniDrawer.js';
-import {setItem, getItem, clear} from '../LocalStorage'
+import {setItem, getItem} from '../LocalStorage'
 export default class Lobby extends React.Component
 {
     constructor(props)

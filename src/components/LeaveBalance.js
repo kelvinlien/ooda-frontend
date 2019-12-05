@@ -1,10 +1,22 @@
 import React from 'react';
 import axios from 'axios';
+import { styled } from '@material-ui/core/styles';
 import { CssBaseline, Grid, Paper, Container} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import LeaveDetail from './LeaveDetail.js';
 import LeaveRequestTable from './LeaveRequestTable'
 import {getItem, setItem} from '../LocalStorage'
+import LeaveRequestCard from './LeaveRequestCard'
+
+const CustomPaper = styled(Paper)({
+    background: 'transparent',
+    border: 0,
+    borderRadius: 7,
+    boxShadow: '0 3px 5px 2px rgba(0, 0, 254, .3)',
+    color: 'black',
+    // height: 48,
+    padding: '0 30px',
+  });
 export default class LeaveBalance extends React.Component{
     constructor(props)
     {
@@ -116,8 +128,7 @@ export default class LeaveBalance extends React.Component{
                     <ThemeProvider theme = {this.theme}>
                         <Grid container spacing = {1} direction="row">
                             <Grid item lg = {12}>
-                                <Paper
-                                square = 'true'
+                                <CustomPaper
                                 elevation = {3}
                                 component = 'div'
                                 >
@@ -127,16 +138,16 @@ export default class LeaveBalance extends React.Component{
                                         totalRequest = {this.state.totalRequest}
                                         remainRequest = {this.state.remainRequest}
                                     />
-                                </Paper>
+                                </CustomPaper>
                             </Grid>
                             <Grid item lg = {12}>
                                 <Container>
-                                    <LeaveRequestTable 
+                                    <LeaveRequestCard 
                                     leaveRequests = {this.props.leaveRequests}
                                     cellNames = {this.cellNames}
                                     leaveDecide = {this.leaveDecide}
                                     decidedRequests = {this.state.decidedRequests}
-                                    totalRequest = {this.state.totalRequest}
+                                    title = {this.props.title}
                                     />
                                 </Container>
                             </Grid>

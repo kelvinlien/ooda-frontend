@@ -14,6 +14,8 @@ import Modal from '@material-ui/core/Modal';
 import qs from 'querystring';
 import history from '../history';
 import {clear} from '../LocalStorage'
+import Snackbar from './CustomSnackbar'
+
 export default class LoginForm extends React.Component
 {
     constructor(props)
@@ -22,12 +24,21 @@ export default class LoginForm extends React.Component
         this.state = {
             url : 'oauth/token/',
             username : '',
-            password : ''
+            password : '',
+            showNoti : false
         }
         this.login = this.login.bind(this);
         this.saveToState = this.saveToState.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         clear();
     }
+    handleClose()
+    {
+        this.setState(() => ({
+            showNoti : false
+        }))
+    }
+    
     login()
     {
         let _this = this;
@@ -56,9 +67,10 @@ export default class LoginForm extends React.Component
             history.push('/lobby/');
         })
         .catch(function(error){
-            // alert(error);
             console.log(error);
-            alert("Bad request. Please double check your username and password!");
+            _this.setState(() => ({
+                showNoti : true
+            }));
         })
     }
     saveToState(e)
@@ -92,12 +104,22 @@ export default class LoginForm extends React.Component
                                 <FormHelperText id="my-helper-text">Vui lòng sử dụng mật khẩu chúng tôi đã cung cấp cho bạn.</FormHelperText>
                             </FormControl>
                         </Grid>
-                        <Button type = 'button' onClick = {this.login} color = 'primary' variant = 'outlined'>
+                        <Button 
+                        type = 'button' 
+                        onClick = {this.login} 
+                        color = 'primary' 
+                        variant = 'outlined'
+                        >
                             Đăng nhập
                         </Button>
                     </Grid>
-                    {/* {this.router()} */}
                 </Container>
+                <Snackbar
+                message = "Bad request. Please double check your username and password!"
+                variant = "error"
+                showNoti = {this.state.showNoti}
+                handleClose = {this.handleClose}
+                />
             </>
         )
     }
