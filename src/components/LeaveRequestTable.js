@@ -43,18 +43,24 @@ export default function SimpleTable(props) {
             {
               cellNames.map((name, index) => (
                 index === 0 ?
-                <TableCell>{name}</TableCell>
+                <TableCell>
+                  <Typography variant ='h6'>{name}</Typography>
+                </TableCell>
                 :
                 name === 'Quyết định' ?
-                <TableCell align="center">{name}</TableCell>
-                :<TableCell align="right">{name}</TableCell>
+                <TableCell align="center">
+                  <Typography variant ='h6'>{name}</Typography>
+                </TableCell>
+                :<TableCell align="right">
+                  <Typography variant ='h6'>{name}</Typography>
+                </TableCell>
               ))
             }
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map(row => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} style = {{backgroundColor: 'primary' }}>
               {
                 row.title === undefined ?
                 <TableCell component="th" scope="row">

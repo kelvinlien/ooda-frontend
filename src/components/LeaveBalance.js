@@ -99,8 +99,6 @@ export default class LeaveBalance extends React.Component{
 
     render()
     {
-        console.log(getItem("remainRequest"));
-        console.log(getItem('decidedRequests'));
         if (this.props.title == 'manager')     //check if there is a title from manager's leaveRequests
         {
             this.cellNames = ['Họ tên', 'Vị trí', 'Lý do', 'Từ ngày', 'Đến ngày', 'Số ngày nghỉ', 'Quyết định'];

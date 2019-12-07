@@ -1,7 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import {Card, Button, Typography, Grid, CardHeader, CardContent, TextField} from '@material-ui/core';
-import NativeSelect from './NativeSelect.js';
+import SimpleSelect from './SimpleSelect.js';
 import DatePicker from './DatePicker.js';
 import Snackbar from './CustomSnackbar'
 
@@ -32,9 +32,8 @@ export default class LeaveForm extends React.Component
             [noti] : false
         }))
     }
-    saveToState(e)
+    saveToState(e, id)
     {
-        let id = e.target.id;
         let value = e.target.value;
         this.setState(()=>({
             [id] : value
@@ -223,10 +222,10 @@ export default class LeaveForm extends React.Component
                                 <Grid 
                                 item 
                                 >
-                                    <NativeSelect 
+                                    <SimpleSelect 
                                     label = 'Lý do nghỉ' 
                                     id = 'reason'
-                                    onChange = {e => this.saveToState(e)}
+                                    onChange = {(e,id) => this.saveToState(e, id)}
                                     options = {[
                                         {
                                             value : 'sick',

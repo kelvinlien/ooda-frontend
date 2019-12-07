@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NativeSelect(props) {
+export default function SimpleSelect(props) {
   const classes = useStyles();
   const inputLabel = React.useRef(null);
   const [state, setState] = React.useState({
@@ -26,12 +26,12 @@ export default function NativeSelect(props) {
     setLabelWidth(inputLabel.current.offsetWidth);
   }, []);
 
-  const handleChange = e =>
+  function handleChange(e)
   {
     setState({
       [props.id]: e.target.value,
     });
-    props.onChange(e);
+    props.onChange(e, props.id);
   }
 
 
@@ -47,7 +47,7 @@ export default function NativeSelect(props) {
           labelId={props.id + '-label'}
           id={props.id}
           value={state[props.id]}
-          onChange={handleChange}
+          onChange={e => handleChange(e)}
           labelWidth={labelWidth}
           style = {{width: '220px'}}
         >
