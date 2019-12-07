@@ -1,11 +1,12 @@
 import React from 'react';
+import Axios from 'axios';
+import qs from 'qs';
+import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
 import {Card, Button, Typography, Grid, Badge, CardHeader, CardContent, CardActionArea, CardActions, TextField} from '@material-ui/core';
 import CompareArrowsOutlinedIcon from '@material-ui/icons/CompareArrowsOutlined';
 import NativeSelect from './NativeSelect.js';
 import DatePicker from './DatePicker.js';
-import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
-import Axios from 'axios';
-import qs from 'qs';
+import Snackbar from './CustomSnackbar'
 export default class LeaveForm extends React.Component
 {
     constructor(props)
@@ -16,11 +17,21 @@ export default class LeaveForm extends React.Component
             fromDate : new Date(),
             toDate : new Date(),
             leaveNum : '',
-            userInfo : ''
+            userInfo : '',
+            errorNoti : false,
+            successNoti : false,
+            unableNoti : false
         };
         this.saveToState = this.saveToState.bind(this);
         this.saveDateToState = this.saveDateToState.bind(this);
         this.createLeaveRequest = this.createLeaveRequest.bind(this);
+    }
+    handleClose(type)
+    {
+        let noti = type + "Noti";
+        this.setState(() => ({
+            [noti] : false
+        }))
     }
     saveToState(e)
     {
@@ -42,8 +53,35 @@ export default class LeaveForm extends React.Component
 
     saveDateToState(id, value)
     {
-        let num = Math.round((id === "toDate" ? value.getTime() - this.state.fromDate.getTime() : this.state.toDate.getTime() - value.getTime()) / (1000 * 3600 * 24)) ;
-        // console.log(value.getHours(), this.state.fromDate.getHours());
+        let num = 0;
+        if (id === "toDate")
+        {
+            for (let d = new Date(this.state.fromDate); d < value; d.setDate(d.getDate() + 1))
+            {
+                if (d.getDay() !== 0 && d.getDay() !== 6)       //excluding Sunday and Saturday
+                {
+                    num++;
+                }
+            }
+            if (value.getDay()!== 0 && value.getDay()!== 6)
+            {
+                num++;
+            }
+        }
+        else
+        {
+            for (let d = new Date(value); d < this.state.toDate; d.setDate(d.getDate() + 1))
+            {
+                if (d.getDay() !== 0 && d.getDay() !== 6)       //excluding Sunday and Saturday
+                {
+                    num++;
+                }
+            }
+            if (this.state.toDate.getDay() !== 0 && this.state.toDate.getDay() !== 6)
+            {
+                num++;
+            }
+        }
         this.setState(()=>({
             [id] : value,
             leaveNum : num
@@ -52,26 +90,43 @@ export default class LeaveForm extends React.Component
 
     createLeaveRequest()
     {
-        let _this = this;
-        Axios({
-            url : _this.state.url,
-            baseURL : _this.props.baseURL,
-            method : "post",
-            headers : {
-                'Authorization': 'Bearer '+ this.props.accessToken
-            },
-            data : {
-                "reason" : this.state.reason,
-                "numberOfDays" : this.state.leaveNum
-            }
-
-        })
-        .then(function(){
-            alert("Gửi đơn xin phép thành công. Đơn của bạn sẽ được duyệt trong thời gian sớm nhất!");
-        })
-        .catch(function(error){
-            console.log(error);
-        })
+        if (this.props.remainingPaidLeave >= this.state.leaveNum)
+        {
+            let _this = this;
+            Axios({
+                url : _this.state.url,
+                baseURL : _this.props.baseURL,
+                method : "post",
+                headers : {
+                    'Authorization': 'Bearer '+ _this.props.accessToken
+                },
+                data : {
+                    "reason" : _this.state.reason,
+                    "numberOfDays" : _this.state.leaveNum,
+                    "fromDate" : _this.state.fromDate,
+                    "toDate" : _this.state.toDate
+                }
+    
+            })
+            .then(function(){
+                _this.setState(() => ({
+                    successNoti : true
+                }));
+                _this.props.updateLeaveBalance();       //perform request to fetch the updated data
+            })
+            .catch(function(error){
+                console.log(error);
+                _this.setState(() => ({
+                    errorNoti : true
+                }));
+            })
+        }
+        else
+        {
+            this.setState(() => ({
+                unableNoti : true
+            }))
+        }
     }
     render()
     {
@@ -80,36 +135,48 @@ export default class LeaveForm extends React.Component
                 <Card>
                     <CardHeader
                     title = {
+                        <Grid container 
+                        spacing = {3}
+                        direction="column"
+                        alignItems="center"
+                        justify="center"
+                        >
                         <Typography variant = 'h5' component = 'div' id = 'form-title'>
                         <b>
                             ĐƠN XIN NGHỈ PHÉP
                         </b>
                         </Typography>
+                        </Grid>
                     }
                     />
-                    <CardContent>
-                    <Grid container spacing = {3}>
-                        <Grid item md = {6}>
+                    <CardContent>                      
+                    <Grid container 
+                    spacing = {3}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                    >
+                        <Grid item md = {12}>
                             <TextField
-                            label = "Họ và tên"
+                            label = "Người quản lý"
                             // value = {this.state.userInfo.fullname}
-                            value = {this.state.userInfo.username}
+                            value = "Liên Hợp Quốc"
                             margin = "normal"
                             variant = "outlined"
+                            backgroundColor = 'black'
                             disabled
                             />
                         </Grid>
-                        <Grid item md = {6}>
-                            <TextField
-                            label = "Team"
-                            // value = {this.state.userInfo.fullname}
-                            value = "webdev"
-                            margin = "normal"
-                            variant = "outlined"
-                            disabled
-                            />
-                        </Grid>
-                        <Grid item md = {6}>
+                    </Grid>
+                        <Grid
+                        container
+                        alignItems="center" 
+                        justify="space-between"
+                        direction="row"
+                        > 
+                        <Grid 
+                        item 
+                        >
                             <NativeSelect 
                             label = 'Lý do nghỉ' 
                             id = 'reason'
@@ -126,17 +193,7 @@ export default class LeaveForm extends React.Component
                             ]}
                             />
                         </Grid>
-                        <Grid item md = {6}>
-                            <TextField
-                            label = "Người quản lý"
-                            // value = {this.state.userInfo.fullname}
-                            value = "Lê Đặng Trung"
-                            margin = "normal"
-                            variant = "outlined"
-                            disabled
-                            />
-                        </Grid>
-                        <Grid item md = {5}>
+                        <Grid item>
                             <DatePicker 
                             type = 'from'
                             toDate = {this.state.toDate}
@@ -145,16 +202,23 @@ export default class LeaveForm extends React.Component
                             callBackFunc = {(id, value) => this.saveDateToState(id,value)}
                             />
                         </Grid>
-                        <Grid item md = {3}>
+                        </Grid>
+                        <Grid
+                        container
+                        alignItems="center"
+                        justify="space-between"
+                        direction="row"
+                        > 
+                        <Grid item>
                             <TextField
                             label = "Số ngày nghỉ"
                             value = {this.state.leaveNum}
                             margin = "dense"
-                            variant = "filled"
+                            variant = "outlined"
                             disabled
                             />
                         </Grid>
-                        <Grid item md = {4}>
+                        <Grid item>
                             <DatePicker 
                             type = 'to' 
                             fromDate = {this.state.fromDate}
@@ -163,26 +227,43 @@ export default class LeaveForm extends React.Component
                             callBackFunc = {(id, value) => this.saveDateToState(id,value)} 
                             />
                         </Grid>
-                    </Grid>
+                        </Grid> 
                     </CardContent>
                     <CardActions>
-                        {/* <Button 
-                        variant = 'text' 
-                        size = 'medium' 
-                        color = 'default'
+                        <Grid
+                            justify="flex-end"
+                            container 
+                            spacing={24}
                         >
-                            Quay về
-                        </Button> */}
-                        <Button
-                        variant = 'contained'
-                        size = 'medium'
-                        color = 'secondary'
-                        onClick = {this.createLeaveRequest}
-                        >
-                            Gửi
-                        </Button>
+                            <Button
+                            variant = 'contained'
+                            size = 'medium'
+                            color = 'secondary'
+                            onClick = {this.createLeaveRequest}
+                            >
+                                Gửi
+                            </Button>
+                        </Grid>
                     </CardActions>
                 </Card>
+                <Snackbar
+                message = 'Gửi đơn xin phép thành công.'
+                variant = 'success'
+                showNoti = {this.state.successNoti}
+                handleClose = {() => this.handleClose('success')}
+                />
+                <Snackbar
+                message = 'Gửi đơn xin phép thất bại.'
+                variant = 'error'
+                showNoti = {this.state.errorNoti}
+                handleClose = {() => this.handleClose('error')}
+                />
+                <Snackbar
+                message = 'Số ngày nghỉ phép còn lại không đủ.'
+                variant = 'error'
+                showNoti = {this.state.unableNoti}
+                handleClose = {() => this.handleClose('unable')}
+                />
             </>
         )
     }

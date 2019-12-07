@@ -1,5 +1,7 @@
 import React from 'react';
 import {Typography, Grid} from '@material-ui/core';
+
+
 export default class LeaveDetail extends React.Component
 {
     constructor(props)
@@ -9,6 +11,7 @@ export default class LeaveDetail extends React.Component
             date : new Date()
         }
     }
+    
     render()
     {
         return(
@@ -17,62 +20,41 @@ export default class LeaveDetail extends React.Component
                 container
                 direction="row"
                 justify="space-between"
-                alignItems="flex-start"
+                alignItems="center"
                 spacing = {1}
             >
-                <Grid item xs >
-                    <Typography variant = 'overline' >
-                        <b>Số ngày nghỉ phép còn lại</b>
+                <Grid item lg = {11} >
+                    <Typography variant = 'overline' > 
+                        <b>{this.props.remainingPaidLeave !== undefined ? 'Số ngày nghỉ phép còn lại' : 'Số đơn xin nghỉ phép còn lại'}</b>
                     </Typography>
                 </Grid>
-                <Grid item xs >
-                    {''}
-                </Grid>
-                <Grid item xs >
+                <Grid item lg = {1} >
                     <Typography variant = 'caption'>
-                        {this.props.leaveRemain} ngày
+                        {this.props.remainingPaidLeave !== undefined ? 
+                        this.props.remainingPaidLeave + ' ngày'
+                        : this.props.remainRequest + ' đơn'
+                        }
                     </Typography>
                 </Grid>
             </Grid>
             <Grid
             container
             direction="row"
-            justify="space-between"
-            alignItems="flex-start"
+            justify = "flex-end"
+            alignContent = 'space-between'
             spacing = {1}
             >
-                <Grid item xs >
+                <Grid 
+                item 
+                lg ={11}
+                >
                     <Typography variant = 'overline' >
-                        <b>Tổng số ngày phép trong năm</b>
+                        <b>{this.props.remainingPaidLeave !== undefined ? 'Tổng số ngày phép trong năm' : 'Tổng số đơn xin nghỉ phép cần duyệt'}</b>
                     </Typography>
                 </Grid>
-                <Grid item xs >
-                    {''}
-                </Grid>
-                <Grid item xs >
+                <Grid item lg = {1} >
                     <Typography variant = 'caption'>
-                        {this.props.totalAnnual} ngày
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="flex-start"
-            spacing = {1}
-            >
-                <Grid item xs >
-                    <Typography variant = 'overline' >
-                        <i>Số ngày nghỉ trong năm {this.state.date.getYear()}</i>
-                    </Typography>
-                </Grid>
-                <Grid item xs >
-                    {''}
-                </Grid>
-                <Grid item xs >
-                    <Typography variant = 'caption'>
-                        {this.props.entitlement} ngày
+                        {this.props.remainingPaidLeave !== undefined ? this.props.totalAnnual + ' ngày' : this.props.totalRequest + ' đơn'}
                     </Typography>
                 </Grid>
             </Grid>

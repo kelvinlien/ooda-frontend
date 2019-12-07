@@ -29,6 +29,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import LeaveForm from './LeaveForm.js';
 import Statistic from './Statistic.js';
 import history from '../history.js';
+import Avatar from '@material-ui/core/Avatar';
+// import Button from '@material-ui/core/Button';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
 import { asyncTryCatchReq, API } from '../util/customAxios';
 import { getItemFromStorage, getRole } from '../util/localStorage';
@@ -153,20 +155,27 @@ export default function MiniDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  switch (props.role)
+  switch (props.userInfo.role)
   {
     case 'hr':
       optionList =  {
-        'Tra cứu' : Description,
-        'Đơn xin nghỉ phép' : Announcement,
         'Thống kê' : PieChart
       };
       break;
     default:
-      optionList =  {
-        'Tra cứu' : Description,
-        'Đơn xin nghỉ phép' : Announcement
-      };
+      if (props.remainingPaidLeave !== undefined)
+      {
+        optionList =  {
+          'Tra cứu' : Description,
+          'Đơn xin nghỉ phép' : Announcement
+        };
+      }
+      else
+      {
+        optionList = {
+          'Duyệt đơn' : Description
+        }
+      }
       break;
   };
   const optionList2 = [
@@ -217,11 +226,17 @@ export default function MiniDrawer(props) {
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+              [classes.hide]: open
             })}
           >
             <MenuIcon />
           </IconButton>
+          <Avatar
+            alt = 'Phat'
+            src = ''
+          >
+              {props.userInfo.username ? props.userInfo.username.charAt(0) : ''}
+          </Avatar>
           <Typography variant="h6" noWrap className={classes.title}>
             <div className = 'row'>
             Xin chào {props.userInfo.username}
@@ -258,7 +273,7 @@ export default function MiniDrawer(props) {
         <List>
           {
             Object.keys(optionList).map((key, index) => (
-              <ListItem button key = {index} component={NavLink} to={baseURL + index}>
+              <ListItem button key = {index} component={NavLink} to={baseURL + ((index - 1) >= 0 ? (index - 1) : '')}>
                 <ListItemIcon>
                   {getCustomTag(key, optionList)}
                 </ListItemIcon>
@@ -286,17 +301,28 @@ export default function MiniDrawer(props) {
         <div className={classes.toolbar} />
         <Router history = {history} >
           <Switch >
-            <Route path = '/lobby/0'>
-              <LeaveBalance />
+            <Route exact path = '/lobby/'>
+              <LeaveBalance 
+              remainingPaidLeave = {props.remainingPaidLeave}
+              totalAnnual = {props.totalAnnual}
+              leaveRequests = {props.leaveRequests}
+              baseURL = {props.baseURL}
+              managerURL = {props.managerURL}
+              accessToken = {props.accessToken}
+              updateLeaveRequests = {() => props.updateLeaveRequests()}
+              title = {props.title}
+              />
             </Route>
-            <Route path = '/lobby/1'>
+            <Route path = '/lobby/0'>
               <LeaveForm 
               baseURL = {props.baseURL}
               accessToken = {props.accessToken}
               leaveURL = {props.leaveURL}
+              remainingPaidLeave = {props.remainingPaidLeave}
+              updateLeaveBalance = {() => props.updateLeaveBalance()}
               />
             </Route>
-            <Route path = '/lobby/2' >
+            <Route path = '/lobby/1' >
               <Statistic />
             </Route>
             <Route path ='/lobby/pr/history'>

@@ -19,9 +19,6 @@ export default class App extends React.Component
         baseURL : 'http://localhost:2109/',
         accessToken : '',
         userInfo : {
-          fullname : '',
-          team : '',
-          manager : ''
         }
     };
     this.openSesame = this.openSesame.bind(this);
