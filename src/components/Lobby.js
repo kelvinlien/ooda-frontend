@@ -160,7 +160,7 @@ export default class Lobby extends React.Component
     render()
     {
         return(
-            <Container>
+            <Container maxWidth = '1'>
                 <MiniDrawer 
                 userInfo = {this.props.userInfo} 
                 logOut = {() => this.logOut()}

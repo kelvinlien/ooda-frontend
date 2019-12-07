@@ -88,7 +88,10 @@ export default class LoginForm extends React.Component
                 <CssBaseline />
                 <Container maxWidth = 'xs'>
                     {/* <img src = {logo} alt = 'logo' /> */}
-                    <Grid container justify = 'center'>
+                    <Grid 
+                    container
+                    justify = 'center' 
+                    >
                         <Grid key = {0} item>
                             <img src={user} alt = 'logo' width="150" height="150" align = 'middle'/>
                         </Grid>

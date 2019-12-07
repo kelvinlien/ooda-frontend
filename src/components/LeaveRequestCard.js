@@ -22,7 +22,7 @@ export default function LeaveRequestCard(props)
         // boxShadow: '0 3px 5px 2px rgba(0, 254, 254, .3)',
         // color: 'black',
         // height: 48,
-        padding:" 20px 20px 20px 20px"
+        padding:" 20px 0px 20px 0px"
       });
     const Item = styled(Grid)({
         // background: 'transparent',

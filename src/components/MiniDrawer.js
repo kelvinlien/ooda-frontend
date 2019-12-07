@@ -6,6 +6,7 @@ import {
   Route,
   NavLink
 } from "react-router-dom";
+import { styled } from '@material-ui/core/styles';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -29,10 +30,15 @@ import Avatar from '@material-ui/core/Avatar';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
 
 import LeaveBalance from './LeaveBalance.js';
+import { Box } from '@material-ui/core';
 
 const drawerWidth = 240;
 
 const baseURL = '/lobby/';
+
+const Panel = styled(Box)({
+  padding: '30px 0px 10px 0px'
+});
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -221,6 +227,10 @@ export default function MiniDrawer(props) {
         <Router history = {history} >
           <Switch >
             <Route exact path = '/lobby/'>
+              <Panel 
+              component = 'div'
+              width = '1'
+              >
               <LeaveBalance 
               remainingPaidLeave = {props.remainingPaidLeave}
               totalAnnual = {props.totalAnnual}
@@ -231,8 +241,10 @@ export default function MiniDrawer(props) {
               updateLeaveRequests = {() => props.updateLeaveRequests()}
               title = {props.title}
               />
+              </Panel>
             </Route>
             <Route path = '/lobby/0'>
+              <Panel component = 'div'>
               <LeaveForm 
               baseURL = {props.baseURL}
               accessToken = {props.accessToken}
@@ -240,9 +252,12 @@ export default function MiniDrawer(props) {
               remainingPaidLeave = {props.remainingPaidLeave}
               updateLeaveBalance = {() => props.updateLeaveBalance()}
               />
+              </Panel>
             </Route>
             <Route path = '/lobby/1' >
+              <Panel component = 'div'>
               <Statistic />
+              </Panel>
             </Route>
           </Switch>
         </Router>
