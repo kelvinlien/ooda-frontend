@@ -127,7 +127,7 @@ export default class LeaveBalance extends React.Component{
                         </CustomPaper>
                     </Grid>
                     <Grid item lg = {12}>
-                        <Container>
+                        <Container maxWidth = '1'>
                             <LeaveRequestCard 
                             leaveRequests = {this.props.leaveRequests}
                             cellNames = {this.cellNames}
