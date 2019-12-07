@@ -174,6 +174,7 @@ export default function MiniDrawer(props) {
           >
               {props.userInfo.username ? props.userInfo.username.charAt(0) : ''}
           </Avatar>
+          <Divider style = {{padding: '0 10px 0 10px', backgroundColor:'transparent'}} />
           <Typography variant="h6" noWrap className={classes.title}>
             <div className = 'row'>
             Xin chào {props.userInfo.username}

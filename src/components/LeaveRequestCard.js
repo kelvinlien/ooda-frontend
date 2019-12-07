@@ -120,7 +120,7 @@ export default function LeaveRequestCard(props)
                             spacing = {4}
                             direction="row"
                             alignItems="center"
-                            justify="space-around"
+                            justify="space-between"
                             >
                                 <Grid item lg = {3}>
                                     <TextField
