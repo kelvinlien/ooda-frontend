@@ -3,10 +3,10 @@ import Axios from 'axios';
 import qs from 'qs';
 import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
 import {Card, Button, Typography, Grid, Badge, CardHeader, CardContent, CardActionArea, CardActions, TextField} from '@material-ui/core';
-import CompareArrowsOutlinedIcon from '@material-ui/icons/CompareArrowsOutlined';
 import NativeSelect from './NativeSelect.js';
 import DatePicker from './DatePicker.js';
 import Snackbar from './CustomSnackbar'
+
 export default class LeaveForm extends React.Component
 {
     constructor(props)
@@ -133,7 +133,9 @@ export default class LeaveForm extends React.Component
         console.log(this.state);
         return(
             <>
-                <Card>
+                <Card
+                // style = {{width: '1000px', alignSelf : 'center'}}
+                >
                     <CardHeader
                     title = {
                         <Grid container 
@@ -192,6 +194,7 @@ export default class LeaveForm extends React.Component
                                     name : 'Cưới hỏi'
                                 }
                             ]}
+                            style = {{width: '350px'}}
                             />
                         </Grid>
                         <Grid item>
@@ -238,7 +241,7 @@ export default class LeaveForm extends React.Component
                         >
                             <Button
                             variant = 'contained'
-                            size = 'medium'
+                            size = 'large'
                             color = 'secondary'
                             onClick = {this.createLeaveRequest}
                             >

@@ -128,7 +128,7 @@ export default class LeaveBalance extends React.Component{
                     </Grid>
                     <Grid item lg = {12}>
                         <Container maxWidth = '1'>
-                            <LeaveRequestCard 
+                            <LeaveRequestTable 
                             leaveRequests = {this.props.leaveRequests}
                             cellNames = {this.cellNames}
                             leaveDecide = {this.leaveDecide}

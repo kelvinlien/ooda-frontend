@@ -40,6 +40,11 @@ const Panel = styled(Box)({
   padding: '30px 0px 10px 0px'
 });
 
+const Form = styled(Box)({
+  width: '80%',
+  padding: '30px 0 0 200px'
+})
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
@@ -245,7 +250,7 @@ export default function MiniDrawer(props) {
               </Panel>
             </Route>
             <Route path = '/lobby/0'>
-              <Panel component = 'div'>
+              <Form component = 'div'>
               <LeaveForm 
               baseURL = {props.baseURL}
               accessToken = {props.accessToken}
@@ -253,7 +258,7 @@ export default function MiniDrawer(props) {
               remainingPaidLeave = {props.remainingPaidLeave}
               updateLeaveBalance = {() => props.updateLeaveBalance()}
               />
-              </Panel>
+              </Form>
             </Route>
             <Route path = '/lobby/1' >
               <Panel component = 'div'>

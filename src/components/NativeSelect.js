@@ -48,6 +48,7 @@ export default function NativeSelect(props) {
             name: props.id,
             id: props.id,
           }}
+          style = {{width: '210px', paddingInlineStart: '0'}}
         >
           <option value = "" key = {0}></option>
                 {                
