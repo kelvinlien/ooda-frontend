@@ -113,7 +113,7 @@ export default class LeaveBalance extends React.Component{
                 direction="column"
                 justify = "space-evenly"
                 >
-                    <Grid item lg = {12}>
+                    {/* <Grid item lg = {12}>
                         <CustomPaper
                         elevation = {3}
                         component = 'div'
@@ -125,7 +125,7 @@ export default class LeaveBalance extends React.Component{
                             remainRequest = {this.state.remainRequest}
                             />
                         </CustomPaper>
-                    </Grid>
+                    </Grid> */}
                     <Grid item lg = {12}>
                         <Container maxWidth = '1'>
                             <LeaveRequestTable 

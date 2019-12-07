@@ -50,7 +50,7 @@ export default function DatePickers(props) {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
-          variant = "inline"
+          variant = "dialog"
           margin="normal"
           id={props.id}
           label={props.label}

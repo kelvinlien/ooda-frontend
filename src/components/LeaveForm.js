@@ -1,8 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
-import qs from 'qs';
-import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
-import {Card, Button, Typography, Grid, Badge, CardHeader, CardContent, CardActionArea, CardActions, TextField} from '@material-ui/core';
+import {Card, Button, Typography, Grid, CardHeader, CardContent, TextField} from '@material-ui/core';
 import NativeSelect from './NativeSelect.js';
 import DatePicker from './DatePicker.js';
 import Snackbar from './CustomSnackbar'
@@ -20,7 +18,8 @@ export default class LeaveForm extends React.Component
             userInfo : '',
             errorNoti : false,
             successNoti : false,
-            unableNoti : false
+            unableNoti : false,
+            dayNumNoti : false
         };
         this.saveToState = this.saveToState.bind(this);
         this.saveDateToState = this.saveDateToState.bind(this);
@@ -90,7 +89,13 @@ export default class LeaveForm extends React.Component
 
     createLeaveRequest()
     {
-        if (this.props.remainingPaidLeave >= this.state.leaveNum)
+        if (this.state.leaveNum <= 0)
+        {
+            this.setState(() => ({
+                dayNumNoti : true
+            }))
+        }
+        else if (this.props.remainingPaidLeave >= this.state.leaveNum)
         {
             let _this = this;
             Axios({
@@ -134,7 +139,7 @@ export default class LeaveForm extends React.Component
         return(
             <>
                 <Card
-                // style = {{width: '1000px', alignSelf : 'center'}}
+                style = {{paddingTop : '20px',border: 0,borderRadius: 9}}
                 >
                     <CardHeader
                     title = {
@@ -153,103 +158,106 @@ export default class LeaveForm extends React.Component
                     }
                     />
                     <CardContent>                      
-                    <Grid container 
-                    spacing = {3}
-                    direction="column"
-                    alignItems="center"
-                    justify="center"
-                    >
-                        <Grid item md = {12}>
-                            <TextField
-                            label = "Người quản lý"
-                            // value = {this.state.userInfo.fullname}
-                            value = "Liên Hợp Quốc"
-                            margin = "normal"
-                            variant = "outlined"
-                            backgroundColor = 'black'
-                            disabled
-                            />
-                        </Grid>
-                    </Grid>
-                        <Grid
-                        container
-                        alignItems="center" 
-                        justify="space-between"
-                        direction="row"
-                        > 
-                        <Grid 
-                        item 
-                        >
-                            <NativeSelect 
-                            label = 'Lý do nghỉ' 
-                            id = 'reason'
-                            onChange = {e => this.saveToState(e)}
-                            options = {[
-                                {
-                                    value : 'sick',
-                                    name : 'Bị bệnh'
-                                },
-                                {
-                                    value : 'marriage',
-                                    name : 'Cưới hỏi'
-                                }
-                            ]}
-                            style = {{width: '350px'}}
-                            />
-                        </Grid>
-                        <Grid item>
-                            <DatePicker 
-                            type = 'from'
-                            toDate = {this.state.toDate}
-                            id = 'fromDate'
-                            label = 'Từ ngày'
-                            callBackFunc = {(id, value) => this.saveDateToState(id,value)}
-                            />
-                        </Grid>
-                        </Grid>
-                        <Grid
-                        container
+                        <Grid container 
+                        spacing = {3}
+                        direction="column"
                         alignItems="center"
-                        justify="space-between"
-                        direction="row"
-                        > 
-                        <Grid item>
-                            <TextField
-                            label = "Số ngày nghỉ"
-                            value = {this.state.leaveNum}
-                            margin = "dense"
-                            variant = "outlined"
-                            disabled
-                            />
+                        justify="center"
+                        >
+                            <Grid item md = {12}>
+                                <TextField
+                                label = "Người quản lý"
+                                // value = {this.state.userInfo.fullname}
+                                value = "Liên Hợp Quốc"
+                                margin = "none"
+                                variant = "outlined"
+                                disabled
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <DatePicker 
-                            type = 'to' 
-                            fromDate = {this.state.fromDate}
-                            id = 'toDate'
-                            label = 'Đến ngày'
-                            callBackFunc = {(id, value) => this.saveDateToState(id,value)} 
-                            />
-                        </Grid>
+                        <Grid
+                        container
+                        direction = "row"
+                        spacing = {3}
+                        alignItems = 'center'
+                        justify = 'space-evenly'
+                        >
+                            <Grid
+                            item
+                            md = {6}
+                            style = {{}}
+                            > 
+                                <Grid item>
+                                    <DatePicker 
+                                    type = 'from'
+                                    toDate = {this.state.toDate}
+                                    id = 'fromDate'
+                                    label = 'Ngày bắt đầu'
+                                    callBackFunc = {(id, value) => this.saveDateToState(id,value)}
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <DatePicker 
+                                    type = 'to' 
+                                    fromDate = {this.state.fromDate}
+                                    id = 'toDate'
+                                    label = 'Ngày kết thúc'
+                                    callBackFunc = {(id, value) => this.saveDateToState(id,value)} 
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid
+                            item
+                            md = {6}
+                            style = {{paddingTop: '20px', paddingLeft: '80px'}}
+                            > 
+                                <Grid item>
+                                    <TextField
+                                    label = "Số ngày nghỉ"
+                                    value = {this.state.leaveNum}
+                                    margin = "dense"
+                                    variant = "outlined"
+                                    disabled
+                                    />
+                                </Grid>
+                                <Grid 
+                                item 
+                                >
+                                    <NativeSelect 
+                                    label = 'Lý do nghỉ' 
+                                    id = 'reason'
+                                    onChange = {e => this.saveToState(e)}
+                                    options = {[
+                                        {
+                                            value : 'sick',
+                                            name : 'Bị bệnh'
+                                        },
+                                        {
+                                            value : 'marriage',
+                                            name : 'Cưới hỏi'
+                                        }
+                                    ]}
+                                    />
+                                </Grid>
+                            </Grid>
                         </Grid> 
                     </CardContent>
-                    <CardActions>
-                        <Grid
-                            justify="flex-end"
-                            container 
-                            spacing={24}
-                        >
-                            <Button
-                            variant = 'contained'
-                            size = 'large'
-                            color = 'secondary'
-                            onClick = {this.createLeaveRequest}
-                            >
-                                Gửi
-                            </Button>
-                        </Grid>
-                    </CardActions>
                 </Card>
+                <Grid
+                    justify="flex-end"
+                    container 
+                    spacing={3}
+                    style = {{padding: "50px 30px"}}
+                >
+                    <Button
+                    variant = 'contained'
+                    size = 'large'
+                    color = 'secondary'
+                    onClick = {this.createLeaveRequest}
+                    >
+                        Gửi
+                    </Button>
+                </Grid>
                 <Snackbar
                 message = 'Gửi đơn xin phép thành công.'
                 variant = 'success'
@@ -266,6 +274,12 @@ export default class LeaveForm extends React.Component
                 message = 'Số ngày nghỉ phép còn lại không đủ.'
                 variant = 'error'
                 showNoti = {this.state.unableNoti}
+                handleClose = {() => this.handleClose('unable')}
+                />
+                <Snackbar
+                message = 'Số ngày nghỉ không hợp lệ.'
+                variant = 'error'
+                showNoti = {this.state.dayNumNoti}
                 handleClose = {() => this.handleClose('unable')}
                 />
             </>
