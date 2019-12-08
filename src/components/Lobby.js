@@ -69,13 +69,14 @@ export default class Lobby extends React.Component
 
     updateLeaveRequests()
     {
+      // console.log(this.state.managerURL, this.props.baseURL,getItem("accessToken"));
       let _this = this;
       axios({
         url : _this.state.managerURL,
         baseURL : _this.props.baseURL,
         method : 'get',
         headers : {
-          'Authorization': 'Bearer '+ _this.props.accessToken
+          'Authorization': 'Bearer '+ getItem("accessToken")
         }
       })
       .then(function(response){
@@ -83,6 +84,7 @@ export default class Lobby extends React.Component
           ...prevState,
           leaveRequests : response.data.leaveRequests
         }));
+        // console.log(response.data.leaveRequests);
         setItem({"leaveRequests" : response.data.leaveRequests});
       })
       .catch(function(error){
@@ -161,7 +163,7 @@ export default class Lobby extends React.Component
     render()
     {
         return(
-            <Container>
+            <Container maxWidth = '1'>
                 <MiniDrawer 
                 userInfo = {this.props.userInfo} 
                 logOut = {() => this.logOut()}

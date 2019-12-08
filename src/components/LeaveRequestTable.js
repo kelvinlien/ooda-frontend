@@ -7,7 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import { Typography, Divider } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -15,9 +15,18 @@ const useStyles = makeStyles({
     overflowX: 'auto',
   },
   table: {
-    minWidth: 650,
+    minWidth: 650
   },
 });
+
+const rowColor = {
+  approved : '#2196f3',
+  rejected : '#f50057',
+  pending : 'initial',
+  header : '#eceff1'
+};
+
+
 
 
 
@@ -34,29 +43,82 @@ export default function SimpleTable(props) {
       console.log(Object.keys(props.decidedRequests));
     }
 
+    function getLeaveDayUsed()
+    {
+      let num = 0;
+      rows.forEach(element => {
+        if (element.status === 'APPROVED' || element.status === 'PENDING')
+        {
+          num+= element.numberOfDays;
+        }
+      })
+      return num;
+    }
+
+    function getTableRowColor(id, status, decidedLeaves)
+    {
+      if (Object.keys(decidedLeaves).length > 0 && Object.keys(decidedLeaves).includes(""+id))
+      {
+        if (decidedLeaves[id] === 'Đã chấp thuận')
+        {
+          return rowColor.approved;
+        }
+        else
+        {
+          return rowColor.rejected;
+        }
+      }
+      if (status === 'APPROVED')
+      {
+        return rowColor.approved;
+      }
+      else if (status === 'REJECTED')
+      {
+        return rowColor.rejected;
+      }
+      return rowColor.pending;
+
+    }
+
+    let total = props.totalAnnual;
+    let leaveUsed = getLeaveDayUsed();
+    let remain = (total - leaveUsed >= 0 ? (total - leaveUsed) : props.remainingPaidLeave);
+
 
   return (
     <Paper className={classes.root}>
         <Table className={classes.table} aria-label="simple table">
         <TableHead>
-          <TableRow>
+          <TableRow style = {{backgroundColor: rowColor.header}}>
             {
               cellNames.map((name, index) => (
                 index === 0 ?
-                <TableCell>{name}</TableCell>
+                <TableCell>
+                  <Typography variant ='h6'>{name}</Typography>
+                </TableCell>
                 :
                 name === 'Quyết định' ?
-                <TableCell align="center">{name}</TableCell>
-                :<TableCell align="right">{name}</TableCell>
+                <TableCell align="center">
+                  <Typography variant ='h6'>{name}</Typography>
+                </TableCell>
+                :<TableCell align="right">
+                  <Typography variant ='h6'>{name}</Typography>
+                </TableCell>
               ))
             }
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map(row => (
-            <TableRow key={row.id}>
+            <TableRow
+            key={row.id} 
+            style = {
+                {
+                backgroundColor: getTableRowColor(row.id,row.status, props.decidedRequests)
+                }
+                }>
               {
-                row.title === undefined ?
+                props.title !== 'manager' ?
                 <TableCell component="th" scope="row">
                 {row.reason}
                 </TableCell>
@@ -72,8 +134,8 @@ export default function SimpleTable(props) {
               <TableCell align="right">{row.fromDate}</TableCell>
               <TableCell align="right">{row.toDate}</TableCell>
               <TableCell align="right">{row.numberOfDays}</TableCell>
-              {row.title === undefined ?    //check if there is a title key in leaveRequests -> tell if current account is a manager or not
-              <TableCell align="right">{row.status}</TableCell>
+              {props.title !== 'manager' ?    //check if there is a title key in leaveRequests -> tell if current account is a manager or not
+              <TableCell align="right">{row.status == 'APPROVED' ? 'Đã chấp thuận' : row.status == 'REJECTED' ? 'Đã từ chối' : 'Đang đợi duyệt'}</TableCell>
               :Object.keys(props.decidedRequests).includes(''+row.id) ?
               <TableCell align="center">
                 {props.decidedRequests[''+row.id]}
@@ -97,6 +159,25 @@ export default function SimpleTable(props) {
               }
             </TableRow>
           ))}
+          {
+            props.title == 'dev' ? 
+            <>
+              <TableRow>
+                <TableCell rowSpan={3} />
+                <TableCell colSpan={2}>Số ngày phép đã sử dụng</TableCell>
+                <TableCell align="right">{leaveUsed}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell colSpan={2}>Tổng số ngày phép trong năm</TableCell>
+                <TableCell align="right">{total}</TableCell>
+              </TableRow>
+              <TableRow style = {{borderTop: 'double', borderTopWidth: 'thick'}}>
+                <TableCell colSpan={2}>Số ngày phép còn lại</TableCell>
+                <TableCell align="right">{remain}</TableCell>
+              </TableRow>
+            </>
+            :''
+          }
         </TableBody>
       </Table>
     </Paper>

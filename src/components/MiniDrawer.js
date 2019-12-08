@@ -6,6 +6,7 @@ import {
   Route,
   NavLink
 } from "react-router-dom";
+import { styled } from '@material-ui/core/styles';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -35,6 +36,7 @@ import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons
 import { asyncTryCatchReq, API } from '../util/customAxios';
 import { getItemFromStorage, getRole } from '../util/localStorage';
 import LeaveBalance from './LeaveBalance.js';
+import { Box } from '@material-ui/core';
 import PerformanceReview from './PerformanceReview/index';
 import PerformanceApproval from './PerformanceApproval/index';
 import PerformanceHistory from './PerformanceHistory/index';
@@ -44,6 +46,15 @@ import ProfilePage from './ProfilePage/index';
 const drawerWidth = 240;
 
 const baseURL = '/lobby/';
+
+const Panel = styled(Box)({
+  padding: '30px 0px 10px 0px'
+});
+
+const Form = styled(Box)({
+  width: '80%',
+  padding: '30px 0 0 200px'
+})
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -237,6 +248,7 @@ export default function MiniDrawer(props) {
           >
               {props.userInfo.username ? props.userInfo.username.charAt(0) : ''}
           </Avatar>
+          <Divider style = {{padding: '0 10px 0 10px', backgroundColor:'transparent'}} />
           <Typography variant="h6" noWrap className={classes.title}>
             <div className = 'row'>
             Xin chào {props.userInfo.username}
@@ -302,28 +314,37 @@ export default function MiniDrawer(props) {
         <Router history = {history} >
           <Switch >
             <Route exact path = '/lobby/'>
-              <LeaveBalance 
-              remainingPaidLeave = {props.remainingPaidLeave}
-              totalAnnual = {props.totalAnnual}
-              leaveRequests = {props.leaveRequests}
-              baseURL = {props.baseURL}
-              managerURL = {props.managerURL}
-              accessToken = {props.accessToken}
-              updateLeaveRequests = {() => props.updateLeaveRequests()}
-              title = {props.title}
-              />
+              <Panel 
+              component = 'div'
+              width = '1'
+              >
+                <LeaveBalance 
+                remainingPaidLeave = {props.remainingPaidLeave}
+                totalAnnual = {props.totalAnnual}
+                leaveRequests = {props.leaveRequests}
+                baseURL = {props.baseURL}
+                managerURL = {props.managerURL}
+                accessToken = {props.accessToken}
+                updateLeaveRequests = {() => props.updateLeaveRequests()}
+                title = {props.title}
+                />
+              </Panel>
             </Route>
             <Route path = '/lobby/0'>
-              <LeaveForm 
-              baseURL = {props.baseURL}
-              accessToken = {props.accessToken}
-              leaveURL = {props.leaveURL}
-              remainingPaidLeave = {props.remainingPaidLeave}
-              updateLeaveBalance = {() => props.updateLeaveBalance()}
-              />
+              <Form component = 'div'>
+                <LeaveForm 
+                baseURL = {props.baseURL}
+                accessToken = {props.accessToken}
+                leaveURL = {props.leaveURL}
+                remainingPaidLeave = {props.remainingPaidLeave}
+                updateLeaveBalance = {() => props.updateLeaveBalance()}
+                />
+              </Form>
             </Route>
             <Route path = '/lobby/1' >
-              <Statistic />
+              <Panel component = 'div'>
+                <Statistic />
+              </Panel>
             </Route>
             <Route path ='/lobby/pr/history'>
               <PerformanceHistory />
