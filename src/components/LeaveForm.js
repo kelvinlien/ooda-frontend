@@ -279,7 +279,7 @@ export default class LeaveForm extends React.Component
                 message = 'Số ngày nghỉ không hợp lệ.'
                 variant = 'error'
                 showNoti = {this.state.dayNumNoti}
-                handleClose = {() => this.handleClose('unable')}
+                handleClose = {() => this.handleClose('dayNum')}
                 />
             </>
         )

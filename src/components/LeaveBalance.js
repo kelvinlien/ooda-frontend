@@ -23,7 +23,7 @@ export default class LeaveBalance extends React.Component{
         this.state = {
             totalRequest : 0,
             remainRequest : 0,
-            decidedRequests : {} 
+            decidedRequests : {}
         }
         this.leaveDecide = this.leaveDecide.bind(this);
     }
@@ -86,7 +86,7 @@ export default class LeaveBalance extends React.Component{
 
     componentDidMount()
     {
-        // this.props.updateLeaveRequests();
+        this.props.updateLeaveRequests();
         if (getItem("decidedRequests"))
         {
         this.setState(() => ({
@@ -97,9 +97,13 @@ export default class LeaveBalance extends React.Component{
         }
     }
 
+
     render()
     {
-        if (this.props.title == 'manager')     //check if there is a title from manager's leaveRequests
+        console.log(this.state.decidedRequests);
+        // console.log(this.props.leaveRequests);
+        // console.log(this.props.updateLeaveRequests);
+        if (this.props.title == 'manager')
         {
             this.cellNames = ['Họ tên', 'Vị trí', 'Lý do', 'Từ ngày', 'Đến ngày', 'Số ngày nghỉ', 'Quyết định'];
         }
@@ -132,6 +136,8 @@ export default class LeaveBalance extends React.Component{
                             leaveDecide = {this.leaveDecide}
                             decidedRequests = {this.state.decidedRequests}
                             title = {this.props.title}
+                            remainingPaidLeave = {this.props.remainingPaidLeave}
+                            totalAnnual = {this.props.totalAnnual}
                             />
                         </Container>
                     </Grid>

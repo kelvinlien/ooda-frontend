@@ -237,32 +237,32 @@ export default function MiniDrawer(props) {
               component = 'div'
               width = '1'
               >
-              <LeaveBalance 
-              remainingPaidLeave = {props.remainingPaidLeave}
-              totalAnnual = {props.totalAnnual}
-              leaveRequests = {props.leaveRequests}
-              baseURL = {props.baseURL}
-              managerURL = {props.managerURL}
-              accessToken = {props.accessToken}
-              updateLeaveRequests = {() => props.updateLeaveRequests()}
-              title = {props.title}
-              />
+                <LeaveBalance 
+                remainingPaidLeave = {props.remainingPaidLeave}
+                totalAnnual = {props.totalAnnual}
+                leaveRequests = {props.leaveRequests}
+                baseURL = {props.baseURL}
+                managerURL = {props.managerURL}
+                accessToken = {props.accessToken}
+                updateLeaveRequests = {() => props.updateLeaveRequests()}
+                title = {props.title}
+                />
               </Panel>
             </Route>
             <Route path = '/lobby/0'>
               <Form component = 'div'>
-              <LeaveForm 
-              baseURL = {props.baseURL}
-              accessToken = {props.accessToken}
-              leaveURL = {props.leaveURL}
-              remainingPaidLeave = {props.remainingPaidLeave}
-              updateLeaveBalance = {() => props.updateLeaveBalance()}
-              />
+                <LeaveForm 
+                baseURL = {props.baseURL}
+                accessToken = {props.accessToken}
+                leaveURL = {props.leaveURL}
+                remainingPaidLeave = {props.remainingPaidLeave}
+                updateLeaveBalance = {() => props.updateLeaveBalance()}
+                />
               </Form>
             </Route>
             <Route path = '/lobby/1' >
               <Panel component = 'div'>
-              <Statistic />
+                <Statistic />
               </Panel>
             </Route>
           </Switch>
