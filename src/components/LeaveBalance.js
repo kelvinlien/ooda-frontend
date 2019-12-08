@@ -100,8 +100,8 @@ export default class LeaveBalance extends React.Component{
 
     render()
     {
-        console.log(this.state.decidedRequests);
-        // console.log(this.props.leaveRequests);
+        // console.log(this.state.decidedRequests);
+        console.log(this.props.leaveRequests);
         // console.log(this.props.updateLeaveRequests);
         if (this.props.title == 'manager')
         {

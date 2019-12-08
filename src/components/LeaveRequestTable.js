@@ -59,19 +59,12 @@ export default function SimpleTable(props) {
     {
       if (Object.keys(decidedLeaves).length > 0 && Object.keys(decidedLeaves).includes(""+id))
       {
-        console.log(decidedLeaves);
-        console.log(decidedLeaves[id]);
-        console.log(decidedLeaves[id] === 'Đã chấp thuận');
         if (decidedLeaves[id] === 'Đã chấp thuận')
         {
-          console.log(decidedLeaves);
-          console.log(decidedLeaves[id]);
           return rowColor.approved;
         }
         else
         {
-          console.log(decidedLeaves);
-          console.log(decidedLeaves[id]);
           return rowColor.rejected;
         }
       }

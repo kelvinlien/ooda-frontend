@@ -88,7 +88,7 @@ export default class LeaveForm extends React.Component
 
     createLeaveRequest()
     {
-        if (this.state.leaveNum <= 0)
+        if (this.state.leaveNum <= 0 || this.state.toDate < this.state.fromDate)
         {
             this.setState(() => ({
                 dayNumNoti : true
