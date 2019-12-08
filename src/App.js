@@ -8,6 +8,7 @@ import history from './history.js';
 import {setItem, getItem} from './LocalStorage'
 import Lobby from './components/Lobby.js';
 import LoginForm from './components/LoginForm.js';
+import GlobalNotice from './components/GlobalNotice';
 
 export default class App extends React.Component
 {
@@ -33,11 +34,7 @@ export default class App extends React.Component
       }))
     }
   }
-  // componentWillUnmount()
-  // {
-  //   LocalStorage.setItem("accessToken", this.state.accessToken);
-  //   LocalStorage.setItem("userInfo", JSON.stringify(this.state.userInfo));
-  // }
+
   resetState()
   {
       this.setState(()=>({
@@ -65,23 +62,25 @@ export default class App extends React.Component
     return(
 	<form>
       <Router history = {history}>
-      <div>
-          <Route exact path = "/">
-              <LoginForm 
-              baseURL = {this.state.baseURL} 
-              magicPhrase = {(token, userInfo) => this.openSesame(token, userInfo)} 
-              resetState = {() => this.resetState()}/>
-          </Route>
-          <Route path = "/lobby/" onEnter={this.requireAuth()}>
-              <Lobby 
-              baseURL = {this.state.baseURL} 
-              accessToken = {this.state.accessToken} 
-              userInfo = {this.state.userInfo}
-              >
-              </Lobby>
-          </Route>
-     </div>
- </Router>
+        <div>
+              <Route exact path = "/">
+                  <LoginForm 
+                    baseURL = {this.state.baseURL} 
+                    magicPhrase = {(token, userInfo) => this.openSesame(token, userInfo)} 
+                    resetState = {() => this.resetState()}
+                  />
+              </Route>
+              {/* <Route path = "/lobby" onEnter={() => this.requireAuth()}> */}
+              <Route path = "/lobby" onEnter={this.requireAuth()}>
+                  <Lobby 
+                    baseURL = {this.state.baseURL} 
+                    accessToken = {this.state.accessToken} 
+                    userInfo = {this.state.userInfo}
+                  />
+              </Route>
+        </div>
+    </Router>
+    <GlobalNotice />
  </form>
     )
   }

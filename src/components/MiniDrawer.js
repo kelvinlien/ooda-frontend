@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import clsx from 'clsx';
 import {
   Router,
@@ -16,9 +16,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import RateReview from '@material-ui/icons/RateReview';
+import History  from '@material-ui/icons/History';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import ThumbUp from '@material-ui/icons/ThumbUp';
+import Contacts from '@material-ui/icons/Contacts';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -28,9 +33,15 @@ import history from '../history.js';
 import Avatar from '@material-ui/core/Avatar';
 // import Button from '@material-ui/core/Button';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
-
+import { asyncTryCatchReq, API } from '../util/customAxios';
+import { getItemFromStorage, getRole } from '../util/localStorage';
 import LeaveBalance from './LeaveBalance.js';
 import { Box } from '@material-ui/core';
+import PerformanceReview from './PerformanceReview/index';
+import PerformanceApproval from './PerformanceApproval/index';
+import PerformanceHistory from './PerformanceHistory/index';
+import EmployeeManagement from './EmployeeManagement/index';
+import ProfilePage from './ProfilePage/index';
 
 const drawerWidth = 240;
 
@@ -114,12 +125,39 @@ function getCustomTag(key, optionList)
   return <CustomTag />;
 }
 
+async function checkIfManager(userId) {
+  const [err, data] = await asyncTryCatchReq({
+    url: API().isManager(userId),
+    method: 'get',
+  }, true);
+  if (err) {
+    return false;
+  }
+  if (data) {
+    return data.isManager;
+  }
+}
+
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [isManager, setIsManager] = React.useState(false);
 
-  var optionList = {}
+  useEffect(() => {
+    const user = getItemFromStorage('userInfo');
+    if (!user) {
+      return;
+    }
+    const {
+      id,
+    } = user;
+    checkIfManager(id).then(rs => {
+        setIsManager(rs);
+    });
+  }, []);
+
+  let optionList = {}
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -151,7 +189,38 @@ export default function MiniDrawer(props) {
       }
       break;
   };
+  const optionList2 = [
+    {
+      title: 'Lịch sử đánh giá',
+      icon: <History />,
+      nav: 'pr/history',
+    },
+    {
+      title: 'Hồ sơ cá nhân',
+      icon: <AccountBoxIcon />,
+      nav: 'profile',
+    }
+  ];
+  if (isManager) {
+    optionList2.push({
+      title: 'Đánh giá năng lực',
+      icon: <RateReview />,
+      nav: 'pr',
+    })
+  }
 
+  if (getRole() === 'hr') {
+    optionList2.push({
+      title: 'Quản lý nhân sự',
+      icon: <Contacts />,
+      nav: 'hr/management',
+    });
+    optionList2.push({
+      title: 'Duyệt phiếu đánh giá',
+      icon: <ThumbUp />,
+      nav: 'hr/pr',
+    })
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -226,6 +295,18 @@ export default function MiniDrawer(props) {
               </ListItem>
             ))
           }
+          {
+            optionList2.length !== 0 && optionList2.map((option) => (
+              <ListItem button key={option.title} component={NavLink} to={baseURL + option.nav}>
+                <ListItemIcon>
+                  {option.icon}
+                </ListItemIcon>
+                <ListItemText>
+                  {option.title}
+                </ListItemText>
+              </ListItem>
+            )) 
+          }
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -264,6 +345,21 @@ export default function MiniDrawer(props) {
               <Panel component = 'div'>
                 <Statistic />
               </Panel>
+            </Route>
+            <Route path ='/lobby/pr/history'>
+              <PerformanceHistory />
+            </Route>
+            <Route path ='/lobby/hr/pr'>
+              <PerformanceApproval />
+            </Route>
+            <Route path = '/lobby/pr'>
+              <PerformanceReview />
+            </Route>
+            <Route path = '/lobby/hr/management'>
+              <EmployeeManagement />
+            </Route>
+            <Route path = '/lobby/profile'>
+              <ProfilePage />
             </Route>
           </Switch>
         </Router>

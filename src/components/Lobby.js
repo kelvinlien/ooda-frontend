@@ -147,12 +147,13 @@ export default class Lobby extends React.Component
     {
       window.open('../','_self');
     }
-    openDrawer()
-    {
+
+    openDrawer() {
       this.setState(() => ({
         openDrawer : true
       }));
     }
+
     closeDrawer()
     {
       this.setState(() => ({
