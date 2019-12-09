@@ -74,3 +74,7 @@ export const getDepartment = () => {
   }
   return user.department;
 }
+
+export const getUserInfo = () => {
+  return getItemFromStorage('userInfo');
+}

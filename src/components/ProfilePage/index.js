@@ -5,6 +5,8 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+import SelfEmployeeDetail from './EmployeeDetail';
+import { getUserInfo } from '../../util/localStorage';
 
 export const useStyles = makeStyles(theme => ({
     expand: {
@@ -46,6 +48,9 @@ function ProfilePage() {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <ChangePassword />
             </Collapse>
+            <SelfEmployeeDetail
+                {...getUserInfo()}
+            />
         </div>
     );
 }

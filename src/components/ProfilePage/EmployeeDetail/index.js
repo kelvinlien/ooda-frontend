@@ -21,23 +21,10 @@ import {
 } from './styled';
 import { showGlobalNotice } from '../../../globalService';
 
-
-const mockEmployee = {
-    id: 2,
-    phoneNumber: '0984388497',
-    username: 'Pham Huy Phat',
-    email: 'phat.pham@nfq.asia',
-    joinDate: '2019/12/01',
-    title: 'developer',
-    managerName: 'Lien Hop Quoc',
-}
-
 function EmployeeDetail({
-    setScreen,
     ...detail
 }) {
     const { 
-        id: employeeId,
         username,
         phoneNumber,
         joinDate,
@@ -47,12 +34,8 @@ function EmployeeDetail({
         address = '',
         bankAccount = '',
         idCard = '',
-        dob: initDob,
+        dob,
     } = detail;
-    const [dob, setDob] = React.useState(new Date(initDob));
-    const handleDateChange = date => {
-        setDob(date);
-    };
     const classes = useStyles();
     return (
         <Container>
@@ -101,25 +84,7 @@ function EmployeeDetail({
                         bankAccount,
                         phoneNumber,
                     }}
-                    onSubmit={async (values) => {
-                        const updateResult = await updateEmployee({
-                            employeeId,
-                            ...values,
-                            dob,
-                        });
-
-                        if (!updateResult) {
-                            showGlobalNotice({
-                                variant: 'error',
-                                message: 'Đã xảy ra lỗi khi cập nhật',
-                            })
-                            return;
-                        }
-                        showGlobalNotice({
-                            variant: 'info',
-                            message: 'Đã cập nhật thông tin nhân viên thành công',
-                        })
-                    }}
+                    
 
                     render={({ values, handleChange, handleSubmit }) => {
                         return (
@@ -129,6 +94,7 @@ function EmployeeDetail({
                                 <h3>Chi tiết nhân viên</h3>
                                 <Layout col={2}>
                                     <TextField
+                                        className='force-black'
                                         disabled
                                         value={values.email}
                                         name='email'
@@ -136,6 +102,8 @@ function EmployeeDetail({
                                         label='Email'
                                     />
                                     <TextField
+                                        className='force-black'
+                                        disabled
                                         value={values.phoneNumber}
                                         name='phoneNumber'
                                         onChange={handleChange}
@@ -144,6 +112,8 @@ function EmployeeDetail({
                                 </Layout>
                                 <Layout col={1}>
                                     <TextField
+                                        className='force-black'
+                                        disabled
                                         value={values.address}
                                         name='address'
                                         onChange={handleChange}
@@ -153,6 +123,8 @@ function EmployeeDetail({
                                 <Layout col ={3}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                     <KeyboardDatePicker
+                                        className='force-black'
+                                        disabled
                                         disableToolbar
                                         variant="inline"
                                         format="MM/dd/yyyy"
@@ -160,7 +132,6 @@ function EmployeeDetail({
                                         id="date-picker-inline"
                                         label="Ngày sinh"
                                         value={dob}
-                                        onChange={handleDateChange}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
@@ -169,6 +140,8 @@ function EmployeeDetail({
                             </Layout>
                                 <Layout col={2}>
                                     <TextField
+                                        className='force-black'
+                                        disabled
                                         value={values.idCard}
                                         name='idCard'
                                         onChange={handleChange}
@@ -177,30 +150,14 @@ function EmployeeDetail({
                                 </Layout>
                                 <Layout col={1}>
                                     <TextField
+                                        className='force-black'
+                                        disabled
                                         value={values.bankAccount}
                                         name='bankAccount'
                                         onChange={handleChange}
                                         label='Số tài khoản ngân hàng'
                                     />
                                 </Layout>
-                                <ActionContainer>
-                                    <Button
-                                        onClick={() => setScreen(0)}
-                                        color='secondary'
-                                        variant='contained'
-                                        className='item'
-                                    >
-                                        Quay lại
-                                    </Button>
-                                    <Button
-                                        color='primary'
-                                        variant='contained'
-                                        className='item'
-                                        onClick={handleSubmit}
-                                    >
-                                        Cập nhật
-                                    </Button>
-                                </ActionContainer>
                             </FormContainer>
                         );
                     }}
