@@ -22,6 +22,7 @@ export default class App extends React.Component
     };
     this.openSesame = this.openSesame.bind(this);
     this.resetState = this.resetState.bind(this);
+    this.counter = 0;
   }
   componentDidMount()
   {
@@ -62,6 +63,7 @@ export default class App extends React.Component
   }
   render()
   {
+    console.log('app got rendered' + this.counter++);
     return(
 	<form>
       <Router history = {history}>

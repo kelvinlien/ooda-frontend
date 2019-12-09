@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import {Container} from '@material-ui/core';
 import MiniDrawer from './MiniDrawer.js';
-import {setItem, getItem} from '../LocalStorage'
 export default class Lobby extends React.Component
 {
     constructor(props)
@@ -20,6 +19,7 @@ export default class Lobby extends React.Component
         this.checkRole = this.checkRole.bind(this);
         this.updateLeaveBalance = this.updateLeaveBalance.bind(this);
         this.updateLeaveRequests = this.updateLeaveRequests.bind(this);
+        this.counter = 0;
     }
     checkRole() //check every role the app support to decide what to render
     {
@@ -41,7 +41,6 @@ export default class Lobby extends React.Component
             leaveRequests : response.data.leaveRequests,
             title : 'dev'
           }));
-          setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests, title : 'dev'});
         })
         .catch(function(){        //otherwise get this manager leave requests that need his attention
           axios({
@@ -58,7 +57,6 @@ export default class Lobby extends React.Component
               leaveRequests : response.data.leaveRequests,
               title : 'manager'
             }));
-            setItem({"leaveRequests" : response.data.leaveRequests,title : 'manager'});
           })
           .catch(function(error){
             console.log(error);
@@ -69,14 +67,13 @@ export default class Lobby extends React.Component
 
     updateLeaveRequests()
     {
-      // console.log(this.state.managerURL, this.props.baseURL,getItem("accessToken"));
       let _this = this;
       axios({
         url : _this.state.managerURL,
         baseURL : _this.props.baseURL,
         method : 'get',
         headers : {
-          'Authorization': 'Bearer '+ getItem("accessToken")
+          'Authorization': 'Bearer '+ _this.props.accessToken
         }
       })
       .then(function(response){
@@ -84,8 +81,6 @@ export default class Lobby extends React.Component
           ...prevState,
           leaveRequests : response.data.leaveRequests
         }));
-        // console.log(response.data.leaveRequests);
-        setItem({"leaveRequests" : response.data.leaveRequests});
       })
       .catch(function(error){
         console.log(error);
@@ -109,7 +104,6 @@ export default class Lobby extends React.Component
           remainingPaidLeave : response.data.remainingPaidLeave,
           leaveRequests : response.data.leaveRequests
         }));
-        setItem({"remainingPaidLeave" :  response.data.remainingPaidLeave, "leaveRequests" : response.data.leaveRequests});
       })
       .catch(function(error){   
         console.log(error);
@@ -119,29 +113,17 @@ export default class Lobby extends React.Component
     componentDidMount()
     {
       this.checkRole();
-      if (getItem("remainingPaidLeave"))      //dev
-      {
-        this.setState(() => ({
-          remainingPaidLeave : getItem("remainingPaidLeave"),
-          leaveRequests : getItem("leaveRequests"),
-          userInfo : this.props.userInfo,
-          title : getItem("title")
-        }));
-      }
-      else if (getItem("leaveRequests"))    //manager
-      {
-        this.setState(() => ({
-          leaveRequests : getItem("leaveRequests"),
-          userInfo : this.props.userInfo,
-          title : getItem("title")
-        }));
-      }
-      else
-      {
-        this.setState(() => ({
-          userInfo : this.props.userInfo
-        }))
-      }
+      this.setState(() => ({
+        userInfo : this.props.userInfo
+      }))
+    }
+    componentDidUpdate(prevProp)
+    {
+        if (prevProp.accessToken !== this.props.accessToken)
+        {
+            this.setState(() => ({
+            }))
+        }
     }
     logOut()
     {
@@ -161,6 +143,9 @@ export default class Lobby extends React.Component
     }
     render()
     {
+      console.log('lobby got rendered' + this.counter++);
+      console.log(this.state);
+      console.log(this.props);
         return(
             <Container maxWidth = '1'>
                 <MiniDrawer 

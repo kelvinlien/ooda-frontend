@@ -84,6 +84,8 @@ export default function SimpleTable(props) {
     let leaveUsed = getLeaveDayUsed();
     let remain = (total - leaveUsed >= 0 ? (total - leaveUsed) : props.remainingPaidLeave);
 
+    console.log('leave request table got rendered');
+
 
   return (
     <Paper className={classes.root}>

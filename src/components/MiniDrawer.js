@@ -114,12 +114,16 @@ function getCustomTag(key, optionList)
   return <CustomTag />;
 }
 
+var counter = 0;
+
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   var optionList = {}
+
+  console.log('drawer got rendered' + counter++);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -256,6 +260,7 @@ export default function MiniDrawer(props) {
                 accessToken = {props.accessToken}
                 leaveURL = {props.leaveURL}
                 remainingPaidLeave = {props.remainingPaidLeave}
+                userInfo = {props.userInfo}
                 updateLeaveBalance = {() => props.updateLeaveBalance()}
                 />
               </Form>
