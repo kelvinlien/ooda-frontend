@@ -15,7 +15,7 @@ export default class LeaveForm extends React.Component
             fromDate : new Date(),
             toDate : new Date(),
             leaveNum : '',
-            userInfo : '',
+            userInfo : this.props.userInfo,
             errorNoti : false,
             successNoti : false,
             unableNoti : false,
@@ -34,6 +34,7 @@ export default class LeaveForm extends React.Component
         this.saveToState = this.saveToState.bind(this);
         this.saveDateToState = this.saveDateToState.bind(this);
         this.createLeaveRequest = this.createLeaveRequest.bind(this);
+        this.counter = 0;
     }
     handleClose(type)
     {
@@ -53,9 +54,8 @@ export default class LeaveForm extends React.Component
 
     componentDidMount()
     {
-        let userInfo = JSON.parse(localStorage.getItem("userInfo"));
         this.setState(() => ({
-            userInfo : userInfo
+            userInfo : this.props.userInfo
         }))
     }
 
@@ -96,9 +96,18 @@ export default class LeaveForm extends React.Component
         }))
     }
 
+    componentDidUpdate(prevProp)
+    {
+        if (prevProp.accessToken !== this.props.accessToken)
+        {
+            this.setState(() => ({
+            }))
+        }
+    }
+
     createLeaveRequest()
     {
-        if (this.state.leaveNum <= 0 || this.state.toDate < this.state.fromDate)
+        if (this.state.leaveNum <= 0)
         {
             this.setState(() => ({
                 dayNumNoti : true

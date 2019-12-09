@@ -159,6 +159,9 @@ export default function MiniDrawer(props) {
 
   let optionList = {}
 
+  console.log('drawer got rendered' + counter++);
+  console.log(props);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -337,6 +340,7 @@ export default function MiniDrawer(props) {
                 accessToken = {props.accessToken}
                 leaveURL = {props.leaveURL}
                 remainingPaidLeave = {props.remainingPaidLeave}
+                userInfo = {props.userInfo}
                 updateLeaveBalance = {() => props.updateLeaveBalance()}
                 />
               </Form>

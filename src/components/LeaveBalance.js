@@ -1,20 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import { styled } from '@material-ui/core/styles';
-import { CssBaseline, Grid, Paper, Container} from '@material-ui/core';
-import LeaveDetail from './LeaveDetail.js';
+import {  Grid,  Container} from '@material-ui/core';
 import LeaveRequestTable from './LeaveRequestTable'
-import {getItem, setItem} from '../LocalStorage'
-import LeaveRequestCard from './LeaveRequestCard'
 
-const CustomPaper = styled(Paper)({
-    background: 'transparent',
-    border: 0,
-    borderRadius: 7,
-    boxShadow: '0 3px 5px 2px rgba(0, 0, 254, .3)',
-    color: 'black',
-    padding: '10px 30px 10px 30px',
-  });
 export default class LeaveBalance extends React.Component{
     constructor(props)
     {
@@ -23,9 +11,11 @@ export default class LeaveBalance extends React.Component{
         this.state = {
             totalRequest : 0,
             remainRequest : 0,
-            decidedRequests : {}
+            decidedRequests : {},
+            leaveRequests : []
         }
         this.leaveDecide = this.leaveDecide.bind(this);
+        this.counter = 0;
     }
 
 
@@ -33,21 +23,10 @@ export default class LeaveBalance extends React.Component{
     {
         if (prevProp.leaveRequests !== this.props.leaveRequests)
         {
-            if (getItem('decidedRequests'))
-            {
-                this.setState(() => ({
-                    totalRequest : getItem("totalRequest"),
-                    remainRequest : getItem("remainRequest"),
-                    decidedRequests : getItem("decidedRequests")
-                }))
-            }
-            else
-            {
-                this.setState(() => ({
-                    totalRequest : this.props.leaveRequests.length,
-                    remainRequest : this.props.leaveRequests.length
-                }));
-            }
+            this.setState(() => ({
+                leaveRequests: this.props.leaveRequests,
+                totalRequest : this.props.leaveRequests.length
+            }))
         }
     }
 
@@ -75,7 +54,6 @@ export default class LeaveBalance extends React.Component{
                 remainRequest : prevState.remainRequest - 1,
                 decidedRequests : newDecidedRequests
             }));
-            setItem(_this.state);
         })
         .catch(function(error){
             console.log(error);
@@ -87,19 +65,17 @@ export default class LeaveBalance extends React.Component{
     componentDidMount()
     {
         this.props.updateLeaveRequests();
-        if (getItem("decidedRequests"))
-        {
         this.setState(() => ({
-            totalRequest : getItem("totalRequest"),
-            remainRequest : getItem("remainRequest"),
-            decidedRequests : getItem("decidedRequests")
+            leaveRequests: this.props.leaveRequests,
+            totalRequest : this.props.leaveRequests.length
         }))
-        }
     }
 
 
     render()
     {
+        console.log('leave balance got rendered' + this.counter++);
+        console.log(this.props);
         // console.log(this.state.decidedRequests);
         console.log(this.props.leaveRequests);
         // console.log(this.props.updateLeaveRequests);
