@@ -12,7 +12,7 @@ export default class LeaveBalance extends React.Component{
             totalRequest : 0,
             remainRequest : 0,
             decidedRequests : {},
-            leaveRequests : []
+            leaveRequests : this.props.leaveRequests
         }
         this.leaveDecide = this.leaveDecide.bind(this);
         this.counter = 0;
@@ -23,6 +23,7 @@ export default class LeaveBalance extends React.Component{
     {
         if (prevProp.leaveRequests !== this.props.leaveRequests)
         {
+            console.log(this.props.leaveRequests);
             this.setState(() => ({
                 leaveRequests: this.props.leaveRequests,
                 totalRequest : this.props.leaveRequests.length

@@ -158,8 +158,6 @@ export default function MiniDrawer(props) {
   }, []);
 
   let optionList = {}
-
-  console.log('drawer got rendered' + counter++);
   console.log(props);
 
   const handleDrawerOpen = () => {

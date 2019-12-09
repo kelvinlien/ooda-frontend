@@ -18,7 +18,7 @@ export default class App extends React.Component
     this.state = {
         baseURL : 'http://localhost:2109/',
         accessToken : getItem("accessToken"),
-        userInfo : getItem("userInfo")
+        userInfo : JSON.parse(getItem("userInfo"))
     };
     this.openSesame = this.openSesame.bind(this);
     this.resetState = this.resetState.bind(this);
@@ -30,7 +30,7 @@ export default class App extends React.Component
     {
       this.setState(()=>({
         accessToken : getItem("accessToken"),
-        userInfo : getItem("userInfo")
+        userInfo : JSON.parse(getItem("userInfo"))
       }))
     }
   }
@@ -45,7 +45,7 @@ export default class App extends React.Component
   {
     let data = {
       accessToken : token,
-      userInfo : userInfo
+      userInfo : JSON.stringify(userInfo)
   };
     this.setState(()=>(data));
     setItem(data);

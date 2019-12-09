@@ -23,7 +23,6 @@ export default class Lobby extends React.Component
     }
     checkRole() //check every role the app support to decide what to render
     {
-      console.log('inside checkrole');
       if (this.state.userInfo.role === 'staff')
       {
         let _this = this;
@@ -115,9 +114,9 @@ export default class Lobby extends React.Component
     componentDidMount()
     {
       this.checkRole();
-      this.setState(() => ({
-        userInfo : this.props.userInfo
-      }))
+      // this.setState(() => ({
+      //   userInfo : this.props.userInfo
+      // }))
     }
     componentDidUpdate(prevProp)
     {
@@ -146,7 +145,7 @@ export default class Lobby extends React.Component
     render()
     {
       console.log('lobby got rendered' + this.counter++);
-      console.log(this.state);
+      console.log('lobby state is ' ,this.state);
       console.log(this.props);
         return(
             <Container maxWidth = '1'>
