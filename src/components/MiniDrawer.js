@@ -124,6 +124,7 @@ export default function MiniDrawer(props) {
   var optionList = {}
 
   console.log('drawer got rendered' + counter++);
+  console.log(props);
 
   const handleDrawerOpen = () => {
     setOpen(true);

@@ -16,9 +16,8 @@ export default class App extends React.Component
     super(props);
     this.state = {
         baseURL : 'http://localhost:2109/',
-        accessToken : '',
-        userInfo : {
-        }
+        accessToken : getItem("accessToken"),
+        userInfo : getItem("userInfo")
     };
     this.openSesame = this.openSesame.bind(this);
     this.resetState = this.resetState.bind(this);

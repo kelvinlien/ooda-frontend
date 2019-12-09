@@ -23,6 +23,7 @@ export default class Lobby extends React.Component
     }
     checkRole() //check every role the app support to decide what to render
     {
+      console.log('inside checkrole');
       if (this.state.userInfo.role === 'staff')
       {
         let _this = this;
@@ -60,6 +61,7 @@ export default class Lobby extends React.Component
           })
           .catch(function(error){
             console.log(error);
+            console.log(_this.props.accessToken);
           })
         })
       }
@@ -121,8 +123,7 @@ export default class Lobby extends React.Component
     {
         if (prevProp.accessToken !== this.props.accessToken)
         {
-            this.setState(() => ({
-            }))
+            this.checkRole();
         }
     }
     logOut()

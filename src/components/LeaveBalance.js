@@ -15,6 +15,7 @@ export default class LeaveBalance extends React.Component{
             leaveRequests : []
         }
         this.leaveDecide = this.leaveDecide.bind(this);
+        this.counter = 0;
     }
 
 
@@ -73,7 +74,8 @@ export default class LeaveBalance extends React.Component{
 
     render()
     {
-        console.log('leave balance got rendered');
+        console.log('leave balance got rendered' + this.counter++);
+        console.log(this.props);
         // console.log(this.state.decidedRequests);
         console.log(this.props.leaveRequests);
         // console.log(this.props.updateLeaveRequests);

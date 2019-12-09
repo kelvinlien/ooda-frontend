@@ -24,6 +24,7 @@ export default class LeaveForm extends React.Component
         this.saveToState = this.saveToState.bind(this);
         this.saveDateToState = this.saveDateToState.bind(this);
         this.createLeaveRequest = this.createLeaveRequest.bind(this);
+        this.counter = 0;
     }
     handleClose(type)
     {
@@ -142,7 +143,8 @@ export default class LeaveForm extends React.Component
     }
     render()
     {
-        console.log('leave form got rendered');
+        console.log('leave form got rendered' + this.counter++);
+        console.log(this.props);
         console.log(this.state);
         return(
             <>
