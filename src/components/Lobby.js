@@ -127,7 +127,7 @@ export default class Lobby extends React.Component
     }
     logOut()
     {
-      window.open('http://localhost:3006/','_self');
+      window.open('http://localhost:3000/','_self');
     }
 
     openDrawer() {
@@ -144,9 +144,6 @@ export default class Lobby extends React.Component
     }
     render()
     {
-      console.log('lobby got rendered' + this.counter++);
-      console.log('lobby state is ' ,this.state);
-      console.log(this.props);
         return(
             <Container maxWidth = '1'>
                 <MiniDrawer 

@@ -36,6 +36,11 @@ function EmployeeDetail({
     setScreen,
     ...detail
 }) {
+    const departmentDisplay = {
+        it: 'kĩ sư IT',
+        hr: 'nhân sự',
+      };
+
     const { 
         id: employeeId,
         username,
@@ -48,7 +53,11 @@ function EmployeeDetail({
         bankAccount = '',
         idCard = '',
         dob: initDob,
+        department,
     } = detail;
+    function getDeptDisplay() {
+        return departmentDisplay[department];
+    }
     const [dob, setDob] = React.useState(new Date(initDob));
     const handleDateChange = date => {
         setDob(date);
@@ -90,6 +99,12 @@ function EmployeeDetail({
                 </span>
                 <span>
                     {managerName}
+                </span>
+                <span className='bold'>
+                    Phòng ban:
+                </span>
+                <span>
+                    {getDeptDisplay()}
                 </span>
             </LeftColumn>
             <MainArea>

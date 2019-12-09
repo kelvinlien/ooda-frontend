@@ -14,6 +14,9 @@ const useStyles = makeStyles({
     width: '100%',
     overflowX: 'auto',
   },
+  button: {
+    margin: 5,
+  },
   table: {
     minWidth: 650
   },
@@ -40,7 +43,6 @@ export default function SimpleTable(props) {
     function handleClick(e, decision, id)
     {
       props.leaveDecide(decision, id);
-      console.log(Object.keys(props.decidedRequests));
     }
 
     function getLeaveDayUsed()
@@ -147,14 +149,18 @@ export default function SimpleTable(props) {
               </TableCell>
               :<TableCell align="center">
                 <Button
+                className={classes.button}
                 type="button"
+                variant='contained'
                 color="primary"
                 onClick = { e => handleClick(e, 'approved', row.id)}
                 >
                   Chấp thuận
                 </Button>
                 <Button
+                className={classes.button}
                 type = 'button'
+                variant='contained'
                 color = 'secondary'
                 onClick = { e => handleClick(e, 'rejected', row.id)}
                 >

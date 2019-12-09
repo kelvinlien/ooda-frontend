@@ -23,7 +23,6 @@ export default class LeaveBalance extends React.Component{
     {
         if (prevProp.leaveRequests !== this.props.leaveRequests)
         {
-            console.log(this.props.leaveRequests);
             this.setState(() => ({
                 leaveRequests: this.props.leaveRequests,
                 totalRequest : this.props.leaveRequests.length

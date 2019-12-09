@@ -69,7 +69,7 @@ function NewEmployeeForm({setScreen, setDetail}) {
                         };
                         showGlobalNotice({
                             variant: 'success',
-                            message: 'Đã tạo thành công, hãy cập nhật những thông tin chi tiết',
+                            message: 'Đã tạo thành công, hãy cập nhật những thông tin chi tiết, mật khẩu mặc định là 1',
                         });
                         resetForm();
                         setDetail({

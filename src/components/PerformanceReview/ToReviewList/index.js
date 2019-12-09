@@ -64,7 +64,7 @@ function ToReviewList({
     
                                                 }
                                                 setPrDetail({
-                                                    prId: newPR.id,
+                                                    id: newPR.id,
                                                     reviewee,
                                                 });
                                                 setScreen(1);

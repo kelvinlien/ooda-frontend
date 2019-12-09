@@ -11,15 +11,14 @@ import {
   } from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField';
 import { Layout } from '../../FormLayout';
-import { updateEmployee } from '../service';
 import ava from './img/smav.png';
 import { Formik } from 'formik';
 import { 
     Container, LeftColumn, MainArea,
     useStyles, AvatarContainer,
-    FormContainer, ActionContainer,
+    FormContainer
 } from './styled';
-import { showGlobalNotice } from '../../../globalService';
+import { getRole } from '../../../util/localStorage';
 
 function EmployeeDetail({
     ...detail
@@ -72,7 +71,7 @@ function EmployeeDetail({
                     Quản lý:
                 </span>
                 <span>
-                    {managerName}
+                    {getRole() === 'hr' ? 'Nguyen Ngan Ha' : 'Lien Hop Quoc'}
                 </span>
             </LeftColumn>
             <MainArea>

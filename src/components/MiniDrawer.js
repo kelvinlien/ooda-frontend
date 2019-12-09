@@ -160,8 +160,6 @@ export default function MiniDrawer(props) {
     });
   }, []);
 
-  console.log(props.title);
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -205,7 +203,7 @@ export default function MiniDrawer(props) {
       nav: 'pr',
     });
     optionList.push({
-      title : 'Duyệt đơn',
+      title : 'Duyệt đơn nghỉ phép',
       icon : <Description />,
       nav : 'leave/requests'
     });

@@ -118,10 +118,10 @@ export default class LoginForm extends React.Component
                     </Grid>
                 </Container>
                 <Snackbar
-                message = "Bad request. Please double check your username and password!"
-                variant = "error"
-                showNoti = {this.state.showNoti}
-                handleClose = {this.handleClose}
+                    message = "Không thể đăng nhập. Làm ơn hãy kiểm tra lại định danh và mật khẩu"
+                    variant = "error"
+                    showNoti = {this.state.showNoti}
+                    handleClose = {this.handleClose}
                 />
             </>
         )
