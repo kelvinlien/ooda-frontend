@@ -7,7 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { Typography, Divider } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {
@@ -84,11 +84,11 @@ export default function SimpleTable(props) {
     let leaveUsed = getLeaveDayUsed();
     let remain = (total - leaveUsed >= 0 ? (total - leaveUsed) : props.remainingPaidLeave);
 
-    console.log('leave request table got rendered');
 
 
   return (
-    <Paper className={classes.root}>
+    rows.length > 0 ?
+      <Paper className={classes.root}>
         <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow style = {{backgroundColor: rowColor.header}}>
@@ -183,5 +183,7 @@ export default function SimpleTable(props) {
         </TableBody>
       </Table>
     </Paper>
+    :
+    'Không có gì để xử lý ở đây'
   );
 }
