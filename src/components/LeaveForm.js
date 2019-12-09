@@ -169,6 +169,11 @@ export default class LeaveForm extends React.Component
                                 value = "Liên Hợp Quốc"
                                 margin = "none"
                                 variant = "outlined"
+                                InputProps={{
+                                    style : {
+                                        color: 'black'
+                                    }
+                                }}
                                 disabled
                                 />
                             </Grid>
@@ -215,6 +220,11 @@ export default class LeaveForm extends React.Component
                                     value = {this.state.leaveNum}
                                     margin = "dense"
                                     variant = "outlined"
+                                    InputProps={{
+                                        style : {
+                                            color: 'black'
+                                        }
+                                    }}
                                     disabled
                                     />
                                 </Grid>
