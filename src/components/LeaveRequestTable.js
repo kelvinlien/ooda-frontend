@@ -33,7 +33,7 @@ const rowColor = {
 export default function SimpleTable(props) {
   const classes = useStyles();
 
-    const rows = props.leaveRequests;
+    let rows = props.leaveRequests;
 
     const cellNames = props.cellNames;
 
@@ -46,6 +46,9 @@ export default function SimpleTable(props) {
     function getLeaveDayUsed()
     {
       let num = 0;
+      if (!rows.forEach) {
+        rows = JSON.parse(rows);
+      }
       rows.forEach(element => {
         if (element.status === 'APPROVED' || element.status === 'PENDING')
         {

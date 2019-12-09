@@ -49,7 +49,6 @@ export default class LeaveForm extends React.Component
         this.setState(()=>({
             [id] : value
         }))
-        console.log(this.state);
     }
 
     componentDidMount()

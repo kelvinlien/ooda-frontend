@@ -75,11 +75,6 @@ export default class LeaveBalance extends React.Component{
 
     render()
     {
-        console.log('leave balance got rendered' + this.counter++);
-        console.log(this.props);
-        // console.log(this.state.decidedRequests);
-        console.log(this.props.leaveRequests);
-        // console.log(this.props.updateLeaveRequests);
         if (this.props.title == 'manager')
         {
             this.cellNames = ['Họ tên', 'Vị trí', 'Lý do', 'Từ ngày', 'Đến ngày', 'Số ngày nghỉ', 'Quyết định'];
@@ -108,13 +103,13 @@ export default class LeaveBalance extends React.Component{
                     <Grid item lg = {12}>
                         <Container maxWidth = '1'>
                             <LeaveRequestTable 
-                            leaveRequests = {this.props.leaveRequests}
-                            cellNames = {this.cellNames}
-                            leaveDecide = {this.leaveDecide}
-                            decidedRequests = {this.state.decidedRequests}
-                            title = {this.props.title}
-                            remainingPaidLeave = {this.props.remainingPaidLeave}
-                            totalAnnual = {this.props.totalAnnual}
+                                leaveRequests = {this.props.leaveRequests}
+                                cellNames = {this.cellNames}
+                                leaveDecide = {this.leaveDecide}
+                                decidedRequests = {this.state.decidedRequests}
+                                title = {this.props.title}
+                                remainingPaidLeave = {this.props.remainingPaidLeave}
+                                totalAnnual = {this.props.totalAnnual}
                             />
                         </Container>
                     </Grid>
