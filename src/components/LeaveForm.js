@@ -14,7 +14,7 @@ export default class LeaveForm extends React.Component
             url : this.props.leaveURL,
             fromDate : new Date(),
             toDate : new Date(),
-            leaveNum : '',
+            leaveNum : 1,
             userInfo : this.props.userInfo,
             errorNoti : false,
             successNoti : false,

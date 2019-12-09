@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 const rowColor = {
   approved : '#2196f3',
   rejected : '#f50057',
-  pending : 'initial',
+  pending : '#FFC75F',
   header : '#eceff1'
 };
 

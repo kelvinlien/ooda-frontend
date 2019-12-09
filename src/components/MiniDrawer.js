@@ -213,7 +213,7 @@ export default function MiniDrawer(props) {
   else
   {
     optionList.push({
-      title : 'Tra cứu',
+      title : 'Lịch sử nghỉ phép',
       icon : <Description />,
       nav : 'leave/requests'
     });
