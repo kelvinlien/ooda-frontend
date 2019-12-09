@@ -71,7 +71,6 @@ export default class App extends React.Component
                     resetState = {() => this.resetState()}
                   />
               </Route>
-              {/* <Route path = "/lobby" onEnter={() => this.requireAuth()}> */}
               <Route path = "/lobby" onEnter={this.requireAuth()}>
                   <Lobby 
                     baseURL = {this.state.baseURL} 

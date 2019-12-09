@@ -127,7 +127,7 @@ export default class Lobby extends React.Component
     }
     logOut()
     {
-      window.open('../','_self');
+      window.open('http://localhost:3006/','_self');
     }
 
     openDrawer() {

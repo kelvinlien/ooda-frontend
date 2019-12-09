@@ -119,11 +119,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
   },
 }));
-function getCustomTag(key, optionList)
-{
-  let CustomTag = optionList[key];
-  return <CustomTag />;
-}
 
 async function checkIfManager(userId) {
   const [err, data] = await asyncTryCatchReq({
@@ -157,7 +152,6 @@ export default function MiniDrawer(props) {
     });
   }, []);
 
-  let optionList = {}
   console.log(props);
 
   const handleDrawerOpen = () => {
@@ -167,30 +161,7 @@ export default function MiniDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  switch (props.userInfo.role)
-  {
-    case 'hr':
-      optionList =  {
-        'Thống kê' : PieChart
-      };
-      break;
-    default:
-      if (props.remainingPaidLeave !== undefined)
-      {
-        optionList =  {
-          'Tra cứu' : Description,
-          'Đơn xin nghỉ phép' : Announcement
-        };
-      }
-      else
-      {
-        optionList = {
-          'Duyệt đơn' : Description
-        }
-      }
-      break;
-  };
-  const optionList2 = [
+  const optionList = [
     {
       title: 'Lịch sử đánh giá',
       icon: <History />,
@@ -202,8 +173,34 @@ export default function MiniDrawer(props) {
       nav: 'profile',
     }
   ];
+  switch (props.userInfo.role)
+  {
+    case 'staff':
+      if (props.remainingPaidLeave !== undefined)
+      {
+        optionList.push({
+          title : 'Tra cứu',
+          icon : <Description />,
+          nav : 'leave/requests'
+        });
+        optionList.push({
+          title: 'Đơn xin nghỉ phép',
+          icon : <Announcement />,
+          nav : 'leave'
+        });
+      }
+      else
+      {
+        optionList.push({
+          title : 'Duyệt đơn',
+          icon : <Description />,
+          nav : 'leave/requests'
+        });
+      }
+      break;
+  };
   if (isManager) {
-    optionList2.push({
+    optionList.push({
       title: 'Đánh giá năng lực',
       icon: <RateReview />,
       nav: 'pr',
@@ -211,15 +208,20 @@ export default function MiniDrawer(props) {
   }
 
   if (getRole() === 'hr') {
-    optionList2.push({
+    optionList.push({
       title: 'Quản lý nhân sự',
       icon: <Contacts />,
       nav: 'hr/management',
     });
-    optionList2.push({
+    optionList.push({
       title: 'Duyệt phiếu đánh giá',
       icon: <ThumbUp />,
       nav: 'hr/pr',
+    })
+    optionList.push({
+      title: 'Thống kê',
+      icon: <PieChart />,
+      nav: 'hr/statistic',
     })
   }
   return (
@@ -285,19 +287,7 @@ export default function MiniDrawer(props) {
         <Divider />
         <List>
           {
-            Object.keys(optionList).map((key, index) => (
-              <ListItem button key = {index} component={NavLink} to={baseURL + ((index - 1) >= 0 ? (index - 1) : '')}>
-                <ListItemIcon>
-                  {getCustomTag(key, optionList)}
-                </ListItemIcon>
-                <ListItemText>
-                  {key}
-                </ListItemText>
-              </ListItem>
-            ))
-          }
-          {
-            optionList2.length !== 0 && optionList2.map((option) => (
+            optionList.length !== 0 && optionList.map((option) => (
               <ListItem button key={option.title} component={NavLink} to={baseURL + option.nav}>
                 <ListItemIcon>
                   {option.icon}
@@ -314,7 +304,7 @@ export default function MiniDrawer(props) {
         <div className={classes.toolbar} />
         <Router history = {history} >
           <Switch >
-            <Route exact path = '/lobby/'>
+            <Route exact path = '/lobby/leave/requests'>
               <Panel 
               component = 'div'
               width = '1'
@@ -331,7 +321,7 @@ export default function MiniDrawer(props) {
                 />
               </Panel>
             </Route>
-            <Route path = '/lobby/0'>
+            <Route path = '/lobby/leave'>
               <Form component = 'div'>
                 <LeaveForm 
                 baseURL = {props.baseURL}
@@ -343,7 +333,7 @@ export default function MiniDrawer(props) {
                 />
               </Form>
             </Route>
-            <Route path = '/lobby/1' >
+            <Route path = '/lobby/hr/statistic' >
               <Panel component = 'div'>
                 <Statistic />
               </Panel>
