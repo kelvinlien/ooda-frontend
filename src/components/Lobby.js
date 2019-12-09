@@ -165,18 +165,18 @@ export default class Lobby extends React.Component
         return(
             <Container maxWidth = '1'>
                 <MiniDrawer 
-                userInfo = {this.props.userInfo} 
-                logOut = {() => this.logOut()}
-                baseURL = {this.props.baseURL}
-                accessToken = {this.props.accessToken}
-                leaveURL = {this.state.leaveURL}
-                remainingPaidLeave = {this.state.remainingPaidLeave}
-                totalAnnual = {this.state.totalAnnual}
-                leaveRequests = {this.state.leaveRequests}
-                managerURL = {this.state.managerURL}
-                updateLeaveBalance = {() => this.updateLeaveBalance()}
-                updateLeaveRequests = {() => this.updateLeaveRequests()}
-                title = {this.state.title}
+                  userInfo = {this.props.userInfo} 
+                  logOut = {() => this.logOut()}
+                  baseURL = {this.props.baseURL}
+                  accessToken = {this.props.accessToken}
+                  leaveURL = {this.state.leaveURL}
+                  remainingPaidLeave = {this.state.remainingPaidLeave}
+                  totalAnnual = {this.state.totalAnnual}
+                  leaveRequests = {this.state.leaveRequests}
+                  managerURL = {this.state.managerURL}
+                  updateLeaveBalance = {() => this.updateLeaveBalance()}
+                  updateLeaveRequests = {() => this.updateLeaveRequests()}
+                  title = {this.state.title}
                 />
             </Container>
         )

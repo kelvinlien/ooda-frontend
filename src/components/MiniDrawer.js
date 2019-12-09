@@ -34,7 +34,7 @@ import Avatar from '@material-ui/core/Avatar';
 // import Button from '@material-ui/core/Button';
 import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
 import { asyncTryCatchReq, API } from '../util/customAxios';
-import { getItemFromStorage, getRole } from '../util/localStorage';
+import { getItemFromStorage, getRole, getDepartment, getUsername } from '../util/localStorage';
 import LeaveBalance from './LeaveBalance.js';
 import { Box } from '@material-ui/core';
 import PerformanceReview from './PerformanceReview/index';
@@ -138,11 +138,20 @@ async function checkIfManager(userId) {
   }
 }
 
+const departmentDisplay = {
+  it: 'kĩ sư IT',
+  hr: 'nhân sự',
+};
+
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [isManager, setIsManager] = React.useState(false);
+
+  function getDeptDisplay() {
+    return departmentDisplay[getDepartment()];
+  }
 
   useEffect(() => {
     const user = getItemFromStorage('userInfo');
@@ -170,7 +179,7 @@ export default function MiniDrawer(props) {
   {
     case 'hr':
       optionList =  {
-        'Thống kê' : PieChart
+        'Thống kê ngày nghỉ' : PieChart
       };
       break;
     default:
@@ -251,10 +260,10 @@ export default function MiniDrawer(props) {
           <Divider style = {{padding: '0 10px 0 10px', backgroundColor:'transparent'}} />
           <Typography variant="h6" noWrap className={classes.title}>
             <div className = 'row'>
-            Xin chào {props.userInfo.username}
+            Xin chào {getUsername()}
             </div>
             <div className = 'row'>
-              Phòng ban
+              Phòng ban {getDeptDisplay()}
             </div>
           </Typography>
           <IconButton type = "button" color="inherit" onClick = {props.logOut}>
@@ -319,14 +328,14 @@ export default function MiniDrawer(props) {
               width = '1'
               >
                 <LeaveBalance 
-                remainingPaidLeave = {props.remainingPaidLeave}
-                totalAnnual = {props.totalAnnual}
-                leaveRequests = {props.leaveRequests}
-                baseURL = {props.baseURL}
-                managerURL = {props.managerURL}
-                accessToken = {props.accessToken}
-                updateLeaveRequests = {() => props.updateLeaveRequests()}
-                title = {props.title}
+                  remainingPaidLeave = {props.remainingPaidLeave}
+                  totalAnnual = {props.totalAnnual}
+                  leaveRequests = {props.leaveRequests}
+                  baseURL = {props.baseURL}
+                  managerURL = {props.managerURL}
+                  accessToken = {props.accessToken}
+                  updateLeaveRequests = {() => props.updateLeaveRequests()}
+                  title = {props.title}
                 />
               </Panel>
             </Route>

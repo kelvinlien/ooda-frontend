@@ -40,7 +40,6 @@ export default function LeaveRequestCard(props)
     function handleClick(e, decision, id)
     {
       props.leaveDecide(decision, id);
-      console.log(Object.keys(props.decidedRequests));
     }
     return(
         <>

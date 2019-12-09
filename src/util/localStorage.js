@@ -66,3 +66,11 @@ export const getRole = () => {
   }
   return user.role;
 }
+
+export const getDepartment = () => {
+  const user = getItemFromStorage('userInfo');
+  if (!user) {
+    return undefined;
+  }
+  return user.department;
+}
