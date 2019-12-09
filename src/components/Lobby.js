@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import {Container} from '@material-ui/core';
 import MiniDrawer from './MiniDrawer.js';
+
+import { getSelfId } from '../util/localStorage';
 export default class Lobby extends React.Component
 {
     constructor(props)
@@ -9,8 +11,8 @@ export default class Lobby extends React.Component
         super(props);
         this.state = {
             // hrURL : 'protected/ping/',    //this url used to check if current account's role is hr
-            leaveURL : "leaveRequest/employee/2/",
-            managerURL : "leaveRequest/manager/3/",
+            leaveURL : `leaveRequest/employee/${getSelfId()}/`,
+            managerURL : `leaveRequest/manager/${getSelfId()}/`,
             userInfo : this.props.userInfo,
             totalAnnual : 15,
             leaveRequests : [],   //init purpose

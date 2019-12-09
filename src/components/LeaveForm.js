@@ -106,14 +106,17 @@ export default class LeaveForm extends React.Component
 
     createLeaveRequest()
     {
+        console.log('createLeaveRequest ', this.props.remainingPaidLeave);
         if (this.state.leaveNum <= 0)
         {
+            console.log('this.state.leaveNum <= 0');
             this.setState(() => ({
                 dayNumNoti : true
             }))
         }
         else if (this.props.remainingPaidLeave >= this.state.leaveNum)
         {
+            console.log('in else if');
             let _this = this;
             Axios({
                 url : _this.state.url,
@@ -288,10 +291,10 @@ export default class LeaveForm extends React.Component
                 handleClose = {() => this.handleClose('error')}
                 />
                 <Snackbar
-                message = 'Số ngày nghỉ phép còn lại không đủ.'
-                variant = 'error'
-                showNoti = {this.state.unableNoti}
-                handleClose = {() => this.handleClose('unable')}
+                    message = 'Số ngày nghỉ phép còn lại không đủ.'
+                    variant = 'error'
+                    showNoti = {this.state.unableNoti}
+                    handleClose = {() => this.handleClose('unable')}
                 />
                 <Snackbar
                 message = 'Số ngày nghỉ không hợp lệ.'
