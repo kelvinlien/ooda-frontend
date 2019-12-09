@@ -19,7 +19,17 @@ export default class LeaveForm extends React.Component
             errorNoti : false,
             successNoti : false,
             unableNoti : false,
-            dayNumNoti : false
+            dayNumNoti : false,
+            reasonOptions : [           //prototype data, name is show as option's name in select box and value is the reason saved to database
+                {
+                    value : 'Bị bệnh',
+                    name : 'Bị bệnh'
+                },
+                {
+                    value : 'Cưới hỏi',
+                    name : 'Cưới hỏi'
+                }
+            ]
         };
         this.saveToState = this.saveToState.bind(this);
         this.saveDateToState = this.saveDateToState.bind(this);
@@ -235,16 +245,7 @@ export default class LeaveForm extends React.Component
                                     label = 'Lý do nghỉ' 
                                     id = 'reason'
                                     onChange = {(e,id) => this.saveToState(e, id)}
-                                    options = {[
-                                        {
-                                            value : 'sick',
-                                            name : 'Bị bệnh'
-                                        },
-                                        {
-                                            value : 'marriage',
-                                            name : 'Cưới hỏi'
-                                        }
-                                    ]}
+                                    options = {this.state.reasonOptions}
                                     />
                                 </Grid>
                             </Grid>
