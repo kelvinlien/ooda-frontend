@@ -28,11 +28,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LeaveForm from './LeaveForm.js';
-import Statistic from './Statistic.js';
 import history from '../history.js';
 import Avatar from '@material-ui/core/Avatar';
 // import Button from '@material-ui/core/Button';
-import {ExitToApp, Description, Announcement, PieChart} from '@material-ui/icons';
+import {ExitToApp, Description, Announcement} from '@material-ui/icons';
 import { asyncTryCatchReq, API } from '../util/customAxios';
 import { getItemFromStorage, getRole, getDepartment, getUsername } from '../util/localStorage';
 import LeaveBalance from './LeaveBalance.js';
@@ -161,7 +160,7 @@ export default function MiniDrawer(props) {
     });
   }, []);
 
-  console.log(props);
+  console.log(props.title);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -182,40 +181,6 @@ export default function MiniDrawer(props) {
       nav: 'profile',
     }
   ];
-  switch (props.userInfo.role)
-  {
-    case 'staff':
-      if (props.remainingPaidLeave !== undefined)
-      {
-        optionList.push({
-          title : 'Tra cứu',
-          icon : <Description />,
-          nav : 'leave/requests'
-        });
-        optionList.push({
-          title: 'Đơn xin nghỉ phép',
-          icon : <Announcement />,
-          nav : 'leave'
-        });
-      }
-      else
-      {
-        optionList.push({
-          title : 'Duyệt đơn',
-          icon : <Description />,
-          nav : 'leave/requests'
-        });
-      }
-      break;
-  };
-  if (isManager) {
-    optionList.push({
-      title: 'Đánh giá năng lực',
-      icon: <RateReview />,
-      nav: 'pr',
-    })
-  }
-
   if (getRole() === 'hr') {
     optionList.push({
       title: 'Quản lý nhân sự',
@@ -223,15 +188,40 @@ export default function MiniDrawer(props) {
       nav: 'hr/management',
     });
     optionList.push({
+      title: 'Đánh giá năng lực',
+      icon: <RateReview />,
+      nav: 'pr',
+    });
+    optionList.push({
       title: 'Duyệt phiếu đánh giá',
       icon: <ThumbUp />,
       nav: 'hr/pr',
-    })
+    });
+  }
+  else if (isManager) {
     optionList.push({
-      title: 'Thống kê',
-      icon: <PieChart />,
-      nav: 'hr/statistic',
-    })
+      title: 'Đánh giá năng lực',
+      icon: <RateReview />,
+      nav: 'pr',
+    });
+    optionList.push({
+      title : 'Duyệt đơn',
+      icon : <Description />,
+      nav : 'leave/requests'
+    });
+  }
+  else
+  {
+    optionList.push({
+      title : 'Tra cứu',
+      icon : <Description />,
+      nav : 'leave/requests'
+    });
+    optionList.push({
+      title: 'Đơn xin nghỉ phép',
+      icon : <Announcement />,
+      nav : 'leave'
+    });
   }
   return (
     <div className={classes.root}>
@@ -341,11 +331,6 @@ export default function MiniDrawer(props) {
                 updateLeaveBalance = {() => props.updateLeaveBalance()}
                 />
               </Form>
-            </Route>
-            <Route path = '/lobby/hr/statistic' >
-              <Panel component = 'div'>
-                <Statistic />
-              </Panel>
             </Route>
             <Route path ='/lobby/pr/history'>
               <PerformanceHistory />
